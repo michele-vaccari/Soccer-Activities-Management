@@ -11,7 +11,7 @@
     <groupId>com.sam</groupId>
     <artifactId>web-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>web-api</name>
     <description>web-api</description>
     <properties>
