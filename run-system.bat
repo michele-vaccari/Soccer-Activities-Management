@@ -1,1 +1,1 @@
-call docker-compose up -d
+call docker-compose --env-file config/env.dev up -d
