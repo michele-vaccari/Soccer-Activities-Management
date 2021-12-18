@@ -7,17 +7,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { UsersTableComponent } from './users-table/users-table.component';
+import { MatTableModule } from '@angular/material/table';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    UsersTableComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
