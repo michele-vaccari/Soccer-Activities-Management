@@ -26,8 +26,6 @@ services:
       - DATABASE_NAME=${DATABASE_NAME}
     ports:
       - "8080:8080"
-    links:
-      - database
     depends_on:
       database:
         condition: service_healthy
