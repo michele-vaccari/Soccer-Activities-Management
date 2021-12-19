@@ -24,6 +24,8 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_PORT=${DATABASE_PORT}
       - DATABASE_NAME=${DATABASE_NAME}
+      - CORS_ALLOWED_ORIGINS=${FRONTEND_URL}:${FRONTEND_PORT}
+      - CORS_ALLOWED_METHODS=${CORS_ALLOWED_METHODS}
     ports:
       - "8080:8080"
     depends_on:
@@ -34,4 +36,4 @@ services:
       context: frontend/.
     restart: on-failure
     ports:
-      - "8081:80"
+      - "${FRONTEND_PORT}:80"
