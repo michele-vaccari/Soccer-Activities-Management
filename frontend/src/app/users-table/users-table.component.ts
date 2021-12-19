@@ -1,25 +1,14 @@
-import {Component} from '@angular/core';
-
-export interface User {
-  id: number,
-  type: string,
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
-  isActive: string;
-}
-
-const ELEMENT_DATA: User[] = [
-  { id: 1, type: "SystemAdministrator", name: "Michele", surname: "Vaccari", email: "m.vaccari@sam.com", password: "Password01", isActive: "Y" }
-];
+import {Component, OnInit} from '@angular/core';
+import { UserService } from '../services/user.service';
+import { User } from '../interfaces/user';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-users-table',
   templateUrl: './users-table.component.html',
   styleUrls: ['./users-table.component.css']
 })
-export class UsersTableComponent {
+export class UsersTableComponent implements OnInit {
   columns = [
     {
       columnDef: 'id',
@@ -57,6 +46,13 @@ export class UsersTableComponent {
       cell: (element: User) => `${element.isActive}`,
     },
   ];
-  dataSource = ELEMENT_DATA;
   displayedColumns = this.columns.map(c => c.columnDef);
+  dataSource = new MatTableDataSource<User>();
+
+  constructor(private userService: UserService) { 
+  }
+
+  ngOnInit() {
+    this.userService.getAllUser().subscribe((data: User[]) => this.dataSource.data = data);
+  }
 }
