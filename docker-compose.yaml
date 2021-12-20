@@ -37,3 +37,5 @@ services:
     restart: on-failure
     ports:
       - "${FRONTEND_PORT}:80"
+    depends_on:
+      - web-api
