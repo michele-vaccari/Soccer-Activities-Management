@@ -1,8 +1,13 @@
-<app-toolbar></app-toolbar>
+<div fxLayout="column" fxFlexFill>
 
-<!-- Main content -->
-<div>
-  <app-users-table></app-users-table>
+  <app-toolbar></app-toolbar>
+
+  <div fxFlex fxLayoutAlign="center center">
+
+    <app-users-table></app-users-table>
+
+    <router-outlet></router-outlet>
+
+  </div>
+
 </div>
-
-<router-outlet></router-outlet>
