@@ -44,15 +44,25 @@ export class UsersTableComponent implements OnInit {
       columnDef: 'isActive',
       header: 'Is Active',
       cell: (element: User) => `${element.isActive}`,
-    },
+    }
   ];
-  displayedColumns = this.columns.map(c => c.columnDef);
+  displayedColumns = this.columns.map(c => c.columnDef).concat(['actions']);
   dataSource = new MatTableDataSource<User>();
 
-  constructor(private userService: UserService) { 
+  constructor(private userService: UserService) {
+  }
+
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe((data: User[]) => this.dataSource.data = data);
+  }
+
+  deactivateUser(id: number) {
+    this.userService.deactivateUser(id).subscribe(
+      () => this.getAllUsers()
+    );
   }
 
   ngOnInit() {
-    this.userService.getAllUser().subscribe((data: User[]) => this.dataSource.data = data);
+    this.getAllUsers();
   }
 }

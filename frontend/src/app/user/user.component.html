@@ -1,0 +1,45 @@
+
+<form [formGroup]="userForm" fxLayout="column">
+    <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="type">
+            <mat-option value="SystemAdministrator">System administrator</mat-option>
+            <mat-option value="Referee">Referee</mat-option>
+            <mat-option value="TeamManager">Team manager</mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Surname</mat-label>
+        <input matInput formControlName="surname">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="userForm.controls['email'].invalid">{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field>
+</form>
+
+<button *ngIf="!isUpdateMode" (click)="postNewUser()"
+    mat-stroked-button color="primary">
+    Add
+</button>
+
+<button *ngIf="isUpdateMode" (click)="updateUser()"
+    mat-stroked-button color="primary">
+    Update
+</button>

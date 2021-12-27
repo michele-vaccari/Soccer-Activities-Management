@@ -11,12 +11,20 @@ import { UsersTableComponent } from './users-table/users-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { UserComponent } from './user/user.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input'
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    UsersTableComponent
+    UsersTableComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +33,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatToolbarModule,
     MatTableModule,
     HttpClientModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

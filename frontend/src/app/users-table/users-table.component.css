@@ -1,8 +1,21 @@
+.actions-bar {
+    padding: 16px 0 16px 0;
+}
+
+th.mat-header-cell {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+td {
+    text-align: center;
+}
+
 .mat-row {
     height: auto;
 }  
 
 .mat-cell {
-    padding: 16px 16px 8px 0;
+    padding: 16px;
 }
-  
