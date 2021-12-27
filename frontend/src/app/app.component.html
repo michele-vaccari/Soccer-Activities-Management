@@ -2,12 +2,36 @@
 
   <app-toolbar></app-toolbar>
 
-  <div fxFlex fxLayoutAlign="center center">
+  <mat-drawer-container fxFlex>
+      
+    <mat-drawer
+      mode="side"
+      opened>
+      <div fxLayout="column"
+      fxLayoutAlign="center">
+        <button
+            mat-icon-button
+            color="primary"
+            [routerLink]="['/users']">
+            <mat-icon>people</mat-icon>
+        </button>
+        <button
+            mat-icon-button
+            color="primary"
+            [routerLink]="['/user']">
+            <mat-icon>person_add</mat-icon>
+        </button>
+      </div>
+    </mat-drawer>
 
-    <div fxLayout="column">
-      <router-outlet></router-outlet>
-    </div>
-
-  </div>
+    <mat-drawer-content>
+      <!-- Main content -->
+      <div fxFlex fxLayoutAlign="center center">
+        <div fxLayout="column">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
 
 </div>
