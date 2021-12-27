@@ -29,6 +29,7 @@
         <button
           mat-icon-button
           color="primary"
+          [disabled]="element.isActive == 'N'"
           (click)="deactivateUser(element.id)">
           <mat-icon>delete</mat-icon>
         </button>

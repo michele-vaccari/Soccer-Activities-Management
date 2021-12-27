@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { User } from '../interfaces/user';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user',
@@ -19,7 +20,17 @@ export class UserComponent implements OnInit {
       email: this.userForm.controls['email'].value,
       password: this.userForm.controls['password'].value
     };
-    this.userService.addUser(user).subscribe();
+    this.userService.addUser(user).subscribe(
+      {
+        error: (e) => {
+          this.snackBar.open('Error adding user');
+        },
+        complete: () => {
+          this.snackBar.open(`User successfully added`);
+          this.router.navigate(['/users']);
+        }
+      }
+    );
   }
 
   updateUser() {
@@ -32,7 +43,21 @@ export class UserComponent implements OnInit {
       password: this.userForm.controls['password'].value,
       isActive: 'Y'
     };
-    this.userService.updateUser(user).subscribe();
+    this.userService.updateUser(user).subscribe(
+      {
+        error: (e) => {
+          let message = 'Error updating user';
+
+        if (e.status == 409)
+          message = 'Error updating user, email has already been used'
+        this.snackBar.open(message);
+        },
+        complete: () => {
+          this.snackBar.open(`User successfully updated`);
+          this.router.navigate(['/users']);
+        }
+      }
+    );
   }
 
   getEmailErrorMessage() {
@@ -43,7 +68,9 @@ export class UserComponent implements OnInit {
   }
 
   constructor(private userService: UserService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private snackBar: MatSnackBar,
+              private router: Router) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');

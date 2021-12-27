@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User } from '../interfaces/user';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users-table',
@@ -49,7 +50,8 @@ export class UsersTableComponent implements OnInit {
   displayedColumns = this.columns.map(c => c.columnDef).concat(['actions']);
   dataSource = new MatTableDataSource<User>();
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService,
+              private snackBar: MatSnackBar) {
   }
 
   getAllUsers() {
@@ -58,7 +60,15 @@ export class UsersTableComponent implements OnInit {
 
   deactivateUser(id: number) {
     this.userService.deactivateUser(id).subscribe(
-      () => this.getAllUsers()
+      {
+        error: () => {
+          this.snackBar.open('Error deactivating user');
+        },
+        complete: () => {
+          this.getAllUsers();
+          this.snackBar.open(`User successfully deactivated`);
+        }
+      }
     );
   }
 
