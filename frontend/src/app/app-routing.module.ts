@@ -6,7 +6,7 @@ import { UsersTableComponent } from './users-table/users-table.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/users',
+    redirectTo: 'users',
     pathMatch: 'full'
   },
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
     component: UserComponent
   },
   {
-    path: 'user/:id',
+    path: 'users/:id',
     component: UserComponent
   }
 ];

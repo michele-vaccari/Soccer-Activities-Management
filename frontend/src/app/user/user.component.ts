@@ -22,7 +22,7 @@ export class UserComponent implements OnInit {
     };
     this.userService.addUser(user).subscribe(
       {
-        error: (e) => {
+        error: () => {
           this.snackBar.open('Error adding user');
         },
         complete: () => {
@@ -43,18 +43,24 @@ export class UserComponent implements OnInit {
       password: this.userForm.controls['password'].value,
       isActive: 'Y'
     };
-    this.userService.updateUser(user).subscribe(
+
+    if (this.id == null)
+      return;
+
+    this.userService.updateUser(this.id, user).subscribe(
       {
         error: (e) => {
           let message = 'Error updating user';
 
-        if (e.status == 409)
+        if (e.status == 404)
+          message = 'Error updating user, user not found'
+        else if (e.status == 409)
           message = 'Error updating user, email has already been used'
         this.snackBar.open(message);
         },
         complete: () => {
           this.snackBar.open(`User successfully updated`);
-          this.router.navigate(['/users']);
+          this.router.navigate(['users']);
         }
       }
     );
@@ -70,9 +76,7 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
-              private router: Router) { }
-
-  ngOnInit(): void {
+              private router: Router) {
     const id = this.route.snapshot.paramMap.get('id');
     this.isUpdateMode = id != null;
 
@@ -82,14 +86,23 @@ export class UserComponent implements OnInit {
     this.id = +id;
 
     this.userService.getUser(this.id).subscribe(
-      (user: User) => {
-        this.userForm.controls['type'].setValue(user.type);
-        this.userForm.controls['name'].setValue(user.name);
-        this.userForm.controls['surname'].setValue(user.surname);
-        this.userForm.controls['email'].setValue(user.email);
-        this.userForm.controls['password'].setValue(user.password);
+      {
+        next: (user: User) => {
+          this.userForm.controls['type'].setValue(user.type);
+          this.userForm.controls['name'].setValue(user.name);
+          this.userForm.controls['surname'].setValue(user.surname);
+          this.userForm.controls['email'].setValue(user.email);
+          this.userForm.controls['password'].setValue(user.password);
+        },
+        error: () => {
+          this.snackBar.open('Error retrieving user, user not found');
+          this.router.navigate(['users']);
+        }
       }
     );
+  }
+
+  ngOnInit(): void {
   }
 
   isUpdateMode: boolean = false;

@@ -41,10 +41,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void updateUser(User user) {
-		if (userRepository.existsByEmailAndIdNot(user.getEmail(), user.getId()))
+	public void updateUser(Integer id, User user) {
+		if (!userRepository.existsById(id))
+			throw new UserNotFoundException();
+
+		if (userRepository.existsByEmailAndIdNot(user.getEmail(), id))
 			throw new SingleEmailConstraintException();
 
+		user.setId(id);
 		userRepository.save(user);
 	}
 

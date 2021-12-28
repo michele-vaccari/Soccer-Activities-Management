@@ -16,3 +16,11 @@ https://stackoverflow.com/questions/42874351/spring-boot-enabling-cors-by-applic
 * A complete guide to flexbox
 https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 https://github.com/angular/flex-layout
+
+* Swagger documentation
+** HTML
+http://localhost:8080/swagger-ui.html
+** JSON
+http://localhost:8080/v3/api-docs
+** YAML
+http://localhost:8080/v3/api-docs.yaml

@@ -1,8 +1,16 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.service.SingleEmailConstraintException;
+import com.sam.webapi.service.UserNotFoundException;
 import com.sam.webapi.service.UserServiceImpl;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,11 +20,17 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @RestController
+@Tag(name = "Users", description = "Users information retrieval, creation, modification, deactivation")
 public class User {
 
 	@Autowired
 	private UserServiceImpl userService;
 
+	@Operation(summary = "Get the list of users")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the users",
+					content = { @Content(mediaType = "application/json",
+							array = @ArraySchema(schema = @Schema(implementation = com.sam.webapi.model.User.class))) }) })
 	@RequestMapping(value = "/users",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -24,6 +38,13 @@ public class User {
 		return userService.getUsers();
 	}
 
+	@Operation(summary = "Get a user by its id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the user",
+					content = { @Content(mediaType = "application/json",
+							schema = @Schema(implementation = com.sam.webapi.model.User.class)) }),
+			@ApiResponse(responseCode = "404", description = "User not found",
+					content = @Content) })
 	@RequestMapping(value = "/users/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,14 +54,18 @@ public class User {
 		if (user.isPresent())
 			return user;
 		else
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User doesn't exist");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 
+	@Operation(summary = "Add a new user")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "User added"),
+			@ApiResponse(responseCode = "409", description = "Email has already been used") })
 	@RequestMapping(value = "/users",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void addUser(@RequestBody com.sam.webapi.model.User user) {
+	public void addUser(@RequestBody(required = true) com.sam.webapi.model.User user) {
 		try {
 			userService.createUser(user);
 		}
@@ -49,19 +74,32 @@ public class User {
 		}
 	}
 
-	@RequestMapping(value = "/users",
+	@Operation(summary = "Update an existing user by its id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User updated"),
+			@ApiResponse(responseCode = "404", description = "User not found"),
+			@ApiResponse(responseCode = "409", description = "User update failed. Email has already been used")
+			})
+	@RequestMapping(value = "/users/{id}",
 			method = RequestMethod.PATCH,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public void updateUser(@RequestBody com.sam.webapi.model.User user) {
+	public void updateUser(@PathVariable Integer id,
+						   @RequestBody com.sam.webapi.model.User user) {
 		try {
-			userService.updateUser(user);
+			userService.updateUser(id, user);
+		}
+		catch (UserNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
 		}
 		catch (SingleEmailConstraintException ex) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Email has already been used", ex);
 		}
 	}
 
+	@Operation(summary = "Disable a user by its id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "User disabled") })
 	@RequestMapping(value = "/users/{id}",
 			method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)

@@ -31,9 +31,9 @@ export class UserService {
       );
     }
   
-  updateUser(user: User): Observable<User> {
+  updateUser(id: number, user: User): Observable<User> {
     return this.http.patch<User>(
-      API_ENDPOINT + '/users',
+      API_ENDPOINT + '/users/' + id,
       user,
       this.httpOptionsContentTypeJson
       );

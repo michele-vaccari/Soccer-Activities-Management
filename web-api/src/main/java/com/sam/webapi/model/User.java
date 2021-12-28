@@ -1,17 +1,30 @@
 package com.sam.webapi.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
 @Table(name = "User", schema = "Users")
 public class User {
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private int id;
+	@Schema(description = "Type of users",
+			allowableValues =  {"SystemAdministrator","TeamManager","Referee"})
+	@NotEmpty
 	private String type;
+	@NotEmpty
 	private String name;
+	@NotEmpty
 	private String surname;
+	@NotEmpty
 	private String email;
+	@NotEmpty
 	private String password;
+	@Schema(allowableValues =  {"Y", "N"})
+	@NotEmpty
 	private String isActive;
 
 	@Id
