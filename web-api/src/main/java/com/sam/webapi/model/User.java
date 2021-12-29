@@ -27,6 +27,24 @@ public class User {
 	@NotEmpty
 	private String isActive;
 
+	public User(int id,
+				String type,
+				String name,
+				String surname,
+				String email,
+				String password,
+				String isActive) {
+		this.id = id;
+		this.type = type;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.isActive = isActive;
+	}
+
+	public User() { }
+
 	@Id
 	@Column(name = "Id", nullable = false)
 	public int getId() {
