@@ -15,9 +15,5 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
 	@Modifying
 	@Query(value = "UPDATE Users.User SET isActive='N' WHERE Id=?1", nativeQuery=true)
-	void updateUserById(Integer id, User user);
-
-	@Modifying
-	@Query(value = "UPDATE Users.User SET isActive='N' WHERE Id=?1", nativeQuery=true)
 	void deactivateUserById(Integer id);
 }

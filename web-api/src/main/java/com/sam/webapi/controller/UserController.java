@@ -1,5 +1,6 @@
 package com.sam.webapi.controller;
 
+import com.sam.webapi.model.User;
 import com.sam.webapi.service.SingleEmailConstraintException;
 import com.sam.webapi.service.UserNotFoundException;
 import com.sam.webapi.service.UserServiceImpl;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 @RestController
 @Tag(name = "Users", description = "Users information retrieval, creation, modification, deactivation")
-public class User {
+public class UserController {
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -30,11 +31,12 @@ public class User {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the users",
 					content = { @Content(mediaType = "application/json",
-							array = @ArraySchema(schema = @Schema(implementation = com.sam.webapi.model.User.class))) }) })
+							array = @ArraySchema(schema = @Schema(implementation = User.class))) }) })
 	@RequestMapping(value = "/users",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Iterable<com.sam.webapi.model.User> getUsers() {
+	public Iterable<User> getUsers() {
+
 		return userService.getUsers();
 	}
 
@@ -42,13 +44,13 @@ public class User {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the user",
 					content = { @Content(mediaType = "application/json",
-							schema = @Schema(implementation = com.sam.webapi.model.User.class)) }),
+							schema = @Schema(implementation = User.class)) }),
 			@ApiResponse(responseCode = "404", description = "User not found",
 					content = @Content) })
 	@RequestMapping(value = "/users/{id}",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Optional<com.sam.webapi.model.User> getUser(@PathVariable Integer id) {
+	public Optional<User> getUser(@PathVariable Integer id) {
 		var user = userService.getUser(id);
 
 		if (user.isPresent())
@@ -65,7 +67,7 @@ public class User {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void addUser(@RequestBody(required = true) com.sam.webapi.model.User user) {
+	public void addUser(@RequestBody(required = true) User user) {
 		try {
 			userService.createUser(user);
 		}
@@ -85,7 +87,7 @@ public class User {
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public void updateUser(@PathVariable Integer id,
-						   @RequestBody com.sam.webapi.model.User user) {
+						   @RequestBody User user) {
 		try {
 			userService.updateUser(id, user);
 		}
