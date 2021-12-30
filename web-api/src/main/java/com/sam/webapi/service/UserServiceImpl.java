@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	public UserServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Override
 	@Transactional
@@ -55,6 +59,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void deleteUser(Integer id) {
+		if (!userRepository.existsById(id))
+			throw new UserNotFoundException();
+
 		userRepository.deactivateUserById(id);
 	}
 }

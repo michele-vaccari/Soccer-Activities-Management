@@ -3,7 +3,7 @@ package com.sam.webapi.controller;
 import com.sam.webapi.model.User;
 import com.sam.webapi.service.SingleEmailConstraintException;
 import com.sam.webapi.service.UserNotFoundException;
-import com.sam.webapi.service.UserServiceImpl;
+import com.sam.webapi.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -24,8 +24,12 @@ import java.util.Optional;
 @Tag(name = "Users", description = "Users information retrieval, creation, modification, deactivation")
 public class UserController {
 
+	private UserService userService;
+
 	@Autowired
-	private UserServiceImpl userService;
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@Operation(summary = "Get the list of users")
 	@ApiResponses(value = {
@@ -80,8 +84,7 @@ public class UserController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User updated"),
 			@ApiResponse(responseCode = "404", description = "User not found"),
-			@ApiResponse(responseCode = "409", description = "User update failed. Email has already been used")
-			})
+			@ApiResponse(responseCode = "409", description = "User update failed. Email has already been used") })
 	@RequestMapping(value = "/users/{id}",
 			method = RequestMethod.PATCH,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -101,12 +104,18 @@ public class UserController {
 
 	@Operation(summary = "Disable a user by its id")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "User disabled") })
+			@ApiResponse(responseCode = "200", description = "User disabled"),
+			@ApiResponse(responseCode = "404", description = "User not found") })
 	@RequestMapping(value = "/users/{id}",
 			method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteUser(@PathVariable Integer id) {
-		userService.deleteUser(id);
+		try {
+			userService.deleteUser(id);
+		}
+		catch (UserNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
+		}
 	}
 
 }
