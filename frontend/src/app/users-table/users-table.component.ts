@@ -13,37 +13,37 @@ export class UsersTableComponent implements OnInit {
   columns = [
     {
       columnDef: 'id',
-      header: 'Id',
+      header: $localize `:@@ID:Id`,
       cell: (element: User) => `${element.id}`,
     },
     {
       columnDef: 'type',
-      header: 'Type',
+      header: $localize `:@@TYPE:Type`,
       cell: (element: User) => `${element.type}`,
     },
     {
       columnDef: 'name',
-      header: 'Name',
+      header: $localize `:@@NAME:Name`,
       cell: (element: User) => `${element.name}`,
     },
     {
       columnDef: 'surname',
-      header: 'Surname',
+      header: $localize `:@@SURNAME:Surname`,
       cell: (element: User) => `${element.surname}`,
     },
     {
       columnDef: 'email',
-      header: 'Email',
+      header: $localize `:@@EMAIL:Email`,
       cell: (element: User) => `${element.email}`,
     },
     {
       columnDef: 'password',
-      header: 'Password',
+      header: $localize `:@@PASSWORD:Password`,
       cell: (element: User) => `${element.password}`,
     },
     {
       columnDef: 'isActive',
-      header: 'Is Active',
+      header: $localize `:@@IS_ACTIVE:Is Active`,
       cell: (element: User) => `${element.isActive}`,
     }
   ];
@@ -62,11 +62,11 @@ export class UsersTableComponent implements OnInit {
     this.userService.deactivateUser(id).subscribe(
       {
         error: () => {
-          this.snackBar.open('Error deactivating user');
+          this.snackBar.open($localize `:@@ERROR_DEACTIVATING_USER:Error deactivating user`);
         },
         complete: () => {
           this.getAllUsers();
-          this.snackBar.open(`User successfully deactivated`);
+          this.snackBar.open($localize `:@@USER_SUCCESSFULLY_DEACTIVATED:User successfully deactivated`);
         }
       }
     );

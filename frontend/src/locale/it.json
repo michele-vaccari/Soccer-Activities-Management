@@ -1,0 +1,26 @@
+{
+  "locale": "it",
+  "translations": {
+    "TYPE": "Tipo",
+    "NAME": "Nome",
+    "SURNAME": "Cognome",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "ADD": "Aggiungi",
+    "UPDATE": "Aggiorna",
+    "ERROR_ADDING_USER": "Errore nell'aggiunta dell'utente",
+    "USER_SUCCESSFULLY_ADDED": "Utente aggiunto con successo",
+    "ERROR_UPDATING_USER": "Errore nell'aggiornamento dell'utente",
+    "ERROR_UPDATING_USER_USER_NOT_FOUND": "Errore nell'aggiornamento dell'utente, utente non trovato",
+    "ERROR_UPDATING_USER_EMAIL_HAS_ALREADY_BEEN_USED": "Errore nell'aggiornamento dell'utente, l'e-mail è già stata utilizzata",
+    "USER_SUCCESSFULLY_UPDATED": "Utente aggiornato con successo",
+    "YOU_MUST_ENTER_A_VALUE": "Devi inserire un valore",
+    "NOT_A_VALID_EMAIL": "Email non valida",
+    "ERROR_RETRIEVING_USER_USER_NOT_FOUND": "Errore nel recupero dell'utente, utente non trovato",
+    "ADD_NEW_USER": "Aggiungi nuovo utente",
+    "ID": "Id",
+    "IS_ACTIVE": "Attivo",
+    "ERROR_DEACTIVATING_USER": "Errore nella disattivazione dell'utente",
+    "USER_SUCCESSFULLY_DEACTIVATED": "Utente disattivato con successo"
+  }
+}

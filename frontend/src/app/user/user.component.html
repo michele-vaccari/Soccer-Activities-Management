@@ -1,7 +1,9 @@
 
 <form [formGroup]="userForm" fxLayout="column">
     <mat-form-field appearance="fill">
-        <mat-label>Type</mat-label>
+        <mat-label>
+            <ng-container i18n="@@TYPE">Type</ng-container>
+        </mat-label>
         <mat-select formControlName="type">
             <mat-option value="SystemAdministrator">System administrator</mat-option>
             <mat-option value="Referee">Referee</mat-option>
@@ -10,23 +12,31 @@
     </mat-form-field>
     
     <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
+        <mat-label>
+            <ng-container i18n="@@NAME">Name</ng-container>
+        </mat-label>
         <input matInput formControlName="name">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>Surname</mat-label>
+        <mat-label>
+            <ng-container i18n="@@SURNAME">Surname</ng-container>
+        </mat-label>
         <input matInput formControlName="surname">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
+        <mat-label>
+            <ng-container i18n="@@EMAIL">Email</ng-container>
+        </mat-label>
         <input matInput formControlName="email">
         <mat-error *ngIf="userForm.controls['email'].invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-        <mat-label>Password</mat-label>
+        <mat-label>
+            <ng-container i18n="@@PASSWORD">Password</ng-container>
+        </mat-label>
         <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
         <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -36,10 +46,10 @@
 
 <button *ngIf="!isUpdateMode" (click)="postNewUser()"
     mat-stroked-button color="primary">
-    Add
+    <ng-container i18n="@@ADD">Add</ng-container>
 </button>
 
 <button *ngIf="isUpdateMode" (click)="updateUser()"
     mat-stroked-button color="primary">
-    Update
+    <ng-container i18n="@@UPDATE">Update</ng-container>
 </button>
