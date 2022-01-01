@@ -23,10 +23,10 @@ export class UserComponent implements OnInit {
     this.userService.addUser(user).subscribe(
       {
         error: () => {
-          this.snackBar.open('Error adding user');
+          this.snackBar.open($localize `:@@ERROR_ADDING_USER:Error adding user`);
         },
         complete: () => {
-          this.snackBar.open(`User successfully added`);
+          this.snackBar.open($localize `:@@USER_SUCCESSFULLY_ADDED:User successfully added`);
           this.router.navigate(['/users']);
         }
       }
@@ -50,16 +50,16 @@ export class UserComponent implements OnInit {
     this.userService.updateUser(this.id, user).subscribe(
       {
         error: (e) => {
-          let message = 'Error updating user';
+          let message = $localize `:@@ERROR_UPDATING_USER:Error updating user`;
 
         if (e.status == 404)
-          message = 'Error updating user, user not found'
+          message = $localize `:@@ERROR_UPDATING_USER_USER_NOT_FOUND:Error updating user, user not found`;
         else if (e.status == 409)
-          message = 'Error updating user, email has already been used'
+          message = $localize `:@@ERROR_UPDATING_USER_EMAIL_HAS_ALREADY_BEEN_USED:Error updating user, email has already been used`;
         this.snackBar.open(message);
         },
         complete: () => {
-          this.snackBar.open(`User successfully updated`);
+          this.snackBar.open($localize `:@@USER_SUCCESSFULLY_UPDATED:User successfully updated`);
           this.router.navigate(['users']);
         }
       }
@@ -68,9 +68,9 @@ export class UserComponent implements OnInit {
 
   getEmailErrorMessage() {
     if (this.userForm.controls['email'].hasError('required'))
-      return 'You must enter a value';
+      return $localize `:@@YOU_MUST_ENTER_A_VALUE:You must enter a value`;
 
-    return this.userForm.controls['email'].hasError('email') ? 'Not a valid email' : '';
+    return this.userForm.controls['email'].hasError('email') ? $localize `:@@NOT_A_VALID_EMAIL:Not a valid email` : '';
   }
 
   constructor(private userService: UserService,
@@ -95,7 +95,7 @@ export class UserComponent implements OnInit {
           this.userForm.controls['password'].setValue(user.password);
         },
         error: () => {
-          this.snackBar.open('Error retrieving user, user not found');
+          this.snackBar.open($localize `:@@ERROR_RETRIEVING_USER_USER_NOT_FOUND:Error retrieving user, user not found`);
           this.router.navigate(['users']);
         }
       }
