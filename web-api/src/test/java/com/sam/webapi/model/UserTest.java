@@ -98,14 +98,14 @@ class UserTest {
 	}
 
 	@Test
-	@DisplayName("Should get is active")
-	void shouldGetIsActive() {
+	@DisplayName("Should get active")
+	void shouldGetActive() {
 		Assertions.assertEquals("Y", user.getActive());
 	}
 
 	@Test
-	@DisplayName("Should set is active")
-	void shouldSetIsActive() {
+	@DisplayName("Should set active")
+	void shouldSetActive() {
 		user.setActive("N");
 		Assertions.assertEquals("N", user.getActive());
 	}

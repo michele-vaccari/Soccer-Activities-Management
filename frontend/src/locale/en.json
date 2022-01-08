@@ -1,7 +1,7 @@
 {
   "locale": "en",
   "translations": {
-    "TYPE": "Type",
+    "ROLE": "Role",
     "NAME": "Name",
     "SURNAME": "Surname",
     "EMAIL": "Email",
@@ -19,7 +19,7 @@
     "ERROR_RETRIEVING_USER_USER_NOT_FOUND": "Error retrieving user, user not found",
     "ADD_NEW_USER": "Add new user",
     "ID": "Id",
-    "IS_ACTIVE": "Is Active",
+    "ACTIVE": "Active",
     "ERROR_DEACTIVATING_USER": "Error deactivating user",
     "USER_SUCCESSFULLY_DEACTIVATED": "User successfully deactivated"
   }

@@ -111,8 +111,8 @@ public class User {
 		return active;
 	}
 
-	public void setActive(String isActive) {
-		this.active = isActive;
+	public void setActive(String active) {
+		this.active = active;
 	}
 
 	@Override

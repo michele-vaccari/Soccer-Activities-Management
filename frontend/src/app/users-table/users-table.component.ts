@@ -17,9 +17,9 @@ export class UsersTableComponent implements OnInit {
       cell: (element: User) => `${element.id}`,
     },
     {
-      columnDef: 'type',
-      header: $localize `:@@TYPE:Type`,
-      cell: (element: User) => `${element.type}`,
+      columnDef: 'role',
+      header: $localize `:@@ROLE:Role`,
+      cell: (element: User) => `${element.role}`,
     },
     {
       columnDef: 'name',
@@ -42,9 +42,9 @@ export class UsersTableComponent implements OnInit {
       cell: (element: User) => `${element.password}`,
     },
     {
-      columnDef: 'isActive',
-      header: $localize `:@@IS_ACTIVE:Is Active`,
-      cell: (element: User) => `${element.isActive}`,
+      columnDef: 'Active',
+      header: $localize `:@@ACTIVE:Active`,
+      cell: (element: User) => `${element.active}`,
     }
   ];
   displayedColumns = this.columns.map(c => c.columnDef).concat(['actions']);
