@@ -24,7 +24,7 @@ class UserControllerTest {
 		var userService = Mockito.mock(UserService.class);
 		List<User> users = new ArrayList<>(
 				Arrays.asList(
-						new User(1, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y"),
+						new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y"),
 						new User(2, "Referee", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y"),
 						new User(3, "TeamManager", "Jason", "Doe", "jason.doe@sam.com", "Password03", "N")
 				));
@@ -41,7 +41,7 @@ class UserControllerTest {
 	@DisplayName("When get user, then operation is successful")
 	void whenGetUser_ThenOperationIsSuccessful() {
 		var userService = Mockito.mock(UserService.class);
-		var user = Optional.of(new User(1, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y"));
+		var user = Optional.of(new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y"));
 		Mockito.when(userService.getUser(1)).thenReturn(user);
 		var userController = new UserController(userService);
 
@@ -67,7 +67,7 @@ class UserControllerTest {
 	@DisplayName("When add user, then operation is successful")
 	void whenAddUser_ThenOperationIsSuccessful() {
 		var userService = Mockito.mock(UserService.class);
-		var user = new User(0, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
+		var user = new User(0, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var userController = new UserController(userService);
 
 		userController.addUser(user);
@@ -79,7 +79,7 @@ class UserControllerTest {
 	@DisplayName("When add user, then throw ResponseStatusException: Email has already been used")
 	void whenAddUser_ThenThrowResponseStatusException_EmailHasAlreadyBeenUsed() {
 		var userService = Mockito.mock(UserService.class);
-		var user = new User(0, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
+		var user = new User(0, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		Mockito.doThrow(SingleEmailConstraintException.class).when(userService).createUser(user);
 		var userController = new UserController(userService);
 
@@ -90,7 +90,7 @@ class UserControllerTest {
 	@DisplayName("When update user, then operation is successful")
 	void whenUpdateUser_ThenOperationIsSuccessful() {
 		var userService = Mockito.mock(UserService.class);
-		var user = new User(1, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
+		var user = new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var userController = new UserController(userService);
 
 		userController.updateUser(1, user);
@@ -102,7 +102,7 @@ class UserControllerTest {
 	@DisplayName("When update user, then throw ResponseStatusException: User not found")
 	void whenUpdateUser_ThenThrowResponseStatusException_UserNotFound() {
 		var userService = Mockito.mock(UserService.class);
-		var user = new User(1, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
+		var user = new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		Mockito.doThrow(UserNotFoundException.class).when(userService).updateUser(1, user);
 		var userController = new UserController(userService);
 
@@ -113,7 +113,7 @@ class UserControllerTest {
 	@DisplayName("When update user, then throw ResponseStatusException: Email has already been used")
 	void whenUpdateUser_ThenThrowResponseStatusException_EmailHasAlreadyBeenUsed() {
 		var userService = Mockito.mock(UserService.class);
-		var user = new User(1, "SystemAdministrator", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
+		var user = new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		Mockito.doThrow(SingleEmailConstraintException.class).when(userService).updateUser(1, user);
 		var userController = new UserController(userService);
 

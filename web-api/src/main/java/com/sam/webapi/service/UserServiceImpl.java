@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
 		var userId = userRepository.getMaxId();
 		user.setId(++userId);
-		user.setIsActive("Y");
+		user.setActive("Y");
 
 		userRepository.save(user);
 	}
