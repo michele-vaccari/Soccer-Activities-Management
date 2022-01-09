@@ -9,7 +9,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UsersTableComponent } from './users-table/users-table.component';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { UserComponent } from './user/user.component';
@@ -21,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { LoginComponent } from './login/login.component';
+import { MatCardModule } from '@angular/material/card';
+import { AuthenticationHtppInterceptorService } from './services/authentication-htpp-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { LoginComponent } from './login/login.component';
     ReactiveFormsModule,
     MatIconModule,
     MatSnackBarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCardModule
   ],
   providers: [
     {
@@ -56,6 +59,11 @@ import { LoginComponent } from './login/login.component';
         horizontalPosition: 'end',
         verticalPosition: 'bottom',
       }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationHtppInterceptorService,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

@@ -1,1 +1,27 @@
-<p>login works!</p>
+<mat-card>
+    <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+        <h3>LOGIN:</h3>
+
+        <form [formGroup]="loginForm" fxLayout="column">
+            <mat-form-field appearance="fill" hideRequiredMarker="true">
+                <mat-label>
+                    <ng-container i18n="@@EMAIL">Email</ng-container>
+                </mat-label>
+                <input matInput formControlName="email">
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill" hideRequiredMarker="true">
+                <mat-label>
+                    <ng-container i18n="@@PASSWORD">Password</ng-container>
+                </mat-label>
+                <input matInput formControlName="password" type="password">
+            </mat-form-field>
+        </form>
+
+        <button mat-stroked-button color="primary"
+            (click)="authenticate()"
+            [disabled]="!loginForm.valid">
+            <ng-container i18n="@@LOGIN">Login</ng-container>
+        </button>
+    </mat-card-content>
+</mat-card>
