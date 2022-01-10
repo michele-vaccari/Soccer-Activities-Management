@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { APPLICATION_NAME } from './constants';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +7,8 @@ import { APPLICATION_NAME } from './constants';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = APPLICATION_NAME;
+  title = $localize `:@@APPLICATION_NAME:Soccer Activities Management`;
+
+  constructor(public authenticationService: AuthenticationService) {
+  }
 }

@@ -23,6 +23,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { LoginComponent } from './login/login.component';
 import { MatCardModule } from '@angular/material/card';
 import { AuthenticationHtppInterceptorService } from './services/authentication-htpp-interceptor.service';
+import { HomeComponent } from './home/home.component';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { AuthenticationHtppInterceptorService } from './services/authentication-
     ToolbarComponent,
     UsersTableComponent,
     UserComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,9 @@ import { AuthenticationHtppInterceptorService } from './services/authentication-
     MatIconModule,
     MatSnackBarModule,
     MatSidenavModule,
-    MatCardModule
+    MatCardModule,
+    MatListModule,
+    MatTooltipModule
   ],
   providers: [
     {

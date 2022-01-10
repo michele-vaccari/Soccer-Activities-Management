@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
-  selector: 'app-toolbar',
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
   constructor(public authenticationService: AuthenticationService) { }
 
