@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@Operation(summary = "Get the list of users")
+	@Operation(summary = "Get the list of users", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the users",
 					content = { @Content(mediaType = "application/json",
@@ -44,7 +45,7 @@ public class UserController {
 		return userService.getUsers();
 	}
 
-	@Operation(summary = "Get a user by its id")
+	@Operation(summary = "Get a user by its id", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the user",
 					content = { @Content(mediaType = "application/json",
@@ -63,7 +64,7 @@ public class UserController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 
-	@Operation(summary = "Add a new user")
+	@Operation(summary = "Add a new user", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "User added"),
 			@ApiResponse(responseCode = "409", description = "Email has already been used") })
@@ -80,7 +81,7 @@ public class UserController {
 		}
 	}
 
-	@Operation(summary = "Update an existing user by its id")
+	@Operation(summary = "Update an existing user by its id", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User updated"),
 			@ApiResponse(responseCode = "404", description = "User not found"),
@@ -102,7 +103,7 @@ public class UserController {
 		}
 	}
 
-	@Operation(summary = "Disable a user by its id")
+	@Operation(summary = "Disable a user by its id", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User disabled"),
 			@ApiResponse(responseCode = "404", description = "User not found") })

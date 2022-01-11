@@ -4,6 +4,7 @@ import { Token } from '../interfaces/token';
 import { API_ENDPOINT } from '../constants';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -60,9 +61,11 @@ export class AuthenticationService {
 
   logOut() {
     sessionStorage.removeItem('token');
+    this.router.navigate(['home']);
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private router: Router) {
     this.jwtHelper = new JwtHelperService();
   }
 

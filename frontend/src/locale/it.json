@@ -41,6 +41,7 @@
     "HOME_REGISTERED_USER_DESCRIPTION": "Puoi navigare nel sito come ",
     "ADMINISTRATOR_USER": "utente AMMINISTRATORE",
     "TEAM_MANAGER_USER": "utente GESTORE SQUADRA",
-    "REFEREE_USER": "utente ARBITRO"
+    "REFEREE_USER": "utente ARBITRO",
+    "USER_UNAUTHORIZED_ERROR": "Errore, utente non autorizzato"
   }
 }
