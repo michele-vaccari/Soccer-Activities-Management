@@ -23,7 +23,13 @@ services:
       retries: 10
   web-api:
     build:
-      context: web-api/.
+      context: .
+      dockerfile: web-api/Dockerfile
+      args:
+        JWT_PUBLIC_KEY_SOURCE_PATH: ${JWT_PUBLIC_KEY_SOURCE_PATH}
+        JWT_PRIVATE_KEY_SOURCE_PATH: ${JWT_PRIVATE_KEY_SOURCE_PATH}
+        JWT_PUBLIC_KEY_DESTINATION_PATH: ${JWT_PUBLIC_KEY_DESTINATION_PATH}
+        JWT_PRIVATE_KEY_DESTINATION_PATH: ${JWT_PRIVATE_KEY_DESTINATION_PATH}
     restart: on-failure
     environment:
       - DATABASE_USERNAME=${DATABASE_USERNAME}
@@ -32,6 +38,8 @@ services:
       - DATABASE_NAME=${DATABASE_NAME}
       - CORS_ALLOWED_ORIGINS=${FRONTEND_URL}:${FRONTEND_PORT}
       - CORS_ALLOWED_METHODS=${CORS_ALLOWED_METHODS}
+      - JWT_PUBLIC_KEY_DESTINATION_PATH=${JWT_PUBLIC_KEY_DESTINATION_PATH}
+      - JWT_PRIVATE_KEY_DESTINATION_PATH=${JWT_PRIVATE_KEY_DESTINATION_PATH}
     ports:
       - "8080:8080"
     depends_on:
