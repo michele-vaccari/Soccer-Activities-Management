@@ -14,6 +14,8 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	Integer getMaxId();
 
 	@Modifying
-	@Query(value = "UPDATE Users.User SET isActive='N' WHERE Id=?1", nativeQuery=true)
+	@Query(value = "UPDATE Users.User SET Active='N' WHERE Id=?1", nativeQuery=true)
 	void deactivateUserById(Integer id);
+
+	User findByEmailAndActive(String email, String active);
 }

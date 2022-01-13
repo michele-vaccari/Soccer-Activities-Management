@@ -1,7 +1,8 @@
 {
   "locale": "en",
   "translations": {
-    "TYPE": "Type",
+    "APPLICATION_NAME": "Soccer Activities Management",
+    "ROLE": "Role",
     "NAME": "Name",
     "SURNAME": "Surname",
     "EMAIL": "Email",
@@ -19,8 +20,28 @@
     "ERROR_RETRIEVING_USER_USER_NOT_FOUND": "Error retrieving user, user not found",
     "ADD_NEW_USER": "Add new user",
     "ID": "Id",
-    "IS_ACTIVE": "Is Active",
+    "ACTIVE": "Active",
     "ERROR_DEACTIVATING_USER": "Error deactivating user",
-    "USER_SUCCESSFULLY_DEACTIVATED": "User successfully deactivated"
+    "USER_SUCCESSFULLY_DEACTIVATED": "User successfully deactivated",
+    "HOME_GUEST_TITLE": "Welcome to ",
+    "HOME_GUEST_DESCRIPTION_1": "You can use the web application in two modes:",
+    "GUEST_USER": "GUEST USER",
+    "AND": " and ",
+    "REGISTERED_USER": "REGISTERED USER",
+    "HOME_GUEST_DESCRIPTION_2": "If you are a ",
+    "HOME_GUEST_DESCRIPTION_3": " you can:",
+    "HOME_GUEST_DESCRIPTION_4": "view the data of all registered teams;",
+    "HOME_GUEST_DESCRIPTION_5": "see the results of the teams in the various tournaments;",
+    "HOME_GUEST_DESCRIPTION_6": "see, for each team, the data of the players.",
+    "HOME_GUEST_DESCRIPTION_7": "If you are a ",
+    "HOME_GUEST_DESCRIPTION_8": "you can login by entering",
+    "HOME_GUEST_DESCRIPTION_9": "your credentials on the login page.",
+    "HOME_GUEST_DESCRIPTION_10": "Enjoy your stay!",
+    "HOME_REGISTERED_USER_TITLE": "Welcome back ",
+    "HOME_REGISTERED_USER_DESCRIPTION": "You can browse the site as ",
+    "ADMINISTRATOR_USER": "ADMINISTRATOR user",
+    "TEAM_MANAGER_USER": "TEAM MANAGER user",
+    "REFEREE_USER": "REFEREE user",
+    "USER_UNAUTHORIZED_ERROR": "User unauthorized error"
   }
 }

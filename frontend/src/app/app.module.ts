@@ -9,7 +9,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UsersTableComponent } from './users-table/users-table.component';
 import { MatTableModule } from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { UserComponent } from './user/user.component';
@@ -20,13 +20,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { LoginComponent } from './login/login.component';
+import { MatCardModule } from '@angular/material/card';
+import { AuthenticationHtppInterceptorService } from './services/authentication-htpp-interceptor.service';
+import { HomeComponent } from './home/home.component';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     UsersTableComponent,
-    UserComponent
+    UserComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +52,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     ReactiveFormsModule,
     MatIconModule,
     MatSnackBarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCardModule,
+    MatListModule,
+    MatTooltipModule
   ],
   providers: [
     {
@@ -54,6 +65,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
         horizontalPosition: 'end',
         verticalPosition: 'bottom',
       }
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationHtppInterceptorService,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]

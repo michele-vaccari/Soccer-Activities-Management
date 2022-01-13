@@ -1,7 +1,8 @@
 {
   "locale": "it",
   "translations": {
-    "TYPE": "Tipo",
+    "APPLICATION_NAME": "Gestore attività calcistiche",
+    "ROLE": "Ruolo",
     "NAME": "Nome",
     "SURNAME": "Cognome",
     "EMAIL": "Email",
@@ -19,8 +20,28 @@
     "ERROR_RETRIEVING_USER_USER_NOT_FOUND": "Errore nel recupero dell'utente, utente non trovato",
     "ADD_NEW_USER": "Aggiungi nuovo utente",
     "ID": "Id",
-    "IS_ACTIVE": "Attivo",
+    "ACTIVE": "Attivo",
     "ERROR_DEACTIVATING_USER": "Errore nella disattivazione dell'utente",
-    "USER_SUCCESSFULLY_DEACTIVATED": "Utente disattivato con successo"
+    "USER_SUCCESSFULLY_DEACTIVATED": "Utente disattivato con successo",
+    "HOME_GUEST_TITLE": "Benvenuto in ",
+    "HOME_GUEST_DESCRIPTION_1": "Puoi utilizzare l'applicazione web in due modalità:",
+    "GUEST_USER": "UTENTE OSPITE",
+    "AND": " e ",
+    "REGISTERED_USER": "UTENTE REGISTRATO",
+    "HOME_GUEST_DESCRIPTION_2": "Se sei un ",
+    "HOME_GUEST_DESCRIPTION_3": " puoi:",
+    "HOME_GUEST_DESCRIPTION_4": "visionare i dati di tutte le squadre registrate;",
+    "HOME_GUEST_DESCRIPTION_5": "vedere i risultati delle squadre nei vari tornei;",
+    "HOME_GUEST_DESCRIPTION_6": "visionare, per ogni squadra, i dati dei giocatori.",
+    "HOME_GUEST_DESCRIPTION_7": "Se sei un ",
+    "HOME_GUEST_DESCRIPTION_8": "puoi autenticarti inserendo le",
+    "HOME_GUEST_DESCRIPTION_9": "tue credenziali sulla pagina di login.",
+    "HOME_GUEST_DESCRIPTION_10": "Buona permanenza!",
+    "HOME_REGISTERED_USER_TITLE": "Bentornato ",
+    "HOME_REGISTERED_USER_DESCRIPTION": "Puoi navigare nel sito come ",
+    "ADMINISTRATOR_USER": "utente AMMINISTRATORE",
+    "TEAM_MANAGER_USER": "utente GESTORE SQUADRA",
+    "REFEREE_USER": "utente ARBITRO",
+    "USER_UNAUTHORIZED_ERROR": "Errore, utente non autorizzato"
   }
 }

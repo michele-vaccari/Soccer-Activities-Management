@@ -5,13 +5,17 @@ import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.servers.Server;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @SpringBootApplication
 @OpenAPIDefinition(
@@ -33,11 +37,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 )
 public class WebApiApplication {
 
-	@Autowired
-	private Environment env;
+	@Value("${cors.allowedOrigins}")
+	private List<String> corsAllowedOrigins;
+
+	@Value("${cors.allowedMethods}")
+	private List<String> corsAllowedMethods;
 
 	public static void main(String[] args) {
 		SpringApplication.run(WebApiApplication.class, args);
+	}
+
+	@Bean
+	public OpenAPI customOpenAPI() {
+		return new OpenAPI()
+				.components(new Components()
+						.addSecuritySchemes("Bearer",
+								new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT").description("JWT Authorization header using the Bearer scheme.")));
 	}
 
 	@Bean
@@ -47,11 +62,11 @@ public class WebApiApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				var corsRegistration = registry.addMapping("/**");
 
-				var allowedOrigins = env.getProperty("cors.allowedOrigins");
-				for (var allowedOrigin : allowedOrigins.split(","))
-					corsRegistration.allowedOrigins(allowedOrigin);
+				for (var corsAllowedOrigin : corsAllowedOrigins)
+					corsRegistration.allowedOrigins(corsAllowedOrigin);
 
-				corsRegistration.allowedMethods(env.getProperty("cors.allowedMethods"));
+				for (var corsAllowedMethod : corsAllowedMethods)
+					corsRegistration.allowedMethods(corsAllowedMethod);
 			}
 		};
 	}

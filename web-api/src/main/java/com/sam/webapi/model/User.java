@@ -7,14 +7,14 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Entity
-@Table(name = "User", schema = "Users")
+@Table(name = "User", schema = "SAM")
 public class User {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private int id;
-	@Schema(description = "Type of users",
-			allowableValues =  {"SystemAdministrator","TeamManager","Referee"})
+	@Schema(description = "Role of users",
+			allowableValues = {"Admin","TeamManager","Referee"})
 	@NotEmpty
-	private String type;
+	private String role;
 	@NotEmpty
 	private String name;
 	@NotEmpty
@@ -25,22 +25,22 @@ public class User {
 	private String password;
 	@Schema(allowableValues =  {"Y", "N"})
 	@NotEmpty
-	private String isActive;
+	private String active;
 
 	public User(int id,
-				String type,
+				String role,
 				String name,
 				String surname,
 				String email,
 				String password,
-				String isActive) {
+				String active) {
 		this.id = id;
-		this.type = type;
+		this.role = role;
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
-		this.isActive = isActive;
+		this.active = active;
 	}
 
 	public User() { }
@@ -56,13 +56,13 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Type", nullable = false)
-	public String getType() {
-		return type;
+	@Column(name = "Role", nullable = false)
+	public String getRole() {
+		return role;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setRole(String type) {
+		this.role = type;
 	}
 
 	@Basic
@@ -106,13 +106,13 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "IsActive", columnDefinition = "varchar(1)", nullable = false)
-	public String getIsActive() {
-		return isActive;
+	@Column(name = "Active", columnDefinition = "varchar(1)", nullable = false)
+	public String getActive() {
+		return active;
 	}
 
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
+	public void setActive(String active) {
+		this.active = active;
 	}
 
 	@Override
@@ -120,11 +120,11 @@ public class User {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		User user = (User) o;
-		return id == user.id && Objects.equals(type, user.type) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(isActive, user.isActive);
+		return id == user.id && Objects.equals(role, user.role) && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(active, user.active);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, type, name, surname, email, password, isActive);
+		return Objects.hash(id, role, name, surname, email, password, active);
 	}
 }

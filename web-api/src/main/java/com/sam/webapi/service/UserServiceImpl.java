@@ -20,6 +20,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
+	public User getActiveUserByEmail(String email) {
+		var user = userRepository.findByEmailAndActive(email, "Y");
+
+		if (user == null)
+			throw new UserNotFoundException();
+
+		return user;
+	}
+
+	@Override
+	@Transactional
 	public Iterable<User> getUsers() {
 		return userRepository.findAll();
 	}
@@ -38,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
 		var userId = userRepository.getMaxId();
 		user.setId(++userId);
-		user.setIsActive("Y");
+		user.setActive("Y");
 
 		userRepository.save(user);
 	}

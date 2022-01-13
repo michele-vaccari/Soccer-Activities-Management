@@ -14,7 +14,7 @@ export class UserComponent implements OnInit {
 
   postNewUser() {
     const user: User = {
-      type: this.userForm.controls['type'].value,
+      role: this.userForm.controls['role'].value,
       name: this.userForm.controls['name'].value,
       surname: this.userForm.controls['surname'].value,
       email: this.userForm.controls['email'].value,
@@ -36,12 +36,12 @@ export class UserComponent implements OnInit {
   updateUser() {
     const user: User = {
       id: this.id,
-      type: this.userForm.controls['type'].value,
+      role: this.userForm.controls['role'].value,
       name: this.userForm.controls['name'].value,
       surname: this.userForm.controls['surname'].value,
       email: this.userForm.controls['email'].value,
       password: this.userForm.controls['password'].value,
-      isActive: 'Y'
+      active: 'Y'
     };
 
     if (this.id == null)
@@ -88,7 +88,7 @@ export class UserComponent implements OnInit {
     this.userService.getUser(this.id).subscribe(
       {
         next: (user: User) => {
-          this.userForm.controls['type'].setValue(user.type);
+          this.userForm.controls['role'].setValue(user.role);
           this.userForm.controls['name'].setValue(user.name);
           this.userForm.controls['surname'].setValue(user.surname);
           this.userForm.controls['email'].setValue(user.email);
@@ -108,14 +108,14 @@ export class UserComponent implements OnInit {
   isUpdateMode: boolean = false;
   hidePassword = true;
 
-  userTypes: any = [
-    'SystemAdministrator',
+  userRoles: any = [
+    'Admin',
     'Referee',
     'TeamManager'
   ];
 
   userForm = new FormGroup({
-    type: new FormControl('', Validators.required),
+    role: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),

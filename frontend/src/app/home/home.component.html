@@ -1,0 +1,46 @@
+<mat-card *ngIf="!this.authenticationService.isUserLoggedIn()">
+    <mat-card-title>
+        <ng-container i18n="@@HOME_GUEST_TITLE">Welcome to </ng-container><ng-container i18n="@@APPLICATION_NAME">Soccer Activities Management</ng-container>
+    </mat-card-title>
+    <mat-card-content>
+        <p>
+            <ng-container i18n="@@HOME_GUEST_DESCRIPTION_1">You can use the web application in two modes:</ng-container><br>
+            <b><ng-container i18n="@@GUEST_USER">GUEST USER</ng-container></b><ng-container i18n="@@AND"> and </ng-container><b><ng-container i18n="@@REGISTERED_USER">REGISTERED USER</ng-container></b>.
+        </p>
+        <ng-container i18n="@@HOME_GUEST_DESCRIPTION_2">If you are a </ng-container><b><ng-container i18n="@@GUEST_USER">GUEST USER</ng-container></b><ng-container i18n="@@HOME_GUEST_DESCRIPTION_3"> you can:</ng-container>
+        <ul>
+            <li><ng-container i18n="@@HOME_GUEST_DESCRIPTION_4">view the data of all registered teams;</ng-container></li>
+            <li><ng-container i18n="@@HOME_GUEST_DESCRIPTION_5">see the results of the teams in the various tournaments;</ng-container></li>
+            <li><ng-container i18n="@@HOME_GUEST_DESCRIPTION_6">see, for each team, the data of the players.</ng-container></li>
+        </ul>
+        <p>
+            <ng-container i18n="@@HOME_GUEST_DESCRIPTION_7">If you are a </ng-container><b><ng-container i18n="@@REGISTERED_USER">REGISTERED USER</ng-container></b><ng-container i18n="@@HOME_GUEST_DESCRIPTION_8"> you can login by entering</ng-container><br>
+            <ng-container i18n="@@HOME_GUEST_DESCRIPTION_9">your credentials on the login page.</ng-container>
+        </p>
+        <p>
+            <ng-container i18n="@@HOME_GUEST_DESCRIPTION_10">Enjoy your stay!<br></ng-container>
+            Michele Vaccari
+        </p>
+    </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="this.authenticationService.isUserLoggedIn()">
+    <mat-card-title>
+        <ng-container i18n="@@HOME_REGISTERED_USER_TITLE">Welcome back </ng-container>{{this.authenticationService.getUserNameAndSurname()}}
+    </mat-card-title>
+
+    <mat-card-content>
+        <ng-container i18n="@@HOME_REGISTERED_USER_DESCRIPTION">
+            You can browse the site as 
+        </ng-container>
+        <ng-container i18n="@@ADMINISTRATOR_USER" *ngIf="this.authenticationService.isAdminUser()">
+            ADMINISTRATOR user
+        </ng-container>
+        <ng-container i18n="@@TEAM_MANAGER_USER" *ngIf="this.authenticationService.isTeamManagerUser()">
+            TEAM MANAGER user
+        </ng-container>
+        <ng-container i18n="@@REFEREE_USER" *ngIf="this.authenticationService.isRefereeUser()">
+            REFEREE user
+        </ng-container>
+    </mat-card-content>
+</mat-card>
