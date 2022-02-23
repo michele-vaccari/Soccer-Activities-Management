@@ -26,6 +26,7 @@ public class User {
 	@Schema(allowableValues =  {"Y", "N"})
 	@NotEmpty
 	private String active;
+	private RegisteredUser registeredUserById;
 
 	public User(int id,
 				String role,
@@ -46,7 +47,7 @@ public class User {
 	public User() { }
 
 	@Id
-	@Column(name = "Id", nullable = false)
+	@Column(name = "ID", nullable = false)
 	public int getId() {
 		return id;
 	}
@@ -56,7 +57,7 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Role", nullable = false)
+	@Column(name = "ROLE", nullable = false)
 	public String getRole() {
 		return role;
 	}
@@ -66,7 +67,7 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Name", nullable = false)
+	@Column(name = "NAME", nullable = false)
 	public String getName() {
 		return name;
 	}
@@ -76,7 +77,7 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Surname", nullable = false)
+	@Column(name = "SURNAME", nullable = false)
 	public String getSurname() {
 		return surname;
 	}
@@ -86,7 +87,7 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Email", nullable = false)
+	@Column(name = "EMAIL", nullable = false)
 	public String getEmail() {
 		return email;
 	}
@@ -96,7 +97,7 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Password", nullable = false)
+	@Column(name = "PASSWORD", nullable = false)
 	public String getPassword() {
 		return password;
 	}
@@ -106,7 +107,7 @@ public class User {
 	}
 
 	@Basic
-	@Column(name = "Active", columnDefinition = "varchar(1)", nullable = false)
+	@Column(name = "ACTIVE", columnDefinition = "varchar(1)", nullable = false)
 	public String getActive() {
 		return active;
 	}
@@ -126,5 +127,14 @@ public class User {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, role, name, surname, email, password, active);
+	}
+
+	@OneToOne(mappedBy = "userById")
+	public RegisteredUser getRegisteredUserById() {
+		return registeredUserById;
+	}
+
+	public void setRegisteredUserById(RegisteredUser registeredUserById) {
+		this.registeredUserById = registeredUserById;
 	}
 }
