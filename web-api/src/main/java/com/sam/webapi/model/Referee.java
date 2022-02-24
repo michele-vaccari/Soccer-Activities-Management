@@ -14,8 +14,6 @@ public class Referee {
 	private String resume;
 	private RegisteredUser registeredUserById;
 
-	public Referee() { }
-
 	public Referee(int id, String birthDate, String citizenship, String resume) {
 		this.id = id;
 		this.birthDate = birthDate;

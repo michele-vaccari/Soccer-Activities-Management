@@ -44,8 +44,6 @@ public class User {
 		this.active = active;
 	}
 
-	public User() { }
-
 	@Id
 	@Column(name = "ID", nullable = false)
 	public int getId() {

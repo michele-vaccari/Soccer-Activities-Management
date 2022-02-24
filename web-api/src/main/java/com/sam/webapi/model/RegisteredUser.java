@@ -13,8 +13,6 @@ public class RegisteredUser {
 	private Referee refereeById;
 	private User userById;
 
-	public RegisteredUser() { }
-
 	public RegisteredUser(int id,
 						  int adminUserId,
 						  String phone,
