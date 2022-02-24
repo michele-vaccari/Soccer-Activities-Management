@@ -13,6 +13,18 @@ public class RegisteredUser {
 	private Referee refereeById;
 	private User userById;
 
+	public RegisteredUser() { }
+
+	public RegisteredUser(int id,
+						  int adminUserId,
+						  String phone,
+						  String address) {
+		this.id = id;
+		this.adminUserId = adminUserId;
+		this.phone = phone;
+		this.address = address;
+	}
+
 	@Id
 	@Column(name = "ID")
 	public int getId() {
