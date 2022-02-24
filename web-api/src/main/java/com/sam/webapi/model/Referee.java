@@ -14,6 +14,15 @@ public class Referee {
 	private String resume;
 	private RegisteredUser registeredUserById;
 
+	public Referee() { }
+
+	public Referee(int id, String birthDate, String citizenship, String resume) {
+		this.id = id;
+		this.birthDate = birthDate;
+		this.citizenship = citizenship;
+		this.resume = resume;
+	}
+
 	@Id
 	@Column(name = "ID")
 	public int getId() {
