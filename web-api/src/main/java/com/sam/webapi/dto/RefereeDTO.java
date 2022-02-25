@@ -15,6 +15,8 @@ public class RefereeDto {
 	@Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String password;
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
+	private String active;
 	private String phone;
 	private String address;
 	private String birthDate;
@@ -28,6 +30,7 @@ public class RefereeDto {
 					  String surname,
 					  String email,
 					  String password,
+					  String active,
 					  String phone,
 					  String address,
 					  String birthDate,
@@ -38,6 +41,7 @@ public class RefereeDto {
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
+		this.active = active;
 		this.phone = phone;
 		this.address = address;
 		this.birthDate = birthDate;
@@ -84,6 +88,10 @@ public class RefereeDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getActive() { return active; }
+
+	public void setActive(String active) { this.active = active; }
 
 	public String getPhone() {
 		return phone;

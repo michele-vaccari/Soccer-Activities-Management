@@ -33,7 +33,7 @@ public class RefereeServiceImpl implements RefereeService {
 	@Override
 	@Transactional
 	public Iterable<RefereeDto> getReferees() {
-		var referees = refereeRepository.findAllActive();
+		var referees = refereeRepository.findAll();
 
 		var refereesDto = new ArrayList<RefereeDto>();
 		referees.forEach(referee -> refereesDto.add(convertEntityToDto(referee)));
@@ -156,6 +156,7 @@ public class RefereeServiceImpl implements RefereeService {
 		refereeDTO.setEmail(user.getEmail());
 		refereeDTO.setName(user.getName());
 		refereeDTO.setSurname(user.getSurname());
+		refereeDTO.setActive(user.getActive());
 		refereeDTO.setPhone(registeredUser.getPhone());
 		refereeDTO.setAddress(registeredUser.getAddress());
 		refereeDTO.setBirthDate(referee.getBirthDate());

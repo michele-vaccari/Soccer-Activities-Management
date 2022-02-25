@@ -15,6 +15,7 @@ class RefereeDtoTest {
 				"Doe",
 				"j.doe@sam.com",
 				"Password01",
+				"Y",
 				"123456789",
 				"Street",
 				"01-01-1970",
@@ -86,6 +87,20 @@ class RefereeDtoTest {
 		referee.setPassword("Password02");
 		Assertions.assertEquals("Password02", referee.getPassword());
 	}
+
+	@Test
+	@DisplayName("Should get active")
+	void shouldGetActive() {
+		Assertions.assertEquals("Y", referee.getActive());
+	}
+
+	@Test
+	@DisplayName("Should set active")
+	void shouldSetActive() {
+		referee.setActive("N");
+		Assertions.assertEquals("N", referee.getActive());
+	}
+
 
 	@Test
 	@DisplayName("Should get phone")
@@ -161,6 +176,7 @@ class RefereeDtoTest {
 				"Doe",
 				"j.doe@sam.com",
 				"Password01",
+				"Y",
 				"123456789",
 				"Street",
 				"01-01-1970",
@@ -178,6 +194,7 @@ class RefereeDtoTest {
 				"Doe",
 				"j.d@sam.com",
 				"Password01",
+				"Y",
 				"123456789",
 				"Street",
 				"01-01-1970",

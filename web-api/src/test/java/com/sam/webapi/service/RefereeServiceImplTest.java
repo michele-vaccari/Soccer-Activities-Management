@@ -30,7 +30,7 @@ class RefereeServiceImplTest {
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
 		var user1 = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
-		var user2 = new User(3, "Referee", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
+		var user2 = new User(3, "Referee", "Jane", "Doe", "jane.doe@sam.com", "Password02", "N");
 		var registeredUser1 = new RegisteredUser(2,1,"123456789","Street");
 		var registeredUser2 = new RegisteredUser(3,1,"987654321","Street");
 		var referee1 = new Referee(2, "01-01-1970", "Italian", "Resume");
@@ -44,17 +44,17 @@ class RefereeServiceImplTest {
 						referee1,
 						referee2
 				));
-		Mockito.when(refereeRepository.findAllActive()).thenReturn(referees);
+		Mockito.when(refereeRepository.findAll()).thenReturn(referees);
 		List<RefereeDto> expectedResult = new ArrayList<>(
 				Arrays.asList(
-						new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "123456789", "Street", "01-01-1970", "Italian", "Resume"),
-						new RefereeDto(3, "Jane", "Doe", "jane.doe@sam.com", null,  "987654321","Street", "31-12-1970", "English", "Resume")
+						new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume"),
+						new RefereeDto(3, "Jane", "Doe", "jane.doe@sam.com", null, "N", "987654321","Street", "31-12-1970", "English", "Resume")
 				));
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
 		refereeServiceImpl.getReferees();
 
-		Mockito.verify(refereeRepository, times(1)).findAllActive();
+		Mockito.verify(refereeRepository, times(1)).findAll();
 		Assertions.assertEquals(expectedResult, refereeServiceImpl.getReferees());
 	}
 
@@ -72,7 +72,7 @@ class RefereeServiceImplTest {
 		Mockito.when(refereeRepository.findById(1)).thenReturn(
 				Optional.of(referee)
 		);
-		var expectedResult = new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "123456789", "Street", "01-01-1970", "Italian", "Resume");
+		var expectedResult = new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume");
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
 		var result = refereeServiceImpl.getReferee(1);
@@ -87,7 +87,7 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
-		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
 		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(adminUser);
 		Mockito.when(userRepository.existsByEmail(refereeDto.getEmail())).thenReturn(false);
@@ -114,7 +114,7 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
-		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
 		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(null);
 		Mockito.when(userRepository.existsByEmail(refereeDto.getEmail())).thenReturn(true);
@@ -132,7 +132,7 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
-		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
 		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(adminUser);
 		Mockito.when(userRepository.existsByEmail(refereeDto.getEmail())).thenReturn(true);
@@ -150,7 +150,7 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
-		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
 		var referee = new Referee(2, "01-01-1970", "Italian", "Resume");
@@ -181,7 +181,7 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
-		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var id = 1;
 		Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -198,7 +198,7 @@ class RefereeServiceImplTest {
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
-		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var id = 1;
 		Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(user));
 		Mockito.when(registeredUserRepository.findById(id)).thenReturn(Optional.empty());
@@ -218,7 +218,7 @@ class RefereeServiceImplTest {
 		var userRepository = Mockito.mock(UserRepository.class);
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
-		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var id = 1;
 		Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(user));
 		Mockito.when(registeredUserRepository.findById(id)).thenReturn(Optional.of(registeredUser));
@@ -238,7 +238,7 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
-		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
+		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
 		var referee = new Referee(2, "01-01-1970", "Italian", "Resume");
