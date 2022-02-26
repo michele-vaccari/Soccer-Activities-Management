@@ -265,6 +265,7 @@ class RefereeServiceImplTest {
 		var userRepository = Mockito.mock(UserRepository.class);
 		var id = 1;
 		Mockito.when(refereeRepository.existsById(id)).thenReturn(true);
+		Mockito.when(registeredUserRepository.existsById(id)).thenReturn(true);
 		Mockito.when(userRepository.existsById(id)).thenReturn(true);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
@@ -290,6 +291,21 @@ class RefereeServiceImplTest {
 	}
 
 	@Test
+	@DisplayName("When delete referee, then throw RegisteredUserNotFoundException")
+	void whenDeleteReferee_ThenThrowRegisteredUserNotFoundException() {
+		var refereeRepository = Mockito.mock(RefereeRepository.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		var id = 1;
+		Mockito.when(refereeRepository.existsById(id)).thenReturn(true);
+		Mockito.when(registeredUserRepository.existsById(id)).thenReturn(false);
+		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
+
+		Assertions.assertThrows(RegisteredUserNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id));
+		Mockito.verify(refereeRepository, times(1)).existsById(id);
+	}
+
+	@Test
 	@DisplayName("When delete referee, then throw UserNotFoundException")
 	void whenDeleteReferee_ThenThrowUserNotFoundException() {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
@@ -297,6 +313,7 @@ class RefereeServiceImplTest {
 		var userRepository = Mockito.mock(UserRepository.class);
 		var id = 1;
 		Mockito.when(refereeRepository.existsById(id)).thenReturn(true);
+		Mockito.when(registeredUserRepository.existsById(id)).thenReturn(true);
 		Mockito.when(userRepository.existsById(id)).thenReturn(false);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 

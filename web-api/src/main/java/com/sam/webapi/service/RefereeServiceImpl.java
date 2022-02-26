@@ -142,6 +142,9 @@ public class RefereeServiceImpl implements RefereeService {
 		if (!refereeRepository.existsById(id))
 			throw new RefereeNotFoundException();
 
+		if (!registeredUserRepository.existsById(id))
+			throw new RegisteredUserNotFoundException();
+
 		if (!userRepository.existsById(id))
 			throw new UserNotFoundException();
 
