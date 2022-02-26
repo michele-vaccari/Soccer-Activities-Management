@@ -12,6 +12,9 @@ public class RegisteredUser {
 	private String address;
 	private Referee refereeById;
 	private User userById;
+	private TeamManager teamManagerById;
+
+	public RegisteredUser() { }
 
 	public RegisteredUser(int id,
 						  int adminUserId,
@@ -93,5 +96,14 @@ public class RegisteredUser {
 
 	public void setUserById(User userById) {
 		this.userById = userById;
+	}
+
+	@OneToOne(mappedBy = "registeredUserById")
+	public TeamManager getTeamManagerById() {
+		return teamManagerById;
+	}
+
+	public void setTeamManagerById(TeamManager teamManagerById) {
+		this.teamManagerById = teamManagerById;
 	}
 }
