@@ -120,6 +120,8 @@ public class RefereeServiceImpl implements RefereeService {
 			user.get().setEmail(refereeDto.getEmail());
 		if (refereeDto.getPassword() != null && !refereeDto.getPassword().isEmpty())
 			user.get().setPassword(refereeDto.getPassword());
+		if (refereeDto.getActive() != null && !refereeDto.getActive().isEmpty())
+			user.get().setActive(refereeDto.getActive());
 		if (refereeDto.getPhone() != null && !refereeDto.getPhone().isEmpty())
 			registeredUser.get().setPhone(refereeDto.getPhone());
 		if (refereeDto.getAddress() != null && !refereeDto.getAddress().isEmpty())

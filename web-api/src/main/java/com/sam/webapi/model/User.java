@@ -28,6 +28,8 @@ public class User {
 	private String active;
 	private RegisteredUser registeredUserById;
 
+	public User() { }
+
 	public User(int id,
 				String role,
 				String name,
