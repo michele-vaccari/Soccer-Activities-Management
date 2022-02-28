@@ -278,7 +278,7 @@ class RefereeControllerTest {
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
 		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
-		Mockito.doThrow(UserNotFoundException.class).when(refereeService).deleteReferee(2);
+		Mockito.doThrow(RefereeNotFoundException.class).when(refereeService).deleteReferee(2);
 		var refereeController = new RefereeController(refereeService, jwtService);
 		var bearerToken = "Bearer token";
 
