@@ -30,7 +30,8 @@ class RefereeControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		List<RefereeDto> referees = new ArrayList<>(
 				Arrays.asList(
 						new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume"),
@@ -38,7 +39,6 @@ class RefereeControllerTest {
 				));
 		Mockito.when(refereeService.getReferees()).thenReturn(referees);
 		var refereeController = new RefereeController(refereeService, jwtService);
-		var bearerToken = "Bearer token";
 
 		var result = refereeController.getReferees(bearerToken);
 
@@ -65,11 +65,11 @@ class RefereeControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var referee = Optional.of(new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume"));
 		Mockito.when(refereeService.getReferee(2)).thenReturn(referee);
 		var refereeController = new RefereeController(refereeService, jwtService);
-		var bearerToken = "Bearer token";
 
 		var result = refereeController.getReferee(bearerToken, 2);
 
@@ -96,10 +96,10 @@ class RefereeControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		Mockito.when(refereeService.getReferee(2)).thenReturn(Optional.empty());
 		var refereeController = new RefereeController(refereeService, jwtService);
-		var bearerToken = "Bearer token";
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> refereeController.getReferee(bearerToken, 2));
 		Mockito.verify(refereeService, times(1)).getReferee(2);
@@ -113,10 +113,11 @@ class RefereeControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		Mockito.when(jwtService.getAdminEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var referee = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume");
 		var refereeController = new RefereeController(refereeService, jwtService);
-		var bearerToken = "Bearer token";
 
 		refereeController.addReferee(bearerToken, referee);
 
@@ -161,10 +162,10 @@ class RefereeControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var referee = new RefereeDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null, null, null, null, null, null);
 		var refereeController = new RefereeController(refereeService, jwtService);
-		var bearerToken = "Bearer token";
 
 		refereeController.updateReferee(bearerToken, 2, referee);
 
@@ -248,9 +249,9 @@ class RefereeControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
-		var refereeController = new RefereeController(refereeService, jwtService);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		var refereeController = new RefereeController(refereeService, jwtService);
 
 		refereeController.deleteReferee(bearerToken, 2);
 

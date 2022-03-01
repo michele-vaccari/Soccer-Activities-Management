@@ -19,6 +19,7 @@ public class TeamManagerDto {
 	private String active;
 	private String phone;
 	private String address;
+	private String teamName;
 
 	public TeamManagerDto() { }
 
@@ -29,7 +30,8 @@ public class TeamManagerDto {
 						  String password,
 						  String active,
 						  String phone,
-						  String address) {
+						  String address,
+						  String teamName) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -38,6 +40,7 @@ public class TeamManagerDto {
 		this.active = active;
 		this.phone = phone;
 		this.address = address;
+		this.teamName = teamName;
 	}
 
 	public int getId() {
@@ -100,16 +103,20 @@ public class TeamManagerDto {
 		this.address = address;
 	}
 
+	public String getTeamName() { return teamName; }
+
+	public void setTeamName(String teamName) { this.teamName = teamName; }
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		TeamManagerDto that = (TeamManagerDto) o;
-		return id == that.id && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(phone, that.phone) && Objects.equals(address, that.address);
+		return id == that.id && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(phone, that.phone) && Objects.equals(address, that.address) && Objects.equals(teamName, that.teamName);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, surname, email, password, phone, address);
+		return Objects.hash(id, name, surname, email, password, phone, address, teamName);
 	}
 }

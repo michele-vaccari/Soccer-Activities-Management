@@ -1,9 +1,7 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.dto.RefereeDto;
-import com.sam.webapi.security.model.JwtTokenData;
 import com.sam.webapi.security.service.JwtService;
-import com.sam.webapi.security.service.JwtServiceException;
 import com.sam.webapi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -46,7 +44,7 @@ public class RefereeController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<RefereeDto> getReferees(@RequestHeader("Authorization") String authorization) {
 
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		return refereeService.getReferees();
@@ -66,7 +64,7 @@ public class RefereeController {
 	@ResponseStatus(HttpStatus.OK)
 	public Optional<RefereeDto> getReferee(@RequestHeader("Authorization") String authorization,
 										   @PathVariable Integer id) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		var referee = refereeService.getReferee(id);
@@ -88,10 +86,10 @@ public class RefereeController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addReferee(@RequestHeader("Authorization") String authorization,
 						   @RequestBody(required = true) RefereeDto referee) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var adminEmail = getAdminEmail(authorization);
+		var adminEmail = jwtService.getAdminEmail(authorization);
 
 		try {
 			refereeService.createReferee(adminEmail, referee);
@@ -114,7 +112,7 @@ public class RefereeController {
 	public void updateReferee(@RequestHeader("Authorization") String authorization,
 						   @PathVariable Integer id,
 						   @RequestBody RefereeDto referee) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		try {
@@ -144,7 +142,7 @@ public class RefereeController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteReferee(@RequestHeader("Authorization") String authorization,
 						   @PathVariable Integer id) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		try {
@@ -160,28 +158,4 @@ public class RefereeController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
 		}
 	}
-
-	protected boolean isAnAdminUser(String authorization) {
-		var jwtToken = authorization.substring(7);
-		Optional<JwtTokenData> jwtTokenData;
-		try {
-			jwtTokenData = jwtService.validateJwt(jwtToken);
-		}
-		catch (JwtServiceException e) {
-			return false;
-		}
-
-		if (jwtTokenData.isEmpty())
-			return false;
-
-		return jwtTokenData.get().getRole().equals("Admin");
-	}
-
-	protected String getAdminEmail(String authorization) {
-		var jwtToken = authorization.substring(7);
-		var jwtTokenData = jwtService.validateJwt(jwtToken);
-
-		return jwtTokenData.get().getEmail();
-	}
-
 }

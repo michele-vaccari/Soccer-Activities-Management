@@ -7,6 +7,7 @@ import java.util.Objects;
 @Table(name = "TEAM_MANAGER", schema = "SAM")
 public class TeamManager {
 	private int id;
+	private Team teamById;
 	private RegisteredUser registeredUserById;
 
 	public TeamManager() { }
@@ -36,6 +37,15 @@ public class TeamManager {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	@OneToOne(mappedBy = "teamManagerByTeamManagerId")
+	public Team getTeamById() {
+		return teamById;
+	}
+
+	public void setTeamById(Team teamById) {
+		this.teamById = teamById;
 	}
 
 	@OneToOne
