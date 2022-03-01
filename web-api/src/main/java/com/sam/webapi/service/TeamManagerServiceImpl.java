@@ -2,9 +2,11 @@ package com.sam.webapi.service;
 
 import com.sam.webapi.dataaccess.RegisteredUserRepository;
 import com.sam.webapi.dataaccess.TeamManagerRepository;
+import com.sam.webapi.dataaccess.TeamRepository;
 import com.sam.webapi.dataaccess.UserRepository;
 import com.sam.webapi.dto.TeamManagerDto;
 import com.sam.webapi.model.RegisteredUser;
+import com.sam.webapi.model.Team;
 import com.sam.webapi.model.TeamManager;
 import com.sam.webapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,17 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 	private final TeamManagerRepository teamManagerRepository;
 	private final RegisteredUserRepository registeredUserRepository;
 	private final UserRepository userRepository;
+	private final TeamRepository teamRepository;
 
 	@Autowired
 	public TeamManagerServiceImpl(TeamManagerRepository teamManagerRepository,
 								  RegisteredUserRepository registeredUserRepository,
-								  UserRepository userRepository) {
+								  UserRepository userRepository,
+								  TeamRepository teamRepository) {
 		this.teamManagerRepository = teamManagerRepository;
 		this.registeredUserRepository = registeredUserRepository;
 		this.userRepository = userRepository;
+		this.teamRepository = teamRepository;
 	}
 
 	@Override
@@ -64,7 +69,6 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 			throw new SingleEmailConstraintException();
 
 		var userId = userRepository.getMaxId();
-
 		var user = new User(
 				++userId,
 				"TeamManager",
@@ -86,9 +90,20 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 				user.getId()
 		);
 
+		var teamId = teamRepository.getMaxId();
+		var team = new Team(
+				++teamId,
+				teamManager.getId(),
+				teamManagerDto.getTeamName(),
+				null,
+				null,
+				null
+		);
+
 		userRepository.save(user);
 		registeredUserRepository.save(registeredUser);
 		teamManagerRepository.save(teamManager);
+		teamRepository.save(team);
 	}
 
 	@Override
@@ -105,6 +120,10 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 		var teamManager = teamManagerRepository.findById(id);
 		if (teamManager.isEmpty())
 			throw new TeamManagerNotFoundException();
+
+		var team = teamRepository.findByTeamManagerId(id);
+		if (team.isEmpty())
+			throw new TeamNotFoundException();
 
 		if (userRepository.existsByEmailAndIdNot(teamManagerDto.getEmail(), id))
 			throw new SingleEmailConstraintException();
@@ -123,10 +142,13 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 			registeredUser.get().setPhone(teamManagerDto.getPhone());
 		if (teamManagerDto.getAddress() != null && !teamManagerDto.getAddress().isEmpty())
 			registeredUser.get().setAddress(teamManagerDto.getAddress());
+		if (teamManagerDto.getTeamName() != null && !teamManagerDto.getTeamName().isEmpty())
+			team.get().setName(teamManagerDto.getTeamName());
 
 		userRepository.save(user.get());
 		registeredUserRepository.save(registeredUser.get());
 		teamManagerRepository.save(teamManager.get());
+		teamRepository.save(team.get());
 	}
 
 	@Override
@@ -146,6 +168,7 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 
 	private TeamManagerDto convertEntityToDto(TeamManager teamManager) {
 		var teamManagerDto = new TeamManagerDto();
+		var team = teamManager.getTeamById();
 		var registeredUser = teamManager.getRegisteredUserById();
 		var user =  registeredUser.getUserById();
 		teamManagerDto.setId(user.getId());
@@ -155,6 +178,7 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 		teamManagerDto.setActive(user.getActive());
 		teamManagerDto.setPhone(registeredUser.getPhone());
 		teamManagerDto.setAddress(registeredUser.getAddress());
+		teamManagerDto.setTeamName(team.getName());
 
 		return teamManagerDto;
 	}

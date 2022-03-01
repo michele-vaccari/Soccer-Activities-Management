@@ -17,7 +17,8 @@ class TeamManagerDtoTest {
 				"Password01",
 				"Y",
 				"123456789",
-				"Street");
+				"Street",
+				"Team1");
 	}
 
 	@Test
@@ -126,6 +127,19 @@ class TeamManagerDtoTest {
 	}
 
 	@Test
+	@DisplayName("Should get team name")
+	void shouldGetTeamName() {
+		Assertions.assertEquals("Team1", teamManager.getTeamName());
+	}
+
+	@Test
+	@DisplayName("Should set team name")
+	void shouldSetTeamName() {
+		teamManager.setTeamName("Team2");
+		Assertions.assertEquals("Team2", teamManager.getTeamName());
+	}
+
+	@Test
 	@DisplayName("Should verify equals")
 	void shouldVerifyEquals() {
 		var otherTeamManager = new TeamManagerDto(
@@ -136,7 +150,8 @@ class TeamManagerDtoTest {
 				"Password01",
 				"Y",
 				"123456789",
-				"Street");
+				"Street",
+				"Team1");
 		Assertions.assertTrue(teamManager.equals(otherTeamManager));
 	}
 
@@ -151,7 +166,8 @@ class TeamManagerDtoTest {
 				"Password01",
 				"Y",
 				"123456789",
-				"Street");
+				"Street",
+				"Team1");
 
 		Assertions.assertNotEquals(otherTeamManager.hashCode(), teamManager.hashCode());
 	}
