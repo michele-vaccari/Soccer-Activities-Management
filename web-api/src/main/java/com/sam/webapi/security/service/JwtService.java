@@ -75,4 +75,27 @@ public class JwtService {
 			throw new JwtServiceException();
 		}
 	}
+
+	public boolean hasAnAdminUser(String authorization) {
+		var jwtToken = authorization.substring(7);
+		Optional<JwtTokenData> jwtTokenData;
+		try {
+			jwtTokenData = validateJwt(jwtToken);
+		}
+		catch (JwtServiceException e) {
+			return false;
+		}
+
+		if (jwtTokenData.isEmpty())
+			return false;
+
+		return jwtTokenData.get().getRole().equals("Admin");
+	}
+
+	public String getAdminEmail(String authorization) {
+		var jwtToken = authorization.substring(7);
+		var jwtTokenData = validateJwt(jwtToken);
+
+		return jwtTokenData.get().getEmail();
+	}
 }

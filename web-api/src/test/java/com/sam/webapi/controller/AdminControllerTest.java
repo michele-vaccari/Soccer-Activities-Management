@@ -28,7 +28,8 @@ class AdminControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		List<AdminDto> admins = new ArrayList<>(
 				Arrays.asList(
 						new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y"),
@@ -36,7 +37,6 @@ class AdminControllerTest {
 				));
 		Mockito.when(adminService.getAdmins()).thenReturn(admins);
 		var adminController = new AdminController(adminService, jwtService);
-		var bearerToken = "Bearer token";
 
 		var result = adminController.getAdmins(bearerToken);
 
@@ -63,11 +63,11 @@ class AdminControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var admin = Optional.of(new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y"));
 		Mockito.when(adminService.getAdmin(2)).thenReturn(admin);
 		var adminController = new AdminController(adminService, jwtService);
-		var bearerToken = "Bearer token";
 
 		var result = adminController.getAdmin(bearerToken, 2);
 
@@ -94,10 +94,10 @@ class AdminControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		Mockito.when(adminService.getAdmin(2)).thenReturn(Optional.empty());
 		var adminController = new AdminController(adminService, jwtService);
-		var bearerToken = "Bearer token";
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.getAdmin(bearerToken, 2));
 		Mockito.verify(adminService, times(1)).getAdmin(2);
@@ -111,10 +111,11 @@ class AdminControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		Mockito.when(jwtService.getAdminEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var admin = new AdminDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var adminController = new AdminController(adminService, jwtService);
-		var bearerToken = "Bearer token";
 
 		adminController.addAdmin(bearerToken, admin);
 
@@ -159,10 +160,10 @@ class AdminControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var admin = new AdminDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null);
 		var adminController = new AdminController(adminService, jwtService);
-		var bearerToken = "Bearer token";
 
 		adminController.updateAdmin(bearerToken, 2, admin);
 
@@ -232,9 +233,9 @@ class AdminControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
-		var adminController = new AdminController(adminService, jwtService);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		var adminController = new AdminController(adminService, jwtService);
 
 		adminController.deleteAdmin(bearerToken, 2);
 

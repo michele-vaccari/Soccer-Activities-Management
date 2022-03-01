@@ -1,9 +1,7 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.dto.AdminDto;
-import com.sam.webapi.security.model.JwtTokenData;
 import com.sam.webapi.security.service.JwtService;
-import com.sam.webapi.security.service.JwtServiceException;
 import com.sam.webapi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -46,7 +44,7 @@ public class AdminController {
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<AdminDto> getAdmins(@RequestHeader("Authorization") String authorization) {
 
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		return adminService.getAdmins();
@@ -66,7 +64,7 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.OK)
 	public Optional<AdminDto> getAdmin(@RequestHeader("Authorization") String authorization,
 									   @PathVariable Integer id) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		var admin = adminService.getAdmin(id);
@@ -88,10 +86,10 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addAdmin(@RequestHeader("Authorization") String authorization,
 						 @RequestBody(required = true) AdminDto admin) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var adminEmail = getAdminEmail(authorization);
+		var adminEmail = jwtService.getAdminEmail(authorization);
 
 		try {
 			adminService.createAdmin(adminEmail, admin);
@@ -114,7 +112,7 @@ public class AdminController {
 	public void updateAdmin(@RequestHeader("Authorization") String authorization,
 							@PathVariable Integer id,
 							@RequestBody AdminDto referee) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		try {
@@ -141,7 +139,7 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteAdmin(@RequestHeader("Authorization") String authorization,
 							@PathVariable Integer id) {
-		if (!isAnAdminUser(authorization))
+		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
 		try {
@@ -153,29 +151,6 @@ public class AdminController {
 		catch (UserNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", ex);
 		}
-	}
-
-	protected boolean isAnAdminUser(String authorization) {
-		var jwtToken = authorization.substring(7);
-		Optional<JwtTokenData> jwtTokenData;
-		try {
-			jwtTokenData = jwtService.validateJwt(jwtToken);
-		}
-		catch (JwtServiceException e) {
-			return false;
-		}
-
-		if (jwtTokenData.isEmpty())
-			return false;
-
-		return jwtTokenData.get().getRole().equals("Admin");
-	}
-
-	protected String getAdminEmail(String authorization) {
-		var jwtToken = authorization.substring(7);
-		var jwtTokenData = jwtService.validateJwt(jwtToken);
-
-		return jwtTokenData.get().getEmail();
 	}
 
 }

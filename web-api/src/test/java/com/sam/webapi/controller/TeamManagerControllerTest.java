@@ -28,7 +28,8 @@ class TeamManagerControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		List<TeamManagerDto> teamManagers = new ArrayList<>(
 				Arrays.asList(
 						new TeamManagerDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "Team1"),
@@ -36,7 +37,6 @@ class TeamManagerControllerTest {
 				));
 		Mockito.when(teamManagerService.getTeamManagers()).thenReturn(teamManagers);
 		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
-		var bearerToken = "Bearer token";
 
 		var result = teamManagerController.getTeamManagers(bearerToken);
 
@@ -63,11 +63,11 @@ class TeamManagerControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var teamManager = Optional.of(new TeamManagerDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "Team1"));
 		Mockito.when(teamManagerService.getTeamManager(2)).thenReturn(teamManager);
 		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
-		var bearerToken = "Bearer token";
 
 		var result = teamManagerController.getTeamManager(bearerToken, 2);
 
@@ -94,10 +94,10 @@ class TeamManagerControllerTest {
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		Mockito.when(teamManagerService.getTeamManager(2)).thenReturn(Optional.empty());
 		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
-		var bearerToken = "Bearer token";
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> teamManagerController.getTeamManager(bearerToken, 2));
 		Mockito.verify(teamManagerService, times(1)).getTeamManager(2);
@@ -111,10 +111,11 @@ class TeamManagerControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		Mockito.when(jwtService.getAdminEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var teamManager = new TeamManagerDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y", "123456789", "Street", "Team1");
 		var refereeController = new TeamManagerController(teamManagerService, jwtService);
-		var bearerToken = "Bearer token";
 
 		refereeController.addTeamManager(bearerToken, teamManager);
 
@@ -159,10 +160,10 @@ class TeamManagerControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var referee = new TeamManagerDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null, null, null, null);
 		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
-		var bearerToken = "Bearer token";
 
 		teamManagerController.updateTeamManager(bearerToken, 2, referee);
 
@@ -246,9 +247,9 @@ class TeamManagerControllerTest {
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
-		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
 
 		teamManagerController.deleteTeamManager(bearerToken, 2);
 
