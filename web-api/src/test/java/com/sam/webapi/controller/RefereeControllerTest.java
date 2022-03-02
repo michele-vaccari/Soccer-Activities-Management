@@ -1,11 +1,9 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.dto.RefereeDto;
-import com.sam.webapi.model.User;
 import com.sam.webapi.security.model.JwtTokenData;
 import com.sam.webapi.security.service.JwtService;
 import com.sam.webapi.service.*;
-import com.sun.source.tree.ModuleTree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -115,7 +113,7 @@ class RefereeControllerTest {
 		jwtTokenData.setEmail("john.doe@sam.com");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		Mockito.when(jwtService.getAdminEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var referee = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume");
 		var refereeController = new RefereeController(refereeService, jwtService);
 

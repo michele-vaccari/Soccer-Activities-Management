@@ -120,14 +120,14 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	private AdminDto convertEntityToDto(AdminUser admin) {
-		var adminDto = new AdminDto();
 		var user =  admin.getUserById();
-		adminDto.setId(user.getId());
-		adminDto.setEmail(user.getEmail());
-		adminDto.setName(user.getName());
-		adminDto.setSurname(user.getSurname());
-		adminDto.setActive(user.getActive());
-
-		return adminDto;
+		return new AdminDto(
+				user.getId(),
+				user.getName(),
+				user.getSurname(),
+				user.getEmail(),
+				null,
+				user.getActive()
+		);
 	}
 }

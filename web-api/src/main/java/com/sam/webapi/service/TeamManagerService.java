@@ -5,9 +5,9 @@ import com.sam.webapi.dto.TeamManagerDto;
 import java.util.Optional;
 
 public interface TeamManagerService {
-	public abstract Iterable<TeamManagerDto> getTeamManagers();
-	public abstract Optional<TeamManagerDto> getTeamManager(Integer id);
-	public abstract void createTeamManager(String adminEmail, TeamManagerDto teamManager);
-	public abstract void updateTeamManager(Integer id, TeamManagerDto teamManager);
-	public abstract void deleteTeamManager(Integer id);
+	Iterable<TeamManagerDto> getTeamManagers();
+	Optional<TeamManagerDto> getTeamManager(Integer id);
+	void createTeamManager(String adminEmail, TeamManagerDto teamManager);
+	void updateTeamManager(Integer id, TeamManagerDto teamManager);
+	void deleteTeamManager(Integer id);
 }

@@ -89,7 +89,7 @@ public class RefereeController {
 		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var adminEmail = jwtService.getAdminEmail(authorization);
+		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
 			refereeService.createReferee(adminEmail, referee);

@@ -92,7 +92,7 @@ public class JwtService {
 		return jwtTokenData.get().getRole().equals("Admin");
 	}
 
-	public String getAdminEmail(String authorization) {
+	public String getEmail(String authorization) {
 		var jwtToken = authorization.substring(7);
 		var jwtTokenData = validateJwt(jwtToken);
 

@@ -154,20 +154,20 @@ public class RefereeServiceImpl implements RefereeService {
 	}
 
 	private RefereeDto convertEntityToDto(Referee referee) {
-		var refereeDto = new RefereeDto();
 		var registeredUser = referee.getRegisteredUserById();
 		var user =  registeredUser.getUserById();
-		refereeDto.setId(user.getId());
-		refereeDto.setEmail(user.getEmail());
-		refereeDto.setName(user.getName());
-		refereeDto.setSurname(user.getSurname());
-		refereeDto.setActive(user.getActive());
-		refereeDto.setPhone(registeredUser.getPhone());
-		refereeDto.setAddress(registeredUser.getAddress());
-		refereeDto.setBirthDate(referee.getBirthDate());
-		refereeDto.setCitizenship(referee.getCitizenship());
-		refereeDto.setResume(referee.getResume());
-
-		return refereeDto;
+		return new RefereeDto(
+				user.getId(),
+				user.getName(),
+				user.getSurname(),
+				user.getEmail(),
+				null,
+				user.getActive(),
+				registeredUser.getPhone(),
+				registeredUser.getAddress(),
+				referee.getBirthDate(),
+				referee.getCitizenship(),
+				referee.getResume()
+		);
 	}
 }
