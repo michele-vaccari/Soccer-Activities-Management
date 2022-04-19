@@ -39,6 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] AUTH_ALLOWED_LIST = {
 			"/authenticate",
+			"/teams/**",
+			"/players/**",
 			// Swagger UI v2
 			"/v2/api-docs",
 			"/swagger-resources",
