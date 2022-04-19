@@ -109,9 +109,9 @@ CREATE TABLE IF NOT EXISTS SAM.Player (
 	Birth_date VARCHAR(10) NOT NULL,
 	Citizenship VARCHAR(255) NOT NULL,
 	Description CLOB,
-	Goal INT CHECK (Goal > 0) DEFAULT 0,
-	Admonitions INT CHECK (Admonitions > 0) DEFAULT 0,
-	Ejections INT CHECK (Ejections > 0) DEFAULT 0,
+	Goal INT CHECK (Goal >= 0) DEFAULT 0,
+	Admonitions INT CHECK (Admonitions >= 0) DEFAULT 0,
+	Ejections INT CHECK (Ejections >= 0) DEFAULT 0,
 	PRIMARY KEY (Id),
 	FOREIGN KEY (Team_id) REFERENCES SAM.Team(Id)
 );
@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS SAM.Tournament_Team_Match (
 	Team_id INT CHECK (Team_id > 0) NOT NULL,
 	Other_team_id INT CHECK (Other_team_id > 0) NOT NULL,
 	Tournament_id INT CHECK (Tournament_id > 0) NOT NULL,
-	Nome_partita VARCHAR(30) NOT NULL,
+	Match_name VARCHAR(30) NOT NULL,
 	PRIMARY KEY (Match_id, Team_id, Other_team_id, Tournament_id),
 	FOREIGN KEY (Match_id) REFERENCES SAM.Match(Id),
 	FOREIGN KEY (Team_id) REFERENCES SAM.Team(Id),

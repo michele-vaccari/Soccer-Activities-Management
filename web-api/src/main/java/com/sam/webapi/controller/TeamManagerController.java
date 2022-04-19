@@ -89,7 +89,7 @@ public class TeamManagerController {
 		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var adminEmail = jwtService.getAdminEmail(authorization);
+		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
 			teamManagerService.createTeamManager(adminEmail, teamManagerDto);

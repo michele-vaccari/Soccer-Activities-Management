@@ -167,19 +167,19 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 	}
 
 	private TeamManagerDto convertEntityToDto(TeamManager teamManager) {
-		var teamManagerDto = new TeamManagerDto();
 		var team = teamManager.getTeamById();
 		var registeredUser = teamManager.getRegisteredUserById();
 		var user =  registeredUser.getUserById();
-		teamManagerDto.setId(user.getId());
-		teamManagerDto.setEmail(user.getEmail());
-		teamManagerDto.setName(user.getName());
-		teamManagerDto.setSurname(user.getSurname());
-		teamManagerDto.setActive(user.getActive());
-		teamManagerDto.setPhone(registeredUser.getPhone());
-		teamManagerDto.setAddress(registeredUser.getAddress());
-		teamManagerDto.setTeamName(team.getName());
-
-		return teamManagerDto;
+		return new TeamManagerDto(
+				user.getId(),
+				user.getName(),
+				user.getSurname(),
+				user.getEmail(),
+				null,
+				user.getActive(),
+				registeredUser.getPhone(),
+				registeredUser.getAddress(),
+				team.getName()
+		);
 	}
 }

@@ -1,6 +1,7 @@
 package com.sam.webapi.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +14,7 @@ public class Team {
 	private String headquarters;
 	private String sponsorName;
 	private TeamManager teamManagerByTeamManagerId;
+	private List<Player> playersById;
 
 	public Team() { }
 
@@ -111,5 +113,14 @@ public class Team {
 
 	public void setTeamManagerByTeamManagerId(TeamManager teamManagerByTeamManagerId) {
 		this.teamManagerByTeamManagerId = teamManagerByTeamManagerId;
+	}
+
+	@OneToMany(mappedBy = "teamByTeamId")
+	public List<Player> getPlayersById() {
+		return playersById;
+	}
+
+	public void setPlayersById(List<Player> playersById) {
+		this.playersById = playersById;
 	}
 }

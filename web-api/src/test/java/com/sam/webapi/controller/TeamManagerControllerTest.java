@@ -113,7 +113,7 @@ class TeamManagerControllerTest {
 		jwtTokenData.setEmail("john.doe@sam.com");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		Mockito.when(jwtService.getAdminEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var teamManager = new TeamManagerDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y", "123456789", "Street", "Team1");
 		var refereeController = new TeamManagerController(teamManagerService, jwtService);
 
