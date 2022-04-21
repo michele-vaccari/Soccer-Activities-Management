@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class RefereeServiceImpl implements RefereeService {
@@ -43,13 +42,13 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
-	public Optional<RefereeDto> getReferee(Integer id) {
+	public RefereeDto getReferee(Integer id) {
 		var referee = refereeRepository.findById(id);
 
 		if (referee.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(referee.get()));
+			throw new RefereeNotFoundException();
+
+		return convertEntityToDto(referee.get());
 	}
 
 	@Override

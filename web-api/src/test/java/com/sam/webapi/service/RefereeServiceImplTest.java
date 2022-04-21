@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -78,7 +79,20 @@ class RefereeServiceImplTest {
 		var result = refereeServiceImpl.getReferee(1);
 
 		Mockito.verify(refereeRepository, times(1)).findById(1);
-		Assertions.assertEquals(expectedResult, result.get());
+		Assertions.assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("When get referee, then throw referee not found exception")
+	void whenGetReferee_ThenThrowRefereeNotFoundException() {
+		var refereeRepository = Mockito.mock(RefereeRepository.class);
+		Mockito.when(refereeRepository.findById(1)).thenThrow(RefereeNotFoundException.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
+
+		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.getReferee(1));
+		Mockito.verify(refereeRepository, times(1)).findById(1);
 	}
 
 	@Test

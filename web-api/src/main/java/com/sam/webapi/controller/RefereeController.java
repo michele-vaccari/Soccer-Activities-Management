@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @RestController
 @Tag(name = "Referees", description = "Referees information retrieval, creation, modification, deactivation")
 public class RefereeController {
@@ -62,17 +60,17 @@ public class RefereeController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<RefereeDto> getReferee(@RequestHeader("Authorization") String authorization,
+	public RefereeDto getReferee(@RequestHeader("Authorization") String authorization,
 										   @PathVariable Integer id) {
 		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var referee = refereeService.getReferee(id);
-
-		if (!referee.isPresent())
+		try {
+			return refereeService.getReferee(id);
+		}
+		catch (RefereeNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return referee;
+		}
 	}
 
 	@Operation(summary = "Add a new referee", security = { @SecurityRequirement(name = "Bearer") })

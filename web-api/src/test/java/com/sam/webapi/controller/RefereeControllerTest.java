@@ -65,7 +65,7 @@ class RefereeControllerTest {
 		jwtTokenData.setRole("Admin");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		var referee = Optional.of(new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume"));
+		var referee = new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume");
 		Mockito.when(refereeService.getReferee(2)).thenReturn(referee);
 		var refereeController = new RefereeController(refereeService, jwtService);
 
@@ -88,15 +88,15 @@ class RefereeControllerTest {
 	}
 
 	@Test
-	@DisplayName("When get referee, then throw ResponseStatusException: User not found")
-	void whenGetReferee_ThenThrowResponseStatusException_UserNotFound() {
+	@DisplayName("When get referee, then throw ResponseStatusException: Referee not found")
+	void whenGetReferee_ThenThrowResponseStatusException_RefereeNotFound() {
 		var refereeService = Mockito.mock(RefereeService.class);
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		Mockito.when(refereeService.getReferee(2)).thenReturn(Optional.empty());
+		Mockito.when(refereeService.getReferee(2)).thenThrow(RefereeNotFoundException.class);
 		var refereeController = new RefereeController(refereeService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> refereeController.getReferee(bearerToken, 2));
