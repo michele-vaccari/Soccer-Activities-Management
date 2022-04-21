@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @RestController
 @Tag(name = "Team managers", description = "Team managers information retrieval, creation, modification, deactivation")
 public class TeamManagerController {
