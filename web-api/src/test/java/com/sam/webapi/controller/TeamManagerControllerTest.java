@@ -65,7 +65,7 @@ class TeamManagerControllerTest {
 		jwtTokenData.setRole("Admin");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		var teamManager = Optional.of(new TeamManagerDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "Team1"));
+		var teamManager = new TeamManagerDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "Team1");
 		Mockito.when(teamManagerService.getTeamManager(2)).thenReturn(teamManager);
 		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
 
@@ -88,15 +88,15 @@ class TeamManagerControllerTest {
 	}
 
 	@Test
-	@DisplayName("When get team manager, then throw ResponseStatusException: User not found")
-	void whenGetTeamManager_ThenThrowResponseStatusException_UserNotFound() {
+	@DisplayName("When get team manager, then throw ResponseStatusException: team manager not found")
+	void whenGetTeamManager_ThenThrowResponseStatusException_TeamManagerNotFound() {
 		var teamManagerService = Mockito.mock(TeamManagerService.class);
 		var jwtService = Mockito.mock(JwtService.class);
 		var jwtTokenData = new JwtTokenData();
 		jwtTokenData.setRole("Admin");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		Mockito.when(teamManagerService.getTeamManager(2)).thenReturn(Optional.empty());
+		Mockito.when(teamManagerService.getTeamManager(2)).thenThrow(TeamManagerNotFoundException.class);
 		var teamManagerController = new TeamManagerController(teamManagerService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> teamManagerController.getTeamManager(bearerToken, 2));

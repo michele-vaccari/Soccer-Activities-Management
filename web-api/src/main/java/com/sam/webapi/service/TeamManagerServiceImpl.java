@@ -48,13 +48,13 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 
 	@Override
 	@Transactional
-	public Optional<TeamManagerDto> getTeamManager(Integer id) {
+	public TeamManagerDto getTeamManager(Integer id) {
 		var teamManager = teamManagerRepository.findById(id);
 
 		if (teamManager.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(teamManager.get()));
+			throw new TeamManagerNotFoundException();
+
+		return convertEntityToDto(teamManager.get());
 	}
 
 	@Override

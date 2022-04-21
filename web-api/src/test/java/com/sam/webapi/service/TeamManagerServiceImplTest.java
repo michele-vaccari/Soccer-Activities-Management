@@ -88,7 +88,21 @@ class TeamManagerServiceImplTest {
 		var result = teamManagerServiceImpl.getTeamManager(1);
 
 		Mockito.verify(teamManagerRepository, times(1)).findById(1);
-		Assertions.assertEquals(expectedResult, result.get());
+		Assertions.assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("When get team manager, then throw team manager not found exception")
+	void whenGetTeamManager_ThenThrowTeamManagerNotFoundException() {
+		var teamManagerRepository = Mockito.mock(TeamManagerRepository.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		var teamRepository = Mockito.mock(TeamRepository.class);
+		Mockito.when(teamManagerRepository.findById(1)).thenReturn(Optional.empty());
+		var teamManagerServiceImpl = new TeamManagerServiceImpl(teamManagerRepository, registeredUserRepository, userRepository, teamRepository);
+
+		Assertions.assertThrows(TeamManagerNotFoundException.class, ()-> teamManagerServiceImpl.getTeamManager(1));
+		Mockito.verify(teamManagerRepository, times(1)).findById(1);
 	}
 
 	@Test

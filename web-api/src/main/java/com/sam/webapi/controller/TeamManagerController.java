@@ -62,17 +62,17 @@ public class TeamManagerController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<TeamManagerDto> getTeamManager(@RequestHeader("Authorization") String authorization,
+	public TeamManagerDto getTeamManager(@RequestHeader("Authorization") String authorization,
 												   @PathVariable Integer id) {
 		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var teamManager = teamManagerService.getTeamManager(id);
-
-		if (!teamManager.isPresent())
+		try {
+			return teamManagerService.getTeamManager(id);
+		}
+		catch (TeamManagerNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return teamManager;
+		}
 	}
 
 	@Operation(summary = "Add a new team manager", security = { @SecurityRequirement(name = "Bearer") })
