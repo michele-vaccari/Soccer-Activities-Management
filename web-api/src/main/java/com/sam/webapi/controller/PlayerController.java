@@ -42,14 +42,14 @@ public class PlayerController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<PlayerDto> getPlayer(@PathVariable Integer id) {
+	public PlayerDto getPlayer(@PathVariable Integer id) {
 
-		var player = playerService.getPlayer(id);
-
-		if (!player.isPresent())
+		try {
+			return playerService.getPlayer(id);
+		}
+		catch (PlayerNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return player;
+		}
 	}
 
 	@Operation(summary = "Update an existing player by its id", security = { @SecurityRequirement(name = "Bearer") })

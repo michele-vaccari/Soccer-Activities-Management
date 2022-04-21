@@ -22,7 +22,7 @@ class PlayerControllerTest {
 	void whenGetPlayer_ThenOperationIsSuccessful() {
 		var playerService = Mockito.mock(PlayerService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var player = Optional.of(new PlayerDto(1, 2, "Y", 10, "Role", "John", "Doe", "01-01-1970", "Italian", "description", 0, 0, 0));
+		var player = new PlayerDto(1, 2, "Y", 10, "Role", "John", "Doe", "01-01-1970", "Italian", "description", 0, 0, 0);
 		Mockito.when(playerService.getPlayer(1)).thenReturn(player);
 		var playerController = new PlayerController(playerService, jwtService);
 
@@ -37,7 +37,7 @@ class PlayerControllerTest {
 	void whenGetPlayer_ThenThrowResponseStatusException_PlayerNotFound() {
 		var playerService = Mockito.mock(PlayerService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(playerService.getPlayer(1)).thenReturn(Optional.empty());
+		Mockito.when(playerService.getPlayer(1)).thenThrow(PlayerNotFoundException.class);
 		var playerController = new PlayerController(playerService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> playerController.getPlayer(1));

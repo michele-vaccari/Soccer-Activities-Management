@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -22,12 +21,12 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	@Transactional
-	public Optional<PlayerDto> getPlayer(Integer id) {
+	public PlayerDto getPlayer(Integer id) {
 		var player = playerRepository.findById(id);
 		if (player.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(player.get()));
+			throw new PlayerNotFoundException();
+
+		return convertEntityToDto(player.get());
 	}
 
 	@Override
