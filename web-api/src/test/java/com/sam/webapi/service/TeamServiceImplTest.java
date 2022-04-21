@@ -58,15 +58,25 @@ class TeamServiceImplTest {
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.of(team));
 
-		var expectedResult = Optional.of(
-				new TeamDto(1, "name1", "description1", "headquarters1", "sponsorName1")
-		);
+		var expectedResult = new TeamDto(1, "name1", "description1", "headquarters1", "sponsorName1");
 		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
 
 		teamServiceImpl.getTeam(1);
 
 		Mockito.verify(teamRepository, times(1)).findById(1);
 		Assertions.assertEquals(expectedResult, teamServiceImpl.getTeam(1));
+	}
+
+	@Test
+	@DisplayName("When get team, then throw team not found exception")
+	void whenGetTeam_ThenThrowTeamNotFoundException() {
+		var teamRepository = Mockito.mock(TeamRepository.class);
+		var playerRepository = Mockito.mock(PlayerRepository.class);
+		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.empty());
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+
+		Assertions.assertThrows(TeamNotFoundException.class, ()-> teamServiceImpl.getTeam(1));
+		Mockito.verify(teamRepository, times(1)).findById(1);
 	}
 
 	@Test

@@ -18,8 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @RestController
 @Tag(name = "Teams", description = "Teams information retrieval, modification")
 public class TeamController {
@@ -57,14 +55,14 @@ public class TeamController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<TeamDto> getTeam(@PathVariable Integer id) {
+	public TeamDto getTeam(@PathVariable Integer id) {
 
-		var team = teamService.getTeam(id);
-
-		if (!team.isPresent())
+		try {
+			return teamService.getTeam(id);
+		}
+		catch (TeamNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return team;
+		}
 	}
 
 	@Operation(summary = "Update an existing team by its id", security = { @SecurityRequirement(name = "Bearer") })

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class TeamServiceImpl implements TeamService {
@@ -41,12 +40,13 @@ public class TeamServiceImpl implements TeamService {
 
 	@Override
 	@Transactional
-	public Optional<TeamDto> getTeam(Integer id) {
+	public TeamDto getTeam(Integer id) {
 		var team = teamRepository.findById(id);
+
 		if (team.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(team.get()));
+			throw new TeamNotFoundException();
+
+		return convertEntityToDto(team.get());
 	}
 
 	@Override

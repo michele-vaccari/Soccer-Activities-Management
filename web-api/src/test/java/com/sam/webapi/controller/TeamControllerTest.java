@@ -45,7 +45,7 @@ class TeamControllerTest {
 	void whenGetTeam_ThenOperationIsSuccessful() {
 		var teamService = Mockito.mock(TeamService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var team = Optional.of(new TeamDto(1, "Hellas Verona", "Description", "Verona", "AGSM"));
+		var team = new TeamDto(1, "Hellas Verona", "Description", "Verona", "AGSM");
 		Mockito.when(teamService.getTeam(1)).thenReturn(team);
 		var teamController = new TeamController(teamService, jwtService);
 
@@ -60,7 +60,7 @@ class TeamControllerTest {
 	void whenGetTeam_ThenThrowResponseStatusException_TeamNotFound() {
 		var teamService = Mockito.mock(TeamService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(teamService.getTeam(1)).thenReturn(Optional.empty());
+		Mockito.when(teamService.getTeam(1)).thenThrow(TeamNotFoundException.class);
 		var teamController = new TeamController(teamService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> teamController.getTeam(1));
