@@ -65,7 +65,7 @@ class AdminControllerTest {
 		jwtTokenData.setRole("Admin");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		var admin = Optional.of(new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y"));
+		var admin = new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y");
 		Mockito.when(adminService.getAdmin(2)).thenReturn(admin);
 		var adminController = new AdminController(adminService, jwtService);
 
@@ -96,7 +96,7 @@ class AdminControllerTest {
 		jwtTokenData.setRole("Admin");
 		var bearerToken = "Bearer token";
 		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		Mockito.when(adminService.getAdmin(2)).thenReturn(Optional.empty());
+		Mockito.when(adminService.getAdmin(2)).thenThrow(AdminUserNotFoundException.class);
 		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.getAdmin(bearerToken, 2));

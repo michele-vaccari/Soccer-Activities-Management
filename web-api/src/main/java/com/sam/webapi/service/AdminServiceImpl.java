@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -38,13 +37,13 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public Optional<AdminDto> getAdmin(Integer id) {
+	public AdminDto getAdmin(Integer id) {
 		var admin = adminUserRepository.findById(id);
 
 		if (admin.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(admin.get()));
+			throw new AdminUserNotFoundException();
+
+		return convertEntityToDto(admin.get());
 	}
 
 	@Override

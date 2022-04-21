@@ -69,7 +69,19 @@ class AdminServiceImplTest {
 		var result = adminServiceImpl.getAdmin(1);
 
 		Mockito.verify(adminUserRepository, times(1)).findById(1);
-		Assertions.assertEquals(expectedResult, result.get());
+		Assertions.assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("When get admin, then throw AdminUserNotFoundException")
+	void whenGetAdmin_ThenThrowAdminUserNotFoundException() {
+		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(adminUserRepository.findById(1)).thenReturn(Optional.empty());
+		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
+
+		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.getAdmin(1));
+		Mockito.verify(adminUserRepository, times(1)).findById(1);
 	}
 
 	@Test

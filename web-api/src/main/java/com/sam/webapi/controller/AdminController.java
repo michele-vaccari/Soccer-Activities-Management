@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @RestController
 @Tag(name = "Admins", description = "Admins information retrieval, creation, modification, deactivation")
 public class AdminController {
@@ -62,17 +60,17 @@ public class AdminController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<AdminDto> getAdmin(@RequestHeader("Authorization") String authorization,
+	public AdminDto getAdmin(@RequestHeader("Authorization") String authorization,
 									   @PathVariable Integer id) {
 		if (!jwtService.hasAnAdminUser(authorization))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 
-		var admin = adminService.getAdmin(id);
-
-		if (!admin.isPresent())
+		try {
+			return adminService.getAdmin(id);
+		}
+		catch (AdminUserNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return admin;
+		}
 	}
 
 	@Operation(summary = "Add a new admin", security = { @SecurityRequirement(name = "Bearer") })
