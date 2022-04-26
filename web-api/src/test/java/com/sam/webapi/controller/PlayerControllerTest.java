@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 import static org.mockito.Mockito.times;
 
 @Tag("UnitTest")
