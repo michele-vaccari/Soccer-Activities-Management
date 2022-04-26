@@ -5,9 +5,9 @@ import com.sam.webapi.dto.AdminDto;
 import java.util.Optional;
 
 public interface AdminService {
-	Iterable<AdminDto> getAdmins();
-	AdminDto getAdmin(Integer id);
+	Iterable<AdminDto> getAdmins(String adminEmail);
+	AdminDto getAdmin(Integer id, String adminEmail);
 	void createAdmin(String adminEmail, AdminDto admin);
-	void updateAdmin(Integer id, AdminDto admin);
-	void deleteAdmin(Integer id);
+	void updateAdmin(Integer id, AdminDto admin, String adminEmail);
+	void deleteAdmin(Integer id, String adminEmail);
 }

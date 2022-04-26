@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,9 @@ class AdminServiceImplTest {
 	void whenGetAdmins_ThenOperationIsSuccessful() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user1 = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var user2 = new User(3, "Referee", "Jane", "Doe", "jane.doe@sam.com", "Password02", "N");
 		var adminUser1 = new AdminUser(2);
@@ -46,10 +50,25 @@ class AdminServiceImplTest {
 				));
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		adminServiceImpl.getAdmins();
+		adminServiceImpl.getAdmins("john.doe@sam.com");
 
 		Mockito.verify(adminUserRepository, times(1)).findAll();
-		Assertions.assertEquals(expectedResult, adminServiceImpl.getAdmins());
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
+		Assertions.assertEquals(expectedResult, adminServiceImpl.getAdmins("john.doe@sam.com"));
+	}
+
+	@Test
+	@DisplayName("When get admins, then throw UnauthorizedException")
+	void whenGetAdmins_ThenThrowUnauthorizedException() {
+		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				null
+		);
+		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
+
+		Assertions.assertThrows(UnauthorizedException.class, ()-> adminServiceImpl.getAdmins( "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 	}
 
 	@Test
@@ -57,6 +76,9 @@ class AdminServiceImplTest {
 	void whenGetAdmin_ThenOperationIsSuccessful() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var adminUser = new AdminUser(2);
 		adminUser.setUserById(user);
@@ -66,10 +88,24 @@ class AdminServiceImplTest {
 		var expectedResult = new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y");
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		var result = adminServiceImpl.getAdmin(1);
+		var result = adminServiceImpl.getAdmin(1, "john.doe@sam.com");
 
 		Mockito.verify(adminUserRepository, times(1)).findById(1);
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 		Assertions.assertEquals(expectedResult, result);
+	}
+	@Test
+	@DisplayName("When get admin, then throw UnauthorizedException")
+	void whenGetAdmin_ThenThrowUnauthorizedException() {
+		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				null
+		);
+		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
+
+		Assertions.assertThrows(UnauthorizedException.class, ()-> adminServiceImpl.getAdmin(1, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 	}
 
 	@Test
@@ -77,10 +113,14 @@ class AdminServiceImplTest {
 	void whenGetAdmin_ThenThrowAdminUserNotFoundException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		Mockito.when(adminUserRepository.findById(1)).thenReturn(Optional.empty());
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.getAdmin(1));
+		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.getAdmin(1, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 		Mockito.verify(adminUserRepository, times(1)).findById(1);
 	}
 
@@ -101,7 +141,6 @@ class AdminServiceImplTest {
 
 		adminServiceImpl.createAdmin(adminUser.getEmail(), adminDto);
 
-		Mockito.verify(userRepository, times(1)).findByEmailAndActive(adminUser.getEmail(), "Y");
 		Mockito.verify(userRepository, times(1)).existsByEmail(adminDto.getEmail());
 		Mockito.verify(userRepository, times(1)).getMaxId();
 		Mockito.verify(userRepository, times(1)).save(user);
@@ -109,28 +148,30 @@ class AdminServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("When create admin, then throw AdminUserNotFoundException")
-	void whenCreateAdmin_ThenThrowAdminUserNotFoundException() {
+	@DisplayName("When create admin, then throw UnauthorizedException")
+	void whenCreateAdmin_ThenThrowUnauthorizedException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				null
+		);
 		var adminDto = new AdminDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null);
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
-		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(null);
 		Mockito.when(userRepository.existsByEmail(adminDto.getEmail())).thenReturn(true);
 
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.createAdmin(adminUser.getEmail(), adminDto));
-		Mockito.verify(userRepository, times(1)).findByEmailAndActive(adminUser.getEmail(), "Y");
+		Assertions.assertThrows(UnauthorizedException.class, ()-> adminServiceImpl.createAdmin(adminUser.getEmail(), adminDto));
 	}
-
 
 	@Test
 	@DisplayName("When create admin, then throw SingleEmailConstraintException")
 	void whenCreateAdmin_ThenThrowSingleEmailConstraintException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
-		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var adminDto = new AdminDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null);
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
 		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(adminUser);
@@ -139,7 +180,6 @@ class AdminServiceImplTest {
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
 		Assertions.assertThrows(SingleEmailConstraintException.class, ()-> adminServiceImpl.createAdmin(adminUser.getEmail(), adminDto));
-		Mockito.verify(userRepository, times(1)).findByEmailAndActive(adminUser.getEmail(), "Y");
 		Mockito.verify(userRepository, times(1)).existsByEmail(adminDto.getEmail());
 	}
 
@@ -148,6 +188,9 @@ class AdminServiceImplTest {
 	void whenUpdateAdmin_ThenOperationIsSuccessful() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var adminDto = new AdminDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y");
 		var user = new User(2, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var admin = new AdminUser(2);
@@ -159,7 +202,7 @@ class AdminServiceImplTest {
 
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		adminServiceImpl.updateAdmin(id, adminDto);
+		adminServiceImpl.updateAdmin(id, adminDto, "john.doe@sam.com");
 
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(adminUserRepository, times(1)).findById(id);
@@ -169,17 +212,38 @@ class AdminServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("When update admin, then throw UserNotFoundException")
-	void whenUpdateAdmin_ThenThrowUserNotFoundException() {
+	@DisplayName("When update admin, then throw UnauthorizedException")
+	void whenUpdateAdmin_ThenThrowUnauthorizedException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				null
+		);
 		var adminDto = new AdminDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y");
 		var id = 1;
 		Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
 
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(UserNotFoundException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto));
+		Assertions.assertThrows(UnauthorizedException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
+	}
+
+	@Test
+	@DisplayName("When update admin, then throw UserNotFoundException")
+	void whenUpdateAdmin_ThenThrowUserNotFoundException() {
+		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
+		var adminDto = new AdminDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y");
+		var id = 1;
+		Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
+
+		Assertions.assertThrows(UserNotFoundException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 	}
 
@@ -188,6 +252,9 @@ class AdminServiceImplTest {
 	void whenUpdateAdmin_ThenThrowAdminUserNotFoundException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user = new User(2, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var adminDto = new AdminDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y");
 		var id = 1;
@@ -196,7 +263,7 @@ class AdminServiceImplTest {
 
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto));
+		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(adminUserRepository, times(1)).findById(id);
 	}
@@ -206,6 +273,9 @@ class AdminServiceImplTest {
 	void whenUpdateAdmin_ThenThrowSingleEmailConstraintException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var adminDto = new AdminDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y");
 		var user = new User(2, "Admin", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var admin = new AdminUser(2);
@@ -216,7 +286,7 @@ class AdminServiceImplTest {
 
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(SingleEmailConstraintException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto));
+		Assertions.assertThrows(SingleEmailConstraintException.class, ()-> adminServiceImpl.updateAdmin(id, adminDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(adminUserRepository, times(1)).findById(id);
 		Mockito.verify(userRepository, times(1)).existsByEmailAndIdNot(adminDto.getEmail(), id);
@@ -227,12 +297,15 @@ class AdminServiceImplTest {
 	void whenDeleteAdmin_ThenOperationIsSuccessful() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var id = 1;
 		Mockito.when(adminUserRepository.existsById(id)).thenReturn(true);
 		Mockito.when(userRepository.existsById(id)).thenReturn(true);
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		adminServiceImpl.deleteAdmin(id);
+		adminServiceImpl.deleteAdmin(id, "john.doe@sam.com");
 
 		Mockito.verify(adminUserRepository, times(1)).existsById(id);
 		Mockito.verify(userRepository, times(1)).existsById(id);
@@ -240,15 +313,34 @@ class AdminServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("When delete admin, then throw AdminUserNotFoundException")
-	void whenDeleteAdmin_ThenThrowAdminUserNotFoundException() {
+	@DisplayName("When delete admin, then throw UnauthorizedException")
+	void whenDeleteAdmin_ThenThrowUnauthorizedException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				null
+		);
 		var id = 1;
 		Mockito.when(adminUserRepository.existsById(id)).thenReturn(false);
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.deleteAdmin(id));
+		Assertions.assertThrows(UnauthorizedException.class, ()-> adminServiceImpl.deleteAdmin(id, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
+	}
+
+	@Test
+	@DisplayName("When delete admin, then throw AdminUserNotFoundException")
+	void whenDeleteAdmin_ThenThrowAdminUserNotFoundException() {
+		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
+		var id = 1;
+		Mockito.when(adminUserRepository.existsById(id)).thenReturn(false);
+		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
+
+		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> adminServiceImpl.deleteAdmin(id, "john.doe@sam.com"));
 		Mockito.verify(adminUserRepository, times(1)).existsById(id);
 	}
 
@@ -257,12 +349,15 @@ class AdminServiceImplTest {
 	void whenDeleteAdmin_ThenThrowUserNotFoundException() {
 		var adminUserRepository = Mockito.mock(AdminUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var id = 1;
 		Mockito.when(adminUserRepository.existsById(id)).thenReturn(true);
 		Mockito.when(userRepository.existsById(id)).thenReturn(false);
 		var adminServiceImpl = new AdminServiceImpl(adminUserRepository, userRepository);
 
-		Assertions.assertThrows(UserNotFoundException.class, ()-> adminServiceImpl.deleteAdmin(id));
+		Assertions.assertThrows(UserNotFoundException.class, ()-> adminServiceImpl.deleteAdmin(id, "john.doe@sam.com"));
 		Mockito.verify(adminUserRepository, times(1)).existsById(id);
 		Mockito.verify(userRepository, times(1)).existsById(id);
 	}

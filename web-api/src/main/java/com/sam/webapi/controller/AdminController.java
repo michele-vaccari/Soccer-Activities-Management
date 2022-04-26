@@ -41,11 +41,14 @@ public class AdminController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<AdminDto> getAdmins(@RequestHeader("Authorization") String authorization) {
+		var adminEmail = jwtService.getEmail(authorization);
 
-		if (!jwtService.hasAnAdminUser(authorization))
+		try {
+			return adminService.getAdmins(adminEmail);
+		}
+		catch (UnauthorizedException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
-		return adminService.getAdmins();
+		}
 	}
 
 	@Operation(summary = "Get a admin by its id", security = { @SecurityRequirement(name = "Bearer") })
@@ -62,11 +65,13 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.OK)
 	public AdminDto getAdmin(@RequestHeader("Authorization") String authorization,
 									   @PathVariable Integer id) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
-			return adminService.getAdmin(id);
+			return adminService.getAdmin(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (AdminUserNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -84,13 +89,13 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addAdmin(@RequestHeader("Authorization") String authorization,
 						 @RequestBody(required = true) AdminDto admin) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
 		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
 			adminService.createAdmin(adminEmail, admin);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (SingleEmailConstraintException ex) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Email has already been used", ex);
@@ -110,11 +115,13 @@ public class AdminController {
 	public void updateAdmin(@RequestHeader("Authorization") String authorization,
 							@PathVariable Integer id,
 							@RequestBody AdminDto referee) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
-			adminService.updateAdmin(id, referee);
+			adminService.updateAdmin(id, referee, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (AdminUserNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found", ex);
@@ -137,11 +144,13 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteAdmin(@RequestHeader("Authorization") String authorization,
 							@PathVariable Integer id) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
-			adminService.deleteAdmin(id);
+			adminService.deleteAdmin(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (AdminUserNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin not found", ex);
