@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class TeamManagerServiceImpl implements TeamManagerService {
@@ -37,7 +36,9 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 
 	@Override
 	@Transactional
-	public Iterable<TeamManagerDto> getTeamManagers() {
+	public Iterable<TeamManagerDto> getTeamManagers(String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var teamManagers = teamManagerRepository.findAll();
 
 		var teamManagersDto = new ArrayList<TeamManagerDto>();
@@ -48,7 +49,9 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 
 	@Override
 	@Transactional
-	public TeamManagerDto getTeamManager(Integer id) {
+	public TeamManagerDto getTeamManager(Integer id, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var teamManager = teamManagerRepository.findById(id);
 
 		if (teamManager.isEmpty())
@@ -60,10 +63,7 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 	@Override
 	@Transactional
 	public void createTeamManager(String adminEmail, TeamManagerDto teamManagerDto) {
-
-		var adminUser = userRepository.findByEmailAndActive(adminEmail, "Y");
-		if (adminUser == null)
-			throw new AdminUserNotFoundException();
+		isAuthorizedUser(adminEmail);
 
 		if (userRepository.existsByEmail(teamManagerDto.getEmail()))
 			throw new SingleEmailConstraintException();
@@ -79,6 +79,7 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 				"Y"
 		);
 
+		var adminUser = userRepository.findByEmailAndActive(adminEmail, "Y");
 		var registeredUser = new RegisteredUser(
 				user.getId(),
 				adminUser.getId(),
@@ -108,7 +109,9 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 
 	@Override
 	@Transactional
-	public void updateTeamManager(Integer id, TeamManagerDto teamManagerDto) {
+	public void updateTeamManager(Integer id, TeamManagerDto teamManagerDto, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var user = userRepository.findById(id);
 		if (user.isEmpty())
 			throw new UserNotFoundException();
@@ -153,7 +156,8 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 
 	@Override
 	@Transactional
-	public void deleteTeamManager(Integer id) {
+	public void deleteTeamManager(Integer id, String adminEmail) {
+		isAuthorizedUser(adminEmail);
 		if (!teamManagerRepository.existsById(id))
 			throw new TeamManagerNotFoundException();
 
@@ -164,6 +168,13 @@ public class TeamManagerServiceImpl implements TeamManagerService {
 			throw new UserNotFoundException();
 
 		userRepository.deactivateUserById(id);
+	}
+
+	private void isAuthorizedUser(String userEmail) {
+		var user = userRepository.findByEmailAndActive(userEmail,"Y");
+		if (user == null ||
+			!user.getRole().equals("Admin"))
+			throw new UnauthorizedException();
 	}
 
 	private TeamManagerDto convertEntityToDto(TeamManager teamManager) {

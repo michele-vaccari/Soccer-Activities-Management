@@ -41,11 +41,13 @@ public class TeamManagerController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<TeamManagerDto> getTeamManagers(@RequestHeader("Authorization") String authorization) {
-
-		if (!jwtService.hasAnAdminUser(authorization))
+		var adminEmail = jwtService.getEmail(authorization);
+		try {
+			return teamManagerService.getTeamManagers(adminEmail);
+		}
+		catch (UnauthorizedException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
-		return teamManagerService.getTeamManagers();
+		}
 	}
 
 	@Operation(summary = "Get a team manager by its id", security = { @SecurityRequirement(name = "Bearer") })
@@ -62,11 +64,12 @@ public class TeamManagerController {
 	@ResponseStatus(HttpStatus.OK)
 	public TeamManagerDto getTeamManager(@RequestHeader("Authorization") String authorization,
 												   @PathVariable Integer id) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
+		var adminEmail = jwtService.getEmail(authorization);
 		try {
-			return teamManagerService.getTeamManager(id);
+			return teamManagerService.getTeamManager(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (TeamManagerNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -84,13 +87,12 @@ public class TeamManagerController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addTeamManager(@RequestHeader("Authorization") String authorization,
 							   @RequestBody(required = true) TeamManagerDto teamManagerDto) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
 		var adminEmail = jwtService.getEmail(authorization);
-
 		try {
 			teamManagerService.createTeamManager(adminEmail, teamManagerDto);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (SingleEmailConstraintException ex) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Email has already been used", ex);
@@ -110,11 +112,12 @@ public class TeamManagerController {
 	public void updateTeamManager(@RequestHeader("Authorization") String authorization,
 								  @PathVariable Integer id,
 								  @RequestBody TeamManagerDto teamManagerDto) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
+		var adminEmail = jwtService.getEmail(authorization);
 		try {
-			teamManagerService.updateTeamManager(id, teamManagerDto);
+			teamManagerService.updateTeamManager(id, teamManagerDto, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (TeamManagerNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team manager not found", ex);
@@ -140,11 +143,12 @@ public class TeamManagerController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteTeamManager(@RequestHeader("Authorization") String authorization,
 						   		 @PathVariable Integer id) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
+		var adminEmail = jwtService.getEmail(authorization);
 		try {
-			teamManagerService.deleteTeamManager(id);
+			teamManagerService.deleteTeamManager(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (TeamManagerNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team manager not found", ex);
