@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -27,7 +26,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public Iterable<AdminDto> getAdmins() {
+	public Iterable<AdminDto> getAdmins(String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var admins = adminUserRepository.findAll();
 
 		var adminsDto = new ArrayList<AdminDto>();
@@ -38,22 +39,21 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public Optional<AdminDto> getAdmin(Integer id) {
+	public AdminDto getAdmin(Integer id, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var admin = adminUserRepository.findById(id);
 
 		if (admin.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(admin.get()));
+			throw new AdminUserNotFoundException();
+
+		return convertEntityToDto(admin.get());
 	}
 
 	@Override
 	@Transactional
 	public void createAdmin(String adminEmail, AdminDto adminDto) {
-
-		var adminUser = userRepository.findByEmailAndActive(adminEmail, "Y");
-		if (adminUser == null)
-			throw new AdminUserNotFoundException();
+		isAuthorizedUser(adminEmail);
 
 		if (userRepository.existsByEmail(adminDto.getEmail()))
 			throw new SingleEmailConstraintException();
@@ -80,7 +80,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public void updateAdmin(Integer id, AdminDto adminDto) {
+	public void updateAdmin(Integer id, AdminDto adminDto, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var user = userRepository.findById(id);
 		if (user.isEmpty())
 			throw new UserNotFoundException();
@@ -109,7 +111,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public void deleteAdmin(Integer id) {
+	public void deleteAdmin(Integer id, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		if (!adminUserRepository.existsById(id))
 			throw new AdminUserNotFoundException();
 
@@ -117,6 +121,13 @@ public class AdminServiceImpl implements AdminService {
 			throw new UserNotFoundException();
 
 		userRepository.deactivateUserById(id);
+	}
+
+	private void isAuthorizedUser(String userEmail) {
+		var user = userRepository.findByEmailAndActive(userEmail,"Y");
+		if (user == null ||
+			!user.getRole().equals("Admin"))
+			throw new UnauthorizedException();
 	}
 
 	private AdminDto convertEntityToDto(AdminUser admin) {

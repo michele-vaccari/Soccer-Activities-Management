@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class RefereeServiceImpl implements RefereeService {
@@ -32,7 +31,9 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
-	public Iterable<RefereeDto> getReferees() {
+	public Iterable<RefereeDto> getReferees(String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var referees = refereeRepository.findAll();
 
 		var refereesDto = new ArrayList<RefereeDto>();
@@ -43,22 +44,23 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
-	public Optional<RefereeDto> getReferee(Integer id) {
+	public RefereeDto getReferee(Integer id, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var referee = refereeRepository.findById(id);
 
 		if (referee.isEmpty())
-			return Optional.empty();
-		else
-			return Optional.of(convertEntityToDto(referee.get()));
+			throw new RefereeNotFoundException();
+
+		return convertEntityToDto(referee.get());
 	}
 
 	@Override
 	@Transactional
 	public void createReferee(String adminEmail, RefereeDto refereeDto) {
+		isAuthorizedUser(adminEmail);
 
 		var adminUser = userRepository.findByEmailAndActive(adminEmail, "Y");
-		if (adminUser == null)
-			throw new AdminUserNotFoundException();
 
 		if (userRepository.existsByEmail(refereeDto.getEmail()))
 			throw new SingleEmailConstraintException();
@@ -96,7 +98,9 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
-	public void updateReferee(Integer id, RefereeDto refereeDto) {
+	public void updateReferee(Integer id, RefereeDto refereeDto, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		var user = userRepository.findById(id);
 		if (user.isEmpty())
 			throw new UserNotFoundException();
@@ -140,7 +144,9 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
-	public void deleteReferee(Integer id) {
+	public void deleteReferee(Integer id, String adminEmail) {
+		isAuthorizedUser(adminEmail);
+
 		if (!refereeRepository.existsById(id))
 			throw new RefereeNotFoundException();
 
@@ -151,6 +157,13 @@ public class RefereeServiceImpl implements RefereeService {
 			throw new UserNotFoundException();
 
 		userRepository.deactivateUserById(id);
+	}
+
+	private void isAuthorizedUser(String userEmail) {
+		var user = userRepository.findByEmailAndActive(userEmail,"Y");
+		if (user == null ||
+				!user.getRole().equals("Admin"))
+			throw new UnauthorizedException();
 	}
 
 	private RefereeDto convertEntityToDto(Referee referee) {

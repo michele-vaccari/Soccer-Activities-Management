@@ -27,8 +27,19 @@ class PlayerServiceImplTest {
 		var result = playerServiceImpl.getPlayer(1);
 
 		Mockito.verify(playerRepository, times(1)).findById(1);
-		var expectedResult = Optional.of(new PlayerDto(1, 2, "Y", 10, "role", "name", "surname", "01-01-1970", "Italian", "description", 0, 0, 0));
+		var expectedResult = new PlayerDto(1, 2, "Y", 10, "role", "name", "surname", "01-01-1970", "Italian", "description", 0, 0, 0);
 		Assertions.assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("When get player, then throw PlayerNotFoundException")
+	void whenGetPlayer_ThenThrowPlayerNotFoundException() {
+		var playerRepository = Mockito.mock(PlayerRepository.class);
+		Mockito.when(playerRepository.findById(1)).thenReturn(Optional.empty());
+		var playerServiceImpl = new PlayerServiceImpl(playerRepository);
+
+		Assertions.assertThrows(PlayerNotFoundException.class, ()-> playerServiceImpl.getPlayer(1));
+		Mockito.verify(playerRepository, times(1)).findById(1);
 	}
 
 	@Test

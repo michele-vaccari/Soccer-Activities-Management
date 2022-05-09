@@ -17,8 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @RestController
 @Tag(name = "Referees", description = "Referees information retrieval, creation, modification, deactivation")
 public class RefereeController {
@@ -43,11 +41,13 @@ public class RefereeController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<RefereeDto> getReferees(@RequestHeader("Authorization") String authorization) {
-
-		if (!jwtService.hasAnAdminUser(authorization))
+		var adminEmail = jwtService.getEmail(authorization);
+		try {
+			return refereeService.getReferees(adminEmail);
+		}
+		catch (UnauthorizedException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
-		return refereeService.getReferees();
+		}
 	}
 
 	@Operation(summary = "Get a referee by its id", security = { @SecurityRequirement(name = "Bearer") })
@@ -62,17 +62,18 @@ public class RefereeController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Optional<RefereeDto> getReferee(@RequestHeader("Authorization") String authorization,
-										   @PathVariable Integer id) {
-		if (!jwtService.hasAnAdminUser(authorization))
+	public RefereeDto getReferee(@RequestHeader("Authorization") String authorization,
+								 @PathVariable Integer id) {
+		var adminEmail = jwtService.getEmail(authorization);
+		try {
+			return refereeService.getReferee(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
-		var referee = refereeService.getReferee(id);
-
-		if (!referee.isPresent())
+		}
+		catch (RefereeNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-		return referee;
+		}
 	}
 
 	@Operation(summary = "Add a new referee", security = { @SecurityRequirement(name = "Bearer") })
@@ -86,13 +87,12 @@ public class RefereeController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public void addReferee(@RequestHeader("Authorization") String authorization,
 						   @RequestBody(required = true) RefereeDto referee) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
 		var adminEmail = jwtService.getEmail(authorization);
-
 		try {
 			refereeService.createReferee(adminEmail, referee);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (SingleEmailConstraintException ex) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Email has already been used", ex);
@@ -112,11 +112,12 @@ public class RefereeController {
 	public void updateReferee(@RequestHeader("Authorization") String authorization,
 						   @PathVariable Integer id,
 						   @RequestBody RefereeDto referee) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
+		var adminEmail = jwtService.getEmail(authorization);
 		try {
-			refereeService.updateReferee(id, referee);
+			refereeService.updateReferee(id, referee, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (RefereeNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Referee not found", ex);
@@ -142,11 +143,12 @@ public class RefereeController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteReferee(@RequestHeader("Authorization") String authorization,
 						   @PathVariable Integer id) {
-		if (!jwtService.hasAnAdminUser(authorization))
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-
+		var adminEmail = jwtService.getEmail(authorization);
 		try {
-			refereeService.deleteReferee(id);
+			refereeService.deleteReferee(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		catch (RefereeNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Referee not found", ex);

@@ -1,7 +1,6 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.dto.AdminDto;
-import com.sam.webapi.security.model.JwtTokenData;
 import com.sam.webapi.security.service.JwtService;
 import com.sam.webapi.service.*;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.times;
 
@@ -26,21 +24,19 @@ class AdminControllerTest {
 	void whenGetAdmins_ThenOperationIsSuccessful() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		var bearerToken = "Bearer token";
-		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		List<AdminDto> admins = new ArrayList<>(
 				Arrays.asList(
 						new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y"),
 						new AdminDto(3, "Jane", "Doe", "jane.doe@sam.com", null, "N")
 				));
-		Mockito.when(adminService.getAdmins()).thenReturn(admins);
+		Mockito.when(adminService.getAdmins("john.doe@sam.com")).thenReturn(admins);
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var adminController = new AdminController(adminService, jwtService);
 
 		var result = adminController.getAdmins(bearerToken);
 
-		Mockito.verify(adminService, times(1)).getAdmins();
+		Mockito.verify(adminService, times(1)).getAdmins("john.doe@sam.com");
 		Assertions.assertEquals(admins, result);
 	}
 
@@ -49,11 +45,13 @@ class AdminControllerTest {
 	void whenGetAdmins_ThenThrowResponseStatusException_Unauthorized() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.when(adminService.getAdmins("john.doe@sam.com")).thenThrow(UnauthorizedException.class);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.getAdmins(bearerToken));
+		Mockito.verify(adminService, times(1)).getAdmins("john.doe@sam.com");
 	}
 
 	@Test
@@ -61,17 +59,15 @@ class AdminControllerTest {
 	void whenGetAdmin_ThenOperationIsSuccessful() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
+		var admin = new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y");
 		var bearerToken = "Bearer token";
-		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		var admin = Optional.of(new AdminDto(2, "John", "Doe", "john.doe@sam.com", null, "Y"));
-		Mockito.when(adminService.getAdmin(2)).thenReturn(admin);
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		Mockito.when(adminService.getAdmin(2, "john.doe@sam.com")).thenReturn(admin);
 		var adminController = new AdminController(adminService, jwtService);
 
 		var result = adminController.getAdmin(bearerToken, 2);
 
-		Mockito.verify(adminService, times(1)).getAdmin(2);
+		Mockito.verify(adminService, times(1)).getAdmin(2, "john.doe@sam.com");
 		Assertions.assertEquals(admin, result);
 	}
 
@@ -80,11 +76,13 @@ class AdminControllerTest {
 	void whenGetAdmin_ThenThrowResponseStatusException_Unauthorized() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.when(adminService.getAdmin(2, "john.doe@sam.com")).thenThrow(UnauthorizedException.class);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.getAdmin(bearerToken, 2));
+		Mockito.verify(adminService, times(1)).getAdmin(2, "john.doe@sam.com");
 	}
 
 	@Test
@@ -92,15 +90,13 @@ class AdminControllerTest {
 	void whenGetAdmin_ThenThrowResponseStatusException_UserNotFound() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
+		Mockito.when(adminService.getAdmin(2, "john.doe@sam.com")).thenThrow(AdminUserNotFoundException.class);
 		var bearerToken = "Bearer token";
-		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
-		Mockito.when(adminService.getAdmin(2)).thenReturn(Optional.empty());
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.getAdmin(bearerToken, 2));
-		Mockito.verify(adminService, times(1)).getAdmin(2);
+		Mockito.verify(adminService, times(1)).getAdmin(2, "john.doe@sam.com");
 	}
 
 	@Test
@@ -108,18 +104,14 @@ class AdminControllerTest {
 	void whenAddAdmin_ThenOperationIsSuccessful() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		jwtTokenData.setEmail("john.doe@sam.com");
 		var bearerToken = "Bearer token";
-		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var admin = new AdminDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var adminController = new AdminController(adminService, jwtService);
 
 		adminController.addAdmin(bearerToken, admin);
 
-		Mockito.verify(adminService, times(1)).createAdmin(jwtTokenData.getEmail(), admin);
+		Mockito.verify(adminService, times(1)).createAdmin("john.doe@sam.com", admin);
 	}
 
 	@Test
@@ -127,12 +119,14 @@ class AdminControllerTest {
 	void whenAddAdmin_ThenThrowResponseStatusException_Unauthorized() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
 		var admin = new AdminDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y");
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(UnauthorizedException.class).when(adminService).createAdmin("john.doe@sam.com", admin);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.addAdmin(bearerToken, admin));
+		Mockito.verify(adminService, times(1)).createAdmin("john.doe@sam.com", admin);
 	}
 
 	@Test
@@ -140,14 +134,11 @@ class AdminControllerTest {
 	void whenAddAdmin_ThenThrowResponseStatusException_EmailHasAlreadyBeenUsed() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
 		var admin = new AdminDto(0, "John", "Doe", "john.doe@sam.com", "Password01", "Y");
-		Mockito.doThrow(SingleEmailConstraintException.class).when(adminService).createAdmin(jwtTokenData.getEmail(), admin);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(SingleEmailConstraintException.class).when(adminService).createAdmin("john.doe@sam.com", admin);
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.addAdmin(bearerToken, admin));
 	}
@@ -157,17 +148,14 @@ class AdminControllerTest {
 	void whenUpdateAdmin_ThenOperationIsSuccessful() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		jwtTokenData.setEmail("john.doe@sam.com");
-		var bearerToken = "Bearer token";
-		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
 		var admin = new AdminDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null);
+		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var adminController = new AdminController(adminService, jwtService);
 
 		adminController.updateAdmin(bearerToken, 2, admin);
 
-		Mockito.verify(adminService, times(1)).updateAdmin(2, admin);
+		Mockito.verify(adminService, times(1)).updateAdmin(2, admin, "john.doe@sam.com");
 	}
 
 	@Test
@@ -175,12 +163,14 @@ class AdminControllerTest {
 	void whenUpdateAdmin_ThenThrowResponseStatusException_Unauthorized() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
 		var admin = new AdminDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(UnauthorizedException.class).when(adminService).updateAdmin(2, admin,"john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.updateAdmin(bearerToken, 2, admin));
+		Mockito.verify(adminService, times(1)).updateAdmin(2, admin, "john.doe@sam.com");
 	}
 
 	@Test
@@ -188,13 +178,14 @@ class AdminControllerTest {
 	void whenUpdateAdmin_ThenThrowResponseStatusException_AdminUserNotFound() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
 		var admin = new AdminDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null);
-		Mockito.doThrow(AdminUserNotFoundException.class).when(adminService).updateAdmin(2, admin);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(AdminUserNotFoundException.class).when(adminService).updateAdmin(2, admin,"john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.updateAdmin(bearerToken, 2, admin));
+		Mockito.verify(adminService, times(1)).updateAdmin(2, admin, "john.doe@sam.com");
 	}
 
 	@Test
@@ -202,13 +193,14 @@ class AdminControllerTest {
 	void whenUpdateAdmin_ThenThrowResponseStatusException_UserNotFound() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
 		var admin = new AdminDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null);
-		Mockito.doThrow(UserNotFoundException.class).when(adminService).updateAdmin(2, admin);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(UserNotFoundException.class).when(adminService).updateAdmin(2, admin,"john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.updateAdmin(bearerToken, 2, admin));
+		Mockito.verify(adminService, times(1)).updateAdmin(2, admin, "john.doe@sam.com");
 	}
 
 	@Test
@@ -216,13 +208,14 @@ class AdminControllerTest {
 	void whenUpdateAdmin_ThenThrowResponseStatusException_EmailHasAlreadyBeenUsed() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
 		var admin = new AdminDto(0, "Jane", "Doe", "jane.doe@sam.com", null, null);
-		Mockito.doThrow(SingleEmailConstraintException.class).when(adminService).updateAdmin(2, admin);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(SingleEmailConstraintException.class).when(adminService).updateAdmin(2, admin,"john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.updateAdmin(bearerToken, 2, admin));
+		Mockito.verify(adminService, times(1)).updateAdmin(2, admin, "john.doe@sam.com");
 	}
 
 	@Test
@@ -230,16 +223,13 @@ class AdminControllerTest {
 	void whenDeleteAdmin_ThenOperationIsSuccessful() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		jwtTokenData.setEmail("john.doe@sam.com");
 		var bearerToken = "Bearer token";
-		Mockito.when(jwtService.hasAnAdminUser(bearerToken)).thenReturn(true);
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
 		var adminController = new AdminController(adminService, jwtService);
 
 		adminController.deleteAdmin(bearerToken, 2);
 
-		Mockito.verify(adminService, times(1)).deleteAdmin(2);
+		Mockito.verify(adminService, times(1)).deleteAdmin(2, "john.doe@sam.com");
 	}
 
 	@Test
@@ -247,11 +237,13 @@ class AdminControllerTest {
 	void whenDeleteAdmin_ThenThrowResponseStatusException_Unauthorized() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.empty());
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(UnauthorizedException.class).when(adminService).deleteAdmin(2, "john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.deleteAdmin(bearerToken, 2));
+		Mockito.verify(adminService, times(1)).deleteAdmin(2, "john.doe@sam.com");
 	}
 
 	@Test
@@ -259,15 +251,13 @@ class AdminControllerTest {
 	void whenDeleteAdmin_ThenThrowResponseStatusException_AdminUserNotFound() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
-		Mockito.doThrow(AdminUserNotFoundException.class).when(adminService).deleteAdmin(2);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(UnauthorizedException.class).when(adminService).deleteAdmin(2, "john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.deleteAdmin(bearerToken, 2));
+		Mockito.verify(adminService, times(1)).deleteAdmin(2, "john.doe@sam.com");
 	}
 
 	@Test
@@ -275,14 +265,12 @@ class AdminControllerTest {
 	void whenDeleteAdmin_ThenThrowResponseStatusException_UserNotFound() {
 		var adminService = Mockito.mock(AdminService.class);
 		var jwtService = Mockito.mock(JwtService.class);
-		var jwtTokenData = new JwtTokenData();
-		jwtTokenData.setRole("Admin");
-		jwtTokenData.setEmail("john.doe@sam.com");
-		Mockito.when(jwtService.validateJwt("token")).thenReturn(Optional.of(jwtTokenData));
-		Mockito.doThrow(UserNotFoundException.class).when(adminService).deleteAdmin(2);
-		var adminController = new AdminController(adminService, jwtService);
+		Mockito.doThrow(UnauthorizedException.class).when(adminService).deleteAdmin(2, "john.doe@sam.com");
 		var bearerToken = "Bearer token";
+		Mockito.when(jwtService.getEmail(bearerToken)).thenReturn("john.doe@sam.com");
+		var adminController = new AdminController(adminService, jwtService);
 
 		Assertions.assertThrows(ResponseStatusException.class, ()-> adminController.deleteAdmin(bearerToken, 2));
+		Mockito.verify(adminService, times(1)).deleteAdmin(2, "john.doe@sam.com");
 	}
 }
