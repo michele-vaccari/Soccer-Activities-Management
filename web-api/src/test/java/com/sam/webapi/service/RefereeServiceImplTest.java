@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
@@ -30,6 +29,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user1 = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var user2 = new User(3, "Referee", "Jane", "Doe", "jane.doe@sam.com", "Password02", "N");
 		var registeredUser1 = new RegisteredUser(2,1,"123456789","Street");
@@ -53,10 +55,24 @@ class RefereeServiceImplTest {
 				));
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		refereeServiceImpl.getReferees();
+		refereeServiceImpl.getReferees("john.doe@sam.com");
 
 		Mockito.verify(refereeRepository, times(1)).findAll();
-		Assertions.assertEquals(expectedResult, refereeServiceImpl.getReferees());
+		Assertions.assertEquals(expectedResult, refereeServiceImpl.getReferees("john.doe@sam.com"));
+	}
+
+	@Test
+	@DisplayName("When get referees, then throw UnauthorizedException")
+	void whenGetReferees_ThenThrowUnauthorizedException() {
+		var refereeRepository = Mockito.mock(RefereeRepository.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com", "Y")).thenReturn(null);
+
+		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
+
+		Assertions.assertThrows(UnauthorizedException.class, ()-> refereeServiceImpl.getReferees("john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 	}
 
 	@Test
@@ -65,6 +81,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
 		var referee = new Referee(2, "01-01-1970", "Italian", "Resume");
@@ -76,10 +95,24 @@ class RefereeServiceImplTest {
 		var expectedResult = new RefereeDto(2, "John", "Doe", "john.doe@sam.com", null, "Y", "123456789", "Street", "01-01-1970", "Italian", "Resume");
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		var result = refereeServiceImpl.getReferee(1);
+		var result = refereeServiceImpl.getReferee(1, "john.doe@sam.com");
 
 		Mockito.verify(refereeRepository, times(1)).findById(1);
 		Assertions.assertEquals(expectedResult, result);
+	}
+
+	@Test
+	@DisplayName("When get referee, then throw UnauthorizedException")
+	void whenGetReferee_ThenThrowUnauthorizedException() {
+		var refereeRepository = Mockito.mock(RefereeRepository.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com", "Y")).thenReturn(null);
+
+		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
+
+		Assertions.assertThrows(UnauthorizedException.class, ()-> refereeServiceImpl.getReferee(1, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 	}
 
 	@Test
@@ -89,9 +122,12 @@ class RefereeServiceImplTest {
 		Mockito.when(refereeRepository.findById(1)).thenThrow(RefereeNotFoundException.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.getReferee(1));
+		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.getReferee(1, "john.doe@sam.com"));
 		Mockito.verify(refereeRepository, times(1)).findById(1);
 	}
 
@@ -101,6 +137,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
 		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(adminUser);
@@ -114,7 +153,7 @@ class RefereeServiceImplTest {
 
 		refereeServiceImpl.createReferee(adminUser.getEmail(), refereeDto);
 
-		Mockito.verify(userRepository, times(1)).findByEmailAndActive(adminUser.getEmail(), "Y");
+		Mockito.verify(userRepository, Mockito.atLeastOnce()).findByEmailAndActive(adminUser.getEmail(), "Y");
 		Mockito.verify(userRepository, times(1)).existsByEmail(refereeDto.getEmail());
 		Mockito.verify(userRepository, times(1)).getMaxId();
 		Mockito.verify(userRepository, times(1)).save(user);
@@ -123,8 +162,8 @@ class RefereeServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("When create referee, then throw AdminUserNotFoundException")
-	void whenCreateReferee_ThenThrowAdminUserNotFoundException() {
+	@DisplayName("When create referee, then throw UnauthorizedException")
+	void whenCreateReferee_ThenThrowUnauthorizedException() {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
@@ -135,10 +174,9 @@ class RefereeServiceImplTest {
 
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(AdminUserNotFoundException.class, ()-> refereeServiceImpl.createReferee(adminUser.getEmail(), refereeDto));
+		Assertions.assertThrows(UnauthorizedException.class, ()-> refereeServiceImpl.createReferee(adminUser.getEmail(), refereeDto));
 		Mockito.verify(userRepository, times(1)).findByEmailAndActive(adminUser.getEmail(), "Y");
 	}
-
 
 	@Test
 	@DisplayName("When create referee, then throw SingleEmailConstraintException")
@@ -146,6 +184,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var refereeDto = new RefereeDto(0, "John", "Doe", "john.doe@sam.com", "Password01", null, "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var adminUser = new User(1, "Admin", "Jane", "Doe", "jane.doe@sam.com", "Password02", "Y");
 		Mockito.when(userRepository.findByEmailAndActive(adminUser.getEmail(), "Y")).thenReturn(adminUser);
@@ -154,7 +195,7 @@ class RefereeServiceImplTest {
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
 		Assertions.assertThrows(SingleEmailConstraintException.class, ()-> refereeServiceImpl.createReferee(adminUser.getEmail(), refereeDto));
-		Mockito.verify(userRepository, times(1)).findByEmailAndActive(adminUser.getEmail(), "Y");
+		Mockito.verify(userRepository, Mockito.atLeastOnce()).findByEmailAndActive(adminUser.getEmail(), "Y");
 		Mockito.verify(userRepository, times(1)).existsByEmail(refereeDto.getEmail());
 	}
 
@@ -164,6 +205,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
@@ -178,7 +222,7 @@ class RefereeServiceImplTest {
 
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		refereeServiceImpl.updateReferee(id, refereeDto);
+		refereeServiceImpl.updateReferee(id, refereeDto, "john.doe@sam.com");
 
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(registeredUserRepository, times(1)).findById(id);
@@ -190,18 +234,36 @@ class RefereeServiceImplTest {
 	}
 
 	@Test
+	@DisplayName("When update referee, then throw UnauthorizedException")
+	void whenUpdateReferee_ThenThrowUnauthorizedException() {
+		var refereeRepository = Mockito.mock(RefereeRepository.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com", "Y")).thenReturn(null);
+		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
+
+		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
+
+		Assertions.assertThrows(UnauthorizedException.class, ()-> refereeServiceImpl.updateReferee(1, refereeDto, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
+	}
+
+	@Test
 	@DisplayName("When update referee, then throw UserNotFoundException")
 	void whenUpdateReferee_ThenThrowUserNotFoundException() {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var id = 1;
 		Mockito.when(userRepository.findById(id)).thenReturn(Optional.empty());
 
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(UserNotFoundException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto));
+		Assertions.assertThrows(UserNotFoundException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 	}
 
@@ -211,6 +273,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var id = 1;
@@ -219,7 +284,7 @@ class RefereeServiceImplTest {
 
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(RegisteredUserNotFoundException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto));
+		Assertions.assertThrows(RegisteredUserNotFoundException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(registeredUserRepository, times(1)).findById(id);
 	}
@@ -230,6 +295,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
 		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
@@ -240,7 +308,7 @@ class RefereeServiceImplTest {
 
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto));
+		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(registeredUserRepository, times(1)).findById(id);
 		Mockito.verify(refereeRepository, times(1)).findById(id);
@@ -252,6 +320,9 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var refereeDto = new RefereeDto(0, "Jasmine", "Doe", "jasmine.doe@sam.com", null, "Y", "123456789","Street", "01-01-1970", "Italian", "Resume");
 		var user = new User(2, "Referee", "John", "Doe", "john.doe@sam.com", "Password01", "Y");
 		var registeredUser = new RegisteredUser(2,1,"123456789","Street");
@@ -264,7 +335,7 @@ class RefereeServiceImplTest {
 
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(SingleEmailConstraintException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto));
+		Assertions.assertThrows(SingleEmailConstraintException.class, ()-> refereeServiceImpl.updateReferee(id, refereeDto, "john.doe@sam.com"));
 		Mockito.verify(userRepository, times(1)).findById(id);
 		Mockito.verify(registeredUserRepository, times(1)).findById(id);
 		Mockito.verify(refereeRepository, times(1)).findById(id);
@@ -277,17 +348,35 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var id = 1;
 		Mockito.when(refereeRepository.existsById(id)).thenReturn(true);
 		Mockito.when(registeredUserRepository.existsById(id)).thenReturn(true);
 		Mockito.when(userRepository.existsById(id)).thenReturn(true);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		refereeServiceImpl.deleteReferee(id);
+		refereeServiceImpl.deleteReferee(id, "john.doe@sam.com");
 
 		Mockito.verify(refereeRepository, times(1)).existsById(id);
 		Mockito.verify(userRepository, times(1)).existsById(id);
 		Mockito.verify(userRepository, times(1)).deactivateUserById(id);
+	}
+
+	@Test
+	@DisplayName("When delete referee, then throw UnauthorizedException")
+	void whenDeleteReferee_ThenThrowUnauthorizedException() {
+		var refereeRepository = Mockito.mock(RefereeRepository.class);
+		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
+		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com", "Y")).thenReturn(null);
+		var id = 1;
+		Mockito.when(refereeRepository.existsById(id)).thenReturn(false);
+		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
+
+		Assertions.assertThrows(UnauthorizedException.class, ()-> refereeServiceImpl.deleteReferee(id, "john.doe@sam.com"));
+		Mockito.verify(userRepository, times(1)).findByEmailAndActive("john.doe@sam.com", "Y");
 	}
 
 	@Test
@@ -296,11 +385,14 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var id = 1;
 		Mockito.when(refereeRepository.existsById(id)).thenReturn(false);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id));
+		Assertions.assertThrows(RefereeNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id, "john.doe@sam.com"));
 		Mockito.verify(refereeRepository, times(1)).existsById(id);
 	}
 
@@ -310,12 +402,15 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var id = 1;
 		Mockito.when(refereeRepository.existsById(id)).thenReturn(true);
 		Mockito.when(registeredUserRepository.existsById(id)).thenReturn(false);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(RegisteredUserNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id));
+		Assertions.assertThrows(RegisteredUserNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id, "john.doe@sam.com"));
 		Mockito.verify(refereeRepository, times(1)).existsById(id);
 	}
 
@@ -325,13 +420,16 @@ class RefereeServiceImplTest {
 		var refereeRepository = Mockito.mock(RefereeRepository.class);
 		var registeredUserRepository = Mockito.mock(RegisteredUserRepository.class);
 		var userRepository = Mockito.mock(UserRepository.class);
+		Mockito.when(userRepository.findByEmailAndActive("john.doe@sam.com","Y")).thenReturn(
+				new User(1, "Admin", "John", "Doe", "john.doe@sam.com", "password", "Y")
+		);
 		var id = 1;
 		Mockito.when(refereeRepository.existsById(id)).thenReturn(true);
 		Mockito.when(registeredUserRepository.existsById(id)).thenReturn(true);
 		Mockito.when(userRepository.existsById(id)).thenReturn(false);
 		var refereeServiceImpl = new RefereeServiceImpl(refereeRepository, registeredUserRepository, userRepository);
 
-		Assertions.assertThrows(UserNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id));
+		Assertions.assertThrows(UserNotFoundException.class, ()-> refereeServiceImpl.deleteReferee(id, "john.doe@sam.com"));
 		Mockito.verify(refereeRepository, times(1)).existsById(id);
 		Mockito.verify(userRepository, times(1)).existsById(id);
 	}
