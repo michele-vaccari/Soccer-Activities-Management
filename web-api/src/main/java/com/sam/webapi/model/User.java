@@ -27,6 +27,7 @@ public class User {
 	@NotEmpty
 	private String active;
 	private RegisteredUser registeredUserById;
+	private AdminUser adminUserById;
 
 	public User() { }
 
@@ -136,5 +137,14 @@ public class User {
 
 	public void setRegisteredUserById(RegisteredUser registeredUserById) {
 		this.registeredUserById = registeredUserById;
+	}
+
+	@OneToOne(mappedBy = "userById")
+	public AdminUser getAdminUserById() {
+		return adminUserById;
+	}
+
+	public void setAdminUserById(AdminUser adminUserById) {
+		this.adminUserById = adminUserById;
 	}
 }
