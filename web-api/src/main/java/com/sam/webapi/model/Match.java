@@ -1,18 +1,30 @@
 package com.sam.webapi.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "MATCH", schema = "SAM")
 public class Match {
 	private int id;
 	private String type;
 	private String place;
 	private String date;
 	private String time;
+
+	public Match() {}
+
+	public Match(int id,
+				 String type,
+				 String place,
+				 String date,
+				 String time) {
+		this.id = id;
+		this.type = type;
+		this.place = place;
+		this.date = date;
+		this.time = time;
+	}
 
 	@Id
 	@Column(name = "ID")

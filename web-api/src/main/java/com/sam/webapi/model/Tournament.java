@@ -4,12 +4,27 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Tournament", schema = "SAM")
+@Table(name = "TOURNAMENT", schema = "SAM")
 public class Tournament {
 	private int id;
 	private String type;
 	private String name;
 	private String description;
+	private int adminUserId;
+
+	public Tournament() { }
+
+	public Tournament(int id,
+					  String type,
+					  String name,
+					  String description,
+					  int adminUserId) {
+		this.id = id;
+		this.type = type;
+		this.name = name;
+		this.description = description;
+		this.adminUserId = adminUserId;
+	}
 
 	@Id
 	@Column(name = "ID", nullable = false)
@@ -49,6 +64,16 @@ public class Tournament {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Basic
+	@Column(name = "ADMIN_USER_ID", nullable = false)
+	public int getAdminUserId() {
+		return adminUserId;
+	}
+
+	public void setAdminUserId(int adminUserId) {
+		this.adminUserId = adminUserId;
 	}
 
 	@Override

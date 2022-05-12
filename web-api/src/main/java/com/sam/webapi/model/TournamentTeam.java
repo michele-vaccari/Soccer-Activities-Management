@@ -11,6 +11,13 @@ public class TournamentTeam {
 	private int tournamentId;
 	private Tournament tournamentByTournamentId;
 
+	public TournamentTeam() { }
+
+	public TournamentTeam(int teamId, int tournamentId) {
+		this.teamId = teamId;
+		this.tournamentId = tournamentId;
+	}
+
 	@Id
 	@Column(name = "TEAM_ID", nullable = false)
 	public int getTeamId() {

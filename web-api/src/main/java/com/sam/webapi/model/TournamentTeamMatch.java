@@ -15,6 +15,20 @@ public class TournamentTeamMatch {
 	private Match matchByMatchId;
 	private Tournament tournamentByTournamentId;
 
+	public TournamentTeamMatch() { }
+
+	public TournamentTeamMatch(int matchId,
+							   int teamId,
+							   int otherTeamId,
+							   int tournamentId,
+							   String matchName) {
+		this.matchId = matchId;
+		this.teamId = teamId;
+		this.otherTeamId = otherTeamId;
+		this.tournamentId = tournamentId;
+		this.matchName = matchName;
+	}
+
 	@Id
 	@Column(name = "MATCH_ID", nullable = false)
 	public int getMatchId() {

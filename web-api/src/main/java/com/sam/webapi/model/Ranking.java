@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "RANKING", schema = "SAM")
 @IdClass(RankingPK.class)
 public class Ranking {
 	private int tournamentId;
@@ -16,6 +17,20 @@ public class Ranking {
 	private Integer goalsMade;
 	private Integer goalsSuffered;
 	private Tournament tournamentByTournamentId;
+
+	public Ranking() { }
+
+	public Ranking(int tournamentId, int teamId, Integer score, Integer wonMatches, Integer lostMatches, Integer tiedMatches, Integer playedMatches, Integer goalsMade, Integer goalsSuffered) {
+		this.tournamentId = tournamentId;
+		this.teamId = teamId;
+		this.score = score;
+		this.wonMatches = wonMatches;
+		this.lostMatches = lostMatches;
+		this.tiedMatches = tiedMatches;
+		this.playedMatches = playedMatches;
+		this.goalsMade = goalsMade;
+		this.goalsSuffered = goalsSuffered;
+	}
 
 	@Id
 	@Column(name = "TOURNAMENT_ID", nullable = false)
