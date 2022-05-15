@@ -36,13 +36,34 @@ public class TournamentController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the tournaments",
 						 content = { @Content(mediaType = "application/json",
-						 array = @ArraySchema(schema = @Schema(implementation = AdminDto.class))) })
+						 array = @ArraySchema(schema = @Schema(implementation = ShortTournamentDto.class))) })
 	})
 	@RequestMapping(value = "/tournaments",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public Iterable<ShortTournamentDto> getTournaments() {
 		return tournamentService.getTournaments();
+	}
+
+	@Operation(summary = "Get the list of tournaments by team id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the tournaments",
+					content = {@Content(mediaType = "application/json",
+							array = @ArraySchema(schema = @Schema(implementation = ShortTournamentDto.class)))}),
+			@ApiResponse(responseCode = "404", description = "Team not found", content = @Content(schema = @Schema(hidden = true)))
+	})
+	@RequestMapping(value = "/tournaments/teams/{id}",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	@ResponseStatus(HttpStatus.OK)
+	public Iterable<ShortTournamentDto> getTournamentsByTeamId(@PathVariable Integer id) {
+
+		try {
+			return tournamentService.getTournaments(id);
+		}
+		catch (TeamNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@Operation(summary = "Get a tournament by its id")

@@ -1,18 +1,13 @@
 package com.sam.webapi.service;
 
-import com.google.common.math.IntMath;
 import com.sam.webapi.dataaccess.*;
 import com.sam.webapi.dto.*;
 import com.sam.webapi.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.Console;
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -58,11 +53,27 @@ public class TournamentServiceImpl implements TournamentService {
 
 	@Override
 	@Transactional
+	public Iterable<ShortTournamentDto> getTournaments(Integer teamId) {
+		var team = teamRepository.findById(teamId);
+		if (team.isEmpty())
+			throw new TeamNotFoundException();
+
+		var tournamentTeams = tournamentTeamRepository.findAllByTeamId(teamId);
+
+		var shortTournamentsDto =  new ArrayList<ShortTournamentDto>();
+		tournamentTeams.forEach(tournamentTeam -> shortTournamentsDto.add(convertEntityToShortDto(tournamentRepository.findById(tournamentTeam.getTournamentId()).get())));
+
+		return shortTournamentsDto;
+	}
+
+	@Override
+	@Transactional
 	public TournamentDto getTournament(Integer id) {
 
 		var tournament = tournamentRepository.findById(id);
 
-		// check if tournament is not found
+		if (tournament.isEmpty())
+			throw new TournamentNotFoundException();
 
 		return  convertEntityToDto(tournament.get());
 	}
