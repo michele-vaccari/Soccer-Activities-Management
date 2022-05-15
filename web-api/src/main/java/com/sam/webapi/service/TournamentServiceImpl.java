@@ -50,14 +50,13 @@ public class TournamentServiceImpl implements TournamentService {
 	@Override
 	@Transactional
 	public Iterable<ShortTournamentDto> getTournaments() {
-/*
-		var admins = adminUserRepository.findAll();
 
-		var adminsDto = new ArrayList<AdminDto>();
-		admins.forEach(admin -> adminsDto.add(convertEntityToDto(admin)));
+		var tournaments = tournamentRepository.findAll();
 
-		return adminsDto;*/
-		return new ArrayList<ShortTournamentDto>();
+		var shortTournamentsDto =  new ArrayList<ShortTournamentDto>();
+		tournaments.forEach(tournament -> shortTournamentsDto.add(convertEntityToDto(tournament)));
+
+		return shortTournamentsDto;
 	}
 
 	@Override
@@ -73,15 +72,11 @@ public class TournamentServiceImpl implements TournamentService {
 		return new TournamentDto();
 	}
 
-	private AdminDto convertEntityToDto(AdminUser admin) {
-		var user =  admin.getUserById();
-		return new AdminDto(
-				user.getId(),
-				user.getName(),
-				user.getSurname(),
-				user.getEmail(),
-				null,
-				user.getActive()
+	private ShortTournamentDto convertEntityToDto(Tournament tournament) {
+		return new ShortTournamentDto(
+				tournament.getId(),
+				tournament.getName(),
+				tournament.getType().equals("R") ? "RoundRobin" : "SingleElimination"
 		);
 	}
 
