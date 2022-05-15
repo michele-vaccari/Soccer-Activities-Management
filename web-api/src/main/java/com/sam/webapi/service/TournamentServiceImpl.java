@@ -2,10 +2,7 @@ package com.sam.webapi.service;
 
 import com.google.common.math.IntMath;
 import com.sam.webapi.dataaccess.*;
-import com.sam.webapi.dto.AdminDto;
-import com.sam.webapi.dto.MatchDto;
-import com.sam.webapi.dto.ShortTournamentDto;
-import com.sam.webapi.dto.TournamentDto;
+import com.sam.webapi.dto.*;
 import com.sam.webapi.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -54,7 +51,7 @@ public class TournamentServiceImpl implements TournamentService {
 		var tournaments = tournamentRepository.findAll();
 
 		var shortTournamentsDto =  new ArrayList<ShortTournamentDto>();
-		tournaments.forEach(tournament -> shortTournamentsDto.add(convertEntityToDto(tournament)));
+		tournaments.forEach(tournament -> shortTournamentsDto.add(convertEntityToShortDto(tournament)));
 
 		return shortTournamentsDto;
 	}
@@ -62,17 +59,78 @@ public class TournamentServiceImpl implements TournamentService {
 	@Override
 	@Transactional
 	public TournamentDto getTournament(Integer id) {
-/*
-		var admin = adminUserRepository.findById(id);
 
-		if (admin.isEmpty())
-			throw new TournamentNotFoundException();
+		var tournament = tournamentRepository.findById(id);
 
-		return convertEntityToDto(admin.get());*/
-		return new TournamentDto();
+		// check if tournament is not found
+
+		return  convertEntityToDto(tournament.get());
 	}
 
-	private ShortTournamentDto convertEntityToDto(Tournament tournament) {
+	private TournamentDto convertEntityToDto(Tournament tournament) {
+
+		var tournamentTeamMatches = tournament.getTournamentTeamMatchesById();
+		var matchesDto = new ArrayList<MatchDto>();
+
+		for (var tournamentTeamMatch : tournamentTeamMatches) {
+			var match = tournamentTeamMatch.getMatchByMatchId();
+			var team = teamRepository.getById(tournamentTeamMatch.getTeamId()).get();
+			var otherTeam = teamRepository.getById(tournamentTeamMatch.getOtherTeamId()).get();
+			matchesDto.add(new MatchDto(
+					match.getId(),
+					tournamentTeamMatch.getMatchName(),
+					team.getName(),
+					otherTeam.getName()
+			));
+		}
+
+		var rankingLines = tournament.getRankingsById();
+		rankingLines.sort((o1, o2) -> o1.getScore().compareTo(o2.getScore()));
+		var rankingLinesDto =  new ArrayList<RankingLineDto>();
+		var position = 0;
+		for (var rankingLine : rankingLines) {
+			var team = teamRepository.getById(rankingLine.getTeamId());
+			rankingLinesDto.add(createRankingLineDto(tournament.getType(), ++position, team.get().getName(), rankingLine));
+		}
+
+		var matches = new ArrayList<MatchDto>();
+
+		return new TournamentDto(
+				tournament.getId(),
+				tournament.getName(),
+				tournament.getType(),
+				tournament.getDescription(),
+				matchesDto,
+				rankingLinesDto);
+	}
+
+	private RankingLineDto createRankingLineDto(String tournamentType, Integer position, String teamName, Ranking ranking) {
+
+		if (tournamentType.equals("R"))
+			return new RankingLineDto(
+					position,
+					teamName,
+					ranking.getScore(),
+					ranking.getPlayedMatches(),
+					ranking.getWonMatches(),
+					ranking.getLostMatches(),
+					ranking.getTiedMatches(),
+					ranking.getGoalsMade(),
+					ranking.getGoalsSuffered()
+			);
+		else
+			return new RankingLineDto(
+					position,
+					teamName,
+					ranking.getPlayedMatches(),
+					ranking.getWonMatches(),
+					ranking.getLostMatches(),
+					ranking.getGoalsMade(),
+					ranking.getGoalsSuffered()
+			);
+	}
+
+	private ShortTournamentDto convertEntityToShortDto(Tournament tournament) {
 		return new ShortTournamentDto(
 				tournament.getId(),
 				tournament.getName(),

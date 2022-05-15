@@ -29,6 +29,20 @@ public class TournamentDto {
 						 String name,
 						 String type,
 						 String description,
+						 List<MatchDto> matches,
+						 List<RankingLineDto> ranking) {
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.description = description;
+		this.matches = matches;
+		this.ranking = ranking;
+	}
+
+	public TournamentDto(int id,
+						 String name,
+						 String type,
+						 String description,
 						 List<Integer> teamIds,
 						 List<MatchDto> matches,
 						 List<RankingLineDto> ranking) {

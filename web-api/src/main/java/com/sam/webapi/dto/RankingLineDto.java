@@ -8,40 +8,61 @@ import java.util.Objects;
 public class RankingLineDto {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int position;
+	private Integer position;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int score;
+	private String teamName;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int playedMatches;
+	private Integer score;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int wonMatches;
+	private Integer playedMatches;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int lostMatches;
+	private Integer wonMatches;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int tiedMatches;
+	private Integer lostMatches;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int goalsMade;
+	private Integer tiedMatches;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private int goalsSuffered;
+	private Integer goalsMade;
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Integer goalsSuffered;
 
 	public RankingLineDto() { }
 
-	public RankingLineDto(int position,
-						  int score,
-						  int playedMatches,
-						  int wonMatches,
-						  int lostMatches,
-						  int tiedMatches,
-						  int goalsMade,
-						  int goalsSuffered) {
+	public RankingLineDto(Integer position,
+						  String teamName,
+						  Integer playedMatches,
+						  Integer wonMatches,
+						  Integer lostMatches,
+						  Integer goalsMade,
+						  Integer goalsSuffered) {
 		this.position = position;
+		this.teamName = teamName;
+		this.playedMatches = playedMatches;
+		this.wonMatches = wonMatches;
+		this.lostMatches = lostMatches;
+		this.goalsMade = goalsMade;
+		this.goalsSuffered = goalsSuffered;
+	}
+
+	public RankingLineDto(Integer position,
+						  String teamName,
+						  Integer score,
+						  Integer playedMatches,
+						  Integer wonMatches,
+						  Integer lostMatches,
+						  Integer tiedMatches,
+						  Integer goalsMade,
+						  Integer goalsSuffered) {
+		this.position = position;
+		this.teamName = teamName;
 		this.score = score;
 		this.playedMatches = playedMatches;
 		this.wonMatches = wonMatches;
@@ -51,67 +72,75 @@ public class RankingLineDto {
 		this.goalsSuffered = goalsSuffered;
 	}
 
-	public int getPosition() {
+	public Integer getPosition() {
 		return position;
 	}
 
-	public void setPosition(int position) {
+	public void setPosition(Integer position) {
 		this.position = position;
 	}
 
-	public int getScore() {
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+
+	public Integer getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(Integer score) {
 		this.score = score;
 	}
 
-	public int getPlayedMatches() {
+	public Integer getPlayedMatches() {
 		return playedMatches;
 	}
 
-	public void setPlayedMatches(int playedMatches) {
+	public void setPlayedMatches(Integer playedMatches) {
 		this.playedMatches = playedMatches;
 	}
 
-	public int getWonMatches() {
+	public Integer getWonMatches() {
 		return wonMatches;
 	}
 
-	public void setWonMatches(int wonMatches) {
+	public void setWonMatches(Integer wonMatches) {
 		this.wonMatches = wonMatches;
 	}
 
-	public int getLostMatches() {
+	public Integer getLostMatches() {
 		return lostMatches;
 	}
 
-	public void setLostMatches(int lostMatches) {
+	public void setLostMatches(Integer lostMatches) {
 		this.lostMatches = lostMatches;
 	}
 
-	public int getTiedMatches() {
+	public Integer getTiedMatches() {
 		return tiedMatches;
 	}
 
-	public void setTiedMatches(int tiedMatches) {
+	public void setTiedMatches(Integer tiedMatches) {
 		this.tiedMatches = tiedMatches;
 	}
 
-	public int getGoalsMade() {
+	public Integer getGoalsMade() {
 		return goalsMade;
 	}
 
-	public void setGoalsMade(int goalsMade) {
+	public void setGoalsMade(Integer goalsMade) {
 		this.goalsMade = goalsMade;
 	}
 
-	public int getGoalsSuffered() {
+	public Integer getGoalsSuffered() {
 		return goalsSuffered;
 	}
 
-	public void setGoalsSuffered(int goalsSuffered) {
+	public void setGoalsSuffered(Integer goalsSuffered) {
 		this.goalsSuffered = goalsSuffered;
 	}
 
@@ -120,11 +149,11 @@ public class RankingLineDto {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		RankingLineDto that = (RankingLineDto) o;
-		return position == that.position && score == that.score && playedMatches == that.playedMatches && wonMatches == that.wonMatches && lostMatches == that.lostMatches && tiedMatches == that.tiedMatches && goalsMade == that.goalsMade && goalsSuffered == that.goalsSuffered;
+		return Objects.equals(position, that.position) && Objects.equals(teamName, that.teamName) && Objects.equals(score, that.score) && Objects.equals(playedMatches, that.playedMatches) && Objects.equals(wonMatches, that.wonMatches) && Objects.equals(lostMatches, that.lostMatches) && Objects.equals(tiedMatches, that.tiedMatches) && Objects.equals(goalsMade, that.goalsMade) && Objects.equals(goalsSuffered, that.goalsSuffered);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(position, score, playedMatches, wonMatches, lostMatches, tiedMatches, goalsMade, goalsSuffered);
+		return Objects.hash(position, teamName, score, playedMatches, wonMatches, lostMatches, tiedMatches, goalsMade, goalsSuffered);
 	}
 }

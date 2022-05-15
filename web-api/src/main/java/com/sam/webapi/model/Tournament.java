@@ -1,6 +1,7 @@
 package com.sam.webapi.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,6 +12,8 @@ public class Tournament {
 	private String name;
 	private String description;
 	private int adminUserId;
+	private List<Ranking> rankingsById;
+	private List<TournamentTeamMatch> tournamentTeamMatchesById;
 
 	public Tournament() { }
 
@@ -87,5 +90,23 @@ public class Tournament {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, type, name, description);
+	}
+
+	@OneToMany(mappedBy = "tournamentByTournamentId")
+	public List<Ranking> getRankingsById() {
+		return rankingsById;
+	}
+
+	public void setRankingsById(List<Ranking> rankingsById) {
+		this.rankingsById = rankingsById;
+	}
+
+	@OneToMany(mappedBy = "tournamentByTournamentId")
+	public List<TournamentTeamMatch> getTournamentTeamMatchesById() {
+		return tournamentTeamMatchesById;
+	}
+
+	public void setTournamentTeamMatchesById(List<TournamentTeamMatch> tournamentTeamMatchesById) {
+		this.tournamentTeamMatchesById = tournamentTeamMatchesById;
 	}
 }
