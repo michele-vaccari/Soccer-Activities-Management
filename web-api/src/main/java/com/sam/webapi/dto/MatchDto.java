@@ -8,12 +8,25 @@ import java.util.Objects;
 public class MatchDto {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private int id;
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String name;
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String team;
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String otherTeam;
+
+	@Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private String date;
+	@Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private String place;
+	@Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private Integer refereeId;
 
 	public MatchDto() { }
 
@@ -57,6 +70,30 @@ public class MatchDto {
 
 	public void setOtherTeam(String otherTeam) {
 		this.otherTeam = otherTeam;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
+	public Integer getRefereeId() {
+		return refereeId;
+	}
+
+	public void setRefereeId(Integer refereeId) {
+		this.refereeId = refereeId;
 	}
 
 	@Override

@@ -13,6 +13,16 @@ public class Report {
 	private String matchEndTime;
 	private String result;
 
+	public Report() { }
+
+	public Report(int id,
+				  int matchId,
+				  int refereeId) {
+		this.id = id;
+		this.matchId = matchId;
+		this.refereeId = refereeId;
+	}
+
 	@Id
 	@Column(name = "ID", nullable = false)
 	public int getId() {
