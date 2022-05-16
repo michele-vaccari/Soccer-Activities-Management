@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS SAM.Player (
 CREATE TABLE IF NOT EXISTS SAM.Player_Report (
 	Report_id INT CHECK (Report_id > 0) NOT NULL,
 	Player_id INT CHECK (Player_id > 0) NOT NULL,
-	Goal INT CHECK (Goal > 0) DEFAULT 0,
-    Admonitions INT CHECK (Admonitions > 0) DEFAULT 0,
+	Goal INT CHECK (Goal >= 0) DEFAULT 0,
+    Admonitions INT CHECK (Admonitions >= 0) DEFAULT 0,
 	Ejection VARCHAR(1),
 	PRIMARY KEY (Report_id, Player_id),
 	FOREIGN KEY (Report_id) REFERENCES SAM.Report(Id),
