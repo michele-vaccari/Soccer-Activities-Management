@@ -114,11 +114,11 @@ public class AdminController {
 	@ResponseStatus(HttpStatus.OK)
 	public void updateAdmin(@RequestHeader("Authorization") String authorization,
 							@PathVariable Integer id,
-							@RequestBody AdminDto referee) {
+							@RequestBody AdminDto admin) {
 		var adminEmail = jwtService.getEmail(authorization);
 
 		try {
-			adminService.updateAdmin(id, referee, adminEmail);
+			adminService.updateAdmin(id, admin, adminEmail);
 		}
 		catch (UnauthorizedException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
