@@ -12,6 +12,7 @@ public class Report {
 	private String matchStartTime;
 	private String matchEndTime;
 	private String result;
+	private Match matchByMatchId;
 
 	public Report() { }
 
@@ -94,5 +95,15 @@ public class Report {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, matchId, refereeId, matchStartTime, matchEndTime, result);
+	}
+
+	@OneToOne
+	@JoinColumn(name = "MATCH_ID", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+	public Match getMatchByMatchId() {
+		return matchByMatchId;
+	}
+
+	public void setMatchByMatchId(Match matchByMatchId) {
+		this.matchByMatchId = matchByMatchId;
 	}
 }

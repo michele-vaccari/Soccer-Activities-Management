@@ -78,13 +78,21 @@ public class TournamentServiceImpl implements TournamentService {
 
 		for (var tournamentTeamMatch : tournamentTeamMatches) {
 			var match = tournamentTeamMatch.getMatchByMatchId();
-			var team = teamRepository.getById(tournamentTeamMatch.getTeamId()).get();
-			var otherTeam = teamRepository.getById(tournamentTeamMatch.getOtherTeamId()).get();
+			var teamId = tournamentTeamMatch.getTeamId();
+			var team = teamRepository.getById(teamId).get();
+			var otherTeamId = tournamentTeamMatch.getOtherTeamId();
+			var otherTeam = teamRepository.getById(otherTeamId).get();
+			var report = match.getReportsById();
 			matchesDto.add(new MatchDto(
 					match.getId(),
 					tournamentTeamMatch.getMatchName(),
+					teamId,
+					otherTeamId,
 					team.getName(),
-					otherTeam.getName()
+					otherTeam.getName(),
+					report == null ? null : report.getId(),
+					false, //teamLineupSubmitted
+					false //otherTeamLineupSubmitted
 			));
 		}
 

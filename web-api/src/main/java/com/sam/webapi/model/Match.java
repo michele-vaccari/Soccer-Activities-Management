@@ -11,6 +11,7 @@ public class Match {
 	private String place;
 	private String date;
 	private String time;
+	private Report reportsById;
 
 	public Match() {}
 
@@ -87,5 +88,14 @@ public class Match {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, type, place, date, time);
+	}
+
+	@OneToOne(mappedBy = "matchByMatchId")
+	public Report getReportsById() {
+		return reportsById;
+	}
+
+	public void setReportsById(Report reportsById) {
+		this.reportsById = reportsById;
 	}
 }
