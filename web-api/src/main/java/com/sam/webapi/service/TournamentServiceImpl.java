@@ -85,6 +85,7 @@ public class TournamentServiceImpl implements TournamentService {
 			var report = match.getReportsById();
 			matchesDto.add(new MatchDto(
 					match.getId(),
+					null,
 					tournamentTeamMatch.getMatchName(),
 					teamId,
 					otherTeamId,

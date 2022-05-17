@@ -5,6 +5,7 @@ import com.sam.webapi.dataaccess.PlayerRepository;
 import com.sam.webapi.dataaccess.TeamRepository;
 import com.sam.webapi.dataaccess.TournamentRepository;
 import com.sam.webapi.dataaccess.TournamentTeamRepository;
+import com.sam.webapi.dto.MatchDto;
 import com.sam.webapi.dto.PlayerDto;
 import com.sam.webapi.dto.ShortTournamentDto;
 import com.sam.webapi.dto.TeamDto;
@@ -99,6 +100,54 @@ public class TeamServiceImpl implements TeamService {
 		tournamentTeams.forEach(tournamentTeam -> shortTournamentsDto.add(convertEntityToShortDto(tournamentRepository.findById(tournamentTeam.getTournamentId()).get())));
 
 		return shortTournamentsDto;
+	}
+
+	@Override
+	@Transactional
+	public Iterable<MatchDto> getMatchesOfTeam(Integer id, String userEmail) {
+		var team = teamRepository.findById(id);
+		if (team.isEmpty())
+			throw new TeamNotFoundException();
+
+		var teamManagerEmail = team.get()
+				.getTeamManagerByTeamManagerId()
+				.getRegisteredUserById()
+				.getUserById()
+				.getEmail();
+		if (!teamManagerEmail.equals(userEmail))
+			throw new UnauthorizedException();
+
+		var tournamentTeams = tournamentTeamRepository.findAllByTeamId(id);
+
+		var matchesDto =  new ArrayList<MatchDto>();
+		for (var tournamentTeam : tournamentTeams) {
+			var tournament = tournamentTeam.getTournamentByTournamentId();
+			var tournamentTeamMatches = tournament.getTournamentTeamMatchesById();
+			for (var tournamentTeamMatch : tournamentTeamMatches) {
+				var teamId = tournamentTeamMatch.getTeamId();
+				var otherTeamId = tournamentTeamMatch.getOtherTeamId();
+				if (teamId == id || otherTeamId == id) {
+					var teamName = teamRepository.getById(teamId).get().getName();
+					var otherTeamName = teamRepository.getById(otherTeamId).get().getName();
+					var match = tournamentTeamMatch.getMatchByMatchId();
+					var report = match.getReportsById();
+					matchesDto.add(new MatchDto(
+							tournamentTeamMatch.getMatchId(),
+							tournament.getName(),
+							tournamentTeamMatch.getMatchName(),
+							tournamentTeamMatch.getTeamId(),
+							tournamentTeamMatch.getOtherTeamId(),
+							teamName,
+							otherTeamName,
+							report == null ? null : report.getId(),
+							false, //teamLineupSubmitted
+							false //otherTeamLineupSubmitted
+					));
+				}
+			}
+		}
+
+		return matchesDto;
 	}
 
 	@Override

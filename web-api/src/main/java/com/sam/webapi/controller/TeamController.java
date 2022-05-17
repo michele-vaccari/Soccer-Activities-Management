@@ -1,5 +1,6 @@
 package com.sam.webapi.controller;
 
+import com.sam.webapi.dto.MatchDto;
 import com.sam.webapi.dto.PlayerDto;
 import com.sam.webapi.dto.ShortTournamentDto;
 import com.sam.webapi.dto.TeamDto;
@@ -102,13 +103,39 @@ public class TeamController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Iterable<ShortTournamentDto> getTournamentsByTeamId(@PathVariable Integer id) {
+	public Iterable<ShortTournamentDto> getTournaments(@PathVariable Integer id) {
 
 		try {
 			return teamService.getTournamentsOfTeam(id);
 		}
 		catch (TeamNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@Operation(summary = "Get the list of matches")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the matches",
+					content = {@Content(mediaType = "application/json",
+							array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))}),
+			@ApiResponse(responseCode = "404", description = "Team not found", content = @Content(schema = @Schema(hidden = true)))
+	})
+	@RequestMapping(value = "/teams/{id}/matches",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	@ResponseStatus(HttpStatus.OK)
+	public Iterable<MatchDto> getMatches(@RequestHeader("Authorization") String authorization,
+										 @PathVariable Integer id) {
+		var userEmail = jwtService.getEmail(authorization);
+
+		try {
+			return teamService.getMatchesOfTeam(id, userEmail);
+		}
+		catch (TeamNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized", ex);
 		}
 	}
 

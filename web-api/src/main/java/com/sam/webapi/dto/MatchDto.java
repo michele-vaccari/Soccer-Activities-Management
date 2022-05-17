@@ -10,7 +10,10 @@ public class MatchDto {
 	private int id;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private String name;
+	private String tournamentName;
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private String matchName;
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Integer teamId;
@@ -44,7 +47,8 @@ public class MatchDto {
 	public MatchDto() { }
 
 	public MatchDto(int id,
-					String name,
+					String tournamentName,
+					String matchName,
 					Integer teamId,
 					Integer otherTeamId,
 					String teamName,
@@ -53,7 +57,8 @@ public class MatchDto {
 					boolean teamLineupSubmitted,
 					boolean otherTeamLineupSubmitted) {
 		this.id = id;
-		this.name = name;
+		this.tournamentName = tournamentName;
+		this.matchName = matchName;
 		this.teamId = teamId;
 		this.otherTeamId = otherTeamId;
 		this.teamName = teamName;
@@ -71,12 +76,20 @@ public class MatchDto {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getTournamentName() {
+		return tournamentName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTournamentName(String tournamentName) {
+		this.tournamentName = tournamentName;
+	}
+
+	public String getMatchName() {
+		return matchName;
+	}
+
+	public void setMatchName(String name) {
+		this.matchName = name;
 	}
 
 	public void setDate(String date) {
@@ -164,11 +177,11 @@ public class MatchDto {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		MatchDto matchDto = (MatchDto) o;
-		return id == matchDto.id && teamLineupSubmitted == matchDto.teamLineupSubmitted && otherTeamLineupSubmitted == matchDto.otherTeamLineupSubmitted && Objects.equals(name, matchDto.name) && Objects.equals(teamId, matchDto.teamId) && Objects.equals(otherTeamId, matchDto.otherTeamId) && Objects.equals(teamName, matchDto.teamName) && Objects.equals(otherTeamName, matchDto.otherTeamName) && Objects.equals(reportId, matchDto.reportId) && Objects.equals(date, matchDto.date) && Objects.equals(place, matchDto.place) && Objects.equals(refereeId, matchDto.refereeId);
+		return id == matchDto.id && teamLineupSubmitted == matchDto.teamLineupSubmitted && otherTeamLineupSubmitted == matchDto.otherTeamLineupSubmitted && Objects.equals(tournamentName, matchDto.tournamentName) && Objects.equals(matchName, matchDto.matchName) && Objects.equals(teamId, matchDto.teamId) && Objects.equals(otherTeamId, matchDto.otherTeamId) && Objects.equals(teamName, matchDto.teamName) && Objects.equals(otherTeamName, matchDto.otherTeamName) && Objects.equals(reportId, matchDto.reportId) && Objects.equals(date, matchDto.date) && Objects.equals(place, matchDto.place) && Objects.equals(refereeId, matchDto.refereeId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, teamId, otherTeamId, teamName, otherTeamName, reportId, teamLineupSubmitted, otherTeamLineupSubmitted, date, place, refereeId);
+		return Objects.hash(id, tournamentName, matchName, teamId, otherTeamId, teamName, otherTeamName, reportId, teamLineupSubmitted, otherTeamLineupSubmitted, date, place, refereeId);
 	}
 }
