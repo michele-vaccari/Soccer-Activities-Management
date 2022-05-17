@@ -28,6 +28,8 @@ class TeamServiceImplTest {
 	void whenGetTeams_ThenOperationIsSuccessful() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team1 = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		var team2 = new Team(2, 2, "name2", "description2", "headquarters2", "sponsorName2");
 		List<Team> teams = new ArrayList<>(
@@ -42,7 +44,7 @@ class TeamServiceImplTest {
 						new TeamDto(1, "name1", "description1", "headquarters1", "sponsorName1"),
 						new TeamDto(2, "name2", "description2", "headquarters2", "sponsorName2")
 				));
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		teamServiceImpl.getTeams();
 
@@ -55,11 +57,13 @@ class TeamServiceImplTest {
 	void whenGetTeam_ThenOperationIsSuccessful() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.of(team));
 
 		var expectedResult = new TeamDto(1, "name1", "description1", "headquarters1", "sponsorName1");
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		teamServiceImpl.getTeam(1);
 
@@ -72,8 +76,10 @@ class TeamServiceImplTest {
 	void whenGetTeam_ThenThrowTeamNotFoundException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.empty());
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		Assertions.assertThrows(TeamNotFoundException.class, ()-> teamServiceImpl.getTeam(1));
 		Mockito.verify(teamRepository, times(1)).findById(1);
@@ -84,6 +90,8 @@ class TeamServiceImplTest {
 	void whenUpdateTeams_ThenOperationIsSuccessful() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.of(team));
 		var teamManager = new TeamManager(1);
@@ -94,7 +102,7 @@ class TeamServiceImplTest {
 		registeredUser.setUserById(user);
 		var teamDto = new TeamDto(1, "name", "description", "headquarters", "sponsorName");
 		var updatedTeam = new Team(1, 1, "name", "description", "headquarters", "sponsorName");
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		teamServiceImpl.updateTeam(1, "email", teamDto);
 
@@ -107,8 +115,10 @@ class TeamServiceImplTest {
 	void whenUpdateTeams_ThenThrowTeamNotFoundException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.empty());
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 		var teamDto = new TeamDto(1, "name", "description", "headquarters", "sponsorName");
 
 		Assertions.assertThrows(TeamNotFoundException.class, ()-> teamServiceImpl.updateTeam(1, "email", teamDto));
@@ -120,6 +130,8 @@ class TeamServiceImplTest {
 	void whenUpdateTeams_ThenThrowUnauthorizedException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.of(team));
 		var teamManager = new TeamManager(1);
@@ -129,7 +141,7 @@ class TeamServiceImplTest {
 		var user = new User(1, "TeamManager", "name", "surname", "email@sam.com", "password", "Y");
 		registeredUser.setUserById(user);
 		var teamDto = new TeamDto(1, "name", "description", "headquarters", "sponsorName");
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		Assertions.assertThrows(UnauthorizedException.class, ()-> teamServiceImpl.updateTeam(1, "email", teamDto));
 		Mockito.verify(teamRepository, times(1)).findById(1);
@@ -140,6 +152,8 @@ class TeamServiceImplTest {
 	void whenGetPlayersOfTeam_ThenOperationIsSuccessful() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.of(team));
 		var player1 = new Player( 1, 2, "Y",10, "role", "name", "surname", "01-01-1970", "Italian","description", 0,0,0);
@@ -158,7 +172,7 @@ class TeamServiceImplTest {
 						playerDto1,
 						playerDto2
 				));
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		teamServiceImpl.getPlayersOfTeam(1);
 
@@ -171,8 +185,10 @@ class TeamServiceImplTest {
 	void whenGetPlayersOfTeam_ThenThrowTeamNotFoundException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.empty());
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		Assertions.assertThrows(TeamNotFoundException.class, ()-> teamServiceImpl.getPlayersOfTeam(1));
 		Mockito.verify(teamRepository, times(1)).findById(1);
@@ -183,6 +199,8 @@ class TeamServiceImplTest {
 	void whenCreatePlayerOfTeam_ThenOperationIsSuccessful() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		var teamManager = new TeamManager(1);
 		team.setTeamManagerByTeamManagerId(teamManager);
@@ -201,7 +219,7 @@ class TeamServiceImplTest {
 		Mockito.when(playerRepository.findByTeamIdAndActive(1, "Y")).thenReturn(players);
 		Mockito.when(playerRepository.getMaxId()).thenReturn(2);
 		var playerDto = new PlayerDto( 0, 1, "Y",10, "role", "name", "surname", "01-01-1970", "Italian","description", 0,0,0);
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 		teamServiceImpl.createPlayerOfTeam(1, "email@sam.com", playerDto);
 
 		Mockito.verify(teamRepository, times(1)).findById(1);
@@ -217,6 +235,8 @@ class TeamServiceImplTest {
 	void whenCreatePlayerOfTeam_ThenThrowBadRequestException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		var teamManager = new TeamManager(1);
 		team.setTeamManagerByTeamManagerId(teamManager);
@@ -235,7 +255,7 @@ class TeamServiceImplTest {
 		Mockito.when(playerRepository.findByTeamIdAndActive(1, "Y")).thenReturn(players);
 		Mockito.when(playerRepository.getMaxId()).thenReturn(2);
 		var playerDto = new PlayerDto( 0, 1, "Y",-1, "role", "name", "surname", "01-01-1970", "Italian","description", 0,0,0);
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		Assertions.assertThrows(BadRequestException.class, ()-> teamServiceImpl.createPlayerOfTeam(1, "email@sam.com", playerDto));
 	}
@@ -245,8 +265,10 @@ class TeamServiceImplTest {
 	void whenCreatePlayerOfTeam_ThenThrowTeamNotFoundException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		Mockito.when(teamRepository.findById(1)).thenReturn(Optional.empty());
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		var playerDto = new PlayerDto( 0, 1, "Y",10, "role", "name", "surname", "01-01-1970", "Italian","description", 0,0,0);
 		Assertions.assertThrows(TeamNotFoundException.class, ()-> teamServiceImpl.createPlayerOfTeam(1, "email@sam.com", playerDto));
@@ -258,6 +280,8 @@ class TeamServiceImplTest {
 	void whenCreatePlayerOfTeam_ThenThrowUnauthorizedException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		var teamManager = new TeamManager(1);
 		team.setTeamManagerByTeamManagerId(teamManager);
@@ -276,7 +300,7 @@ class TeamServiceImplTest {
 		Mockito.when(playerRepository.findByTeamIdAndActive(1, "Y")).thenReturn(players);
 		Mockito.when(playerRepository.getMaxId()).thenReturn(2);
 		var playerDto = new PlayerDto( 0, 1, "Y",10, "role", "name", "surname", "01-01-1970", "Italian","description", 0,0,0);
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		Assertions.assertThrows(UnauthorizedException.class, ()-> teamServiceImpl.createPlayerOfTeam(1, "e@sam.com", playerDto));
 		Mockito.verify(teamRepository, times(1)).findById(1);
@@ -287,6 +311,8 @@ class TeamServiceImplTest {
 	void whenCreatePlayerOfTeam_ThenThrowMaxPlayersInTeamException() {
 		var teamRepository = Mockito.mock(TeamRepository.class);
 		var playerRepository = Mockito.mock(PlayerRepository.class);
+		var tournamentTeamRepository = Mockito.mock(TournamentTeamRepository.class);
+		var tournamentRepository = Mockito.mock(TournamentRepository.class);
 		var team = new Team(1, 1, "name1", "description1", "headquarters1", "sponsorName1");
 		var teamManager = new TeamManager(1);
 		team.setTeamManagerByTeamManagerId(teamManager);
@@ -308,7 +334,7 @@ class TeamServiceImplTest {
 		Mockito.when(playerRepository.findByTeamIdAndActive(1, "Y")).thenReturn(players);
 		Mockito.when(playerRepository.getMaxId()).thenReturn(2);
 		var playerDto = new PlayerDto( 0, 1, "Y",10, "role", "name", "surname", "01-01-1970", "Italian","description", 0,0,0);
-		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository);
+		var teamServiceImpl = new TeamServiceImpl(teamRepository, playerRepository, tournamentTeamRepository, tournamentRepository);
 
 		Assertions.assertThrows(MaxPlayersInTeamException.class, ()-> teamServiceImpl.createPlayerOfTeam(1, "email@sam.com", playerDto));
 		Mockito.verify(teamRepository, times(1)).findById(1);

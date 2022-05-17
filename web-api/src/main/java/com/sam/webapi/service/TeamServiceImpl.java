@@ -3,10 +3,14 @@ package com.sam.webapi.service;
 import com.google.common.collect.Iterables;
 import com.sam.webapi.dataaccess.PlayerRepository;
 import com.sam.webapi.dataaccess.TeamRepository;
+import com.sam.webapi.dataaccess.TournamentRepository;
+import com.sam.webapi.dataaccess.TournamentTeamRepository;
 import com.sam.webapi.dto.PlayerDto;
+import com.sam.webapi.dto.ShortTournamentDto;
 import com.sam.webapi.dto.TeamDto;
 import com.sam.webapi.model.Player;
 import com.sam.webapi.model.Team;
+import com.sam.webapi.model.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +23,18 @@ public class TeamServiceImpl implements TeamService {
 	private static final int MAX_PLAYERS_IN_TEAM = 36;
 	private final TeamRepository teamRepository;
 	private final PlayerRepository playerRepository;
+	private final TournamentTeamRepository tournamentTeamRepository;
+	private final TournamentRepository tournamentRepository;
 
 	@Autowired
 	public TeamServiceImpl(TeamRepository teamRepository,
-						   PlayerRepository playerRepository) {
+						   PlayerRepository playerRepository,
+						   TournamentTeamRepository tournamentTeamRepository,
+						   TournamentRepository tournamentRepository) {
 		this.teamRepository = teamRepository;
 		this.playerRepository = playerRepository;
+		this.tournamentTeamRepository = tournamentTeamRepository;
+		this.tournamentRepository = tournamentRepository;
 	}
 
 	@Override
@@ -74,6 +84,21 @@ public class TeamServiceImpl implements TeamService {
 			team.get().setSponsorName(teamDto.getSponsorName());
 
 		teamRepository.save(team.get());
+	}
+
+	@Override
+	@Transactional
+	public Iterable<ShortTournamentDto> getTournamentsOfTeam(Integer teamId) {
+		var team = teamRepository.findById(teamId);
+		if (team.isEmpty())
+			throw new TeamNotFoundException();
+
+		var tournamentTeams = tournamentTeamRepository.findAllByTeamId(teamId);
+
+		var shortTournamentsDto =  new ArrayList<ShortTournamentDto>();
+		tournamentTeams.forEach(tournamentTeam -> shortTournamentsDto.add(convertEntityToShortDto(tournamentRepository.findById(tournamentTeam.getTournamentId()).get())));
+
+		return shortTournamentsDto;
 	}
 
 	@Override
@@ -141,6 +166,14 @@ public class TeamServiceImpl implements TeamService {
 				team.getDescription(),
 				team.getHeadquarters(),
 				team.getSponsorName()
+		);
+	}
+
+	private ShortTournamentDto convertEntityToShortDto(Tournament tournament) {
+		return new ShortTournamentDto(
+				tournament.getId(),
+				tournament.getName(),
+				tournament.getType().equals("R") ? "RoundRobin" : "SingleElimination"
 		);
 	}
 

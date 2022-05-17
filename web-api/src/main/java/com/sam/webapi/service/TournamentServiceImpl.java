@@ -53,21 +53,6 @@ public class TournamentServiceImpl implements TournamentService {
 
 	@Override
 	@Transactional
-	public Iterable<ShortTournamentDto> getTournaments(Integer teamId) {
-		var team = teamRepository.findById(teamId);
-		if (team.isEmpty())
-			throw new TeamNotFoundException();
-
-		var tournamentTeams = tournamentTeamRepository.findAllByTeamId(teamId);
-
-		var shortTournamentsDto =  new ArrayList<ShortTournamentDto>();
-		tournamentTeams.forEach(tournamentTeam -> shortTournamentsDto.add(convertEntityToShortDto(tournamentRepository.findById(tournamentTeam.getTournamentId()).get())));
-
-		return shortTournamentsDto;
-	}
-
-	@Override
-	@Transactional
 	public TournamentDto getTournament(Integer id) {
 
 		var tournament = tournamentRepository.findById(id);
@@ -76,6 +61,14 @@ public class TournamentServiceImpl implements TournamentService {
 			throw new TournamentNotFoundException();
 
 		return  convertEntityToDto(tournament.get());
+	}
+
+	private ShortTournamentDto convertEntityToShortDto(Tournament tournament) {
+		return new ShortTournamentDto(
+				tournament.getId(),
+				tournament.getName(),
+				tournament.getType().equals("R") ? "RoundRobin" : "SingleElimination"
+		);
 	}
 
 	private TournamentDto convertEntityToDto(Tournament tournament) {
@@ -139,14 +132,6 @@ public class TournamentServiceImpl implements TournamentService {
 					ranking.getGoalsMade(),
 					ranking.getGoalsSuffered()
 			);
-	}
-
-	private ShortTournamentDto convertEntityToShortDto(Tournament tournament) {
-		return new ShortTournamentDto(
-				tournament.getId(),
-				tournament.getName(),
-				tournament.getType().equals("R") ? "RoundRobin" : "SingleElimination"
-		);
 	}
 
 	@Override
