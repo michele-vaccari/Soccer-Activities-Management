@@ -50,7 +50,7 @@ public class AuthenticateController {
 			if (!user.getPassword().equals(authentication.getPassword()))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-			var token = jwtService.createJwt(user.getEmail(), user.getRole(), user.getName(), user.getSurname());
+			var token = jwtService.createJwt(user.getEmail(), user.getId(), user.getRole(), user.getName(), user.getSurname());
 			return Optional.of(new JWT(token));
 		}
 		catch (UserNotFoundException ex) {

@@ -38,7 +38,7 @@ public class JwtService {
 		}
 	}
 
-	public String createJwt(String email, String role, String name, String surname) {
+	public String createJwt(String email, Integer id, String role, String name, String surname) {
 		var currentTime = System.currentTimeMillis();
 
 		return JWT.create()
@@ -46,6 +46,7 @@ public class JwtService {
 				.withExpiresAt(new Date(currentTime + duration))
 				.withIssuedAt(new Date(currentTime))
 				.withClaim("email", email)
+				.withClaim("id", id)
 				.withClaim("role", role)
 				.withClaim("name", name)
 				.withClaim("surname", surname)
@@ -65,6 +66,7 @@ public class JwtService {
 
 			var jwtTokenData = new JwtTokenData();
 			jwtTokenData.setEmail(decodedJwt.getClaim("email").asString());
+			jwtTokenData.setId(decodedJwt.getClaim("id").asInt());
 			jwtTokenData.setRole(decodedJwt.getClaim("role").asString());
 			jwtTokenData.setName(decodedJwt.getClaim("name").asString());
 			jwtTokenData.setSurname(decodedJwt.getClaim("surname").asString());
