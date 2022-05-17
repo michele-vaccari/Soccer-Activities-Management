@@ -13,6 +13,18 @@ public class TeamPlayerReport {
 	private String reserve;
 	private Report reportByReportId;
 
+	public TeamPlayerReport() { }
+
+	public TeamPlayerReport(int reportId,
+							int teamId,
+							int playerId,
+							String reserve) {
+		this.reportId = reportId;
+		this.teamId = teamId;
+		this.playerId = playerId;
+		this.reserve = reserve;
+	}
+
 	@Id
 	@Column(name = "REPORT_ID", nullable = false)
 	public int getReportId() {

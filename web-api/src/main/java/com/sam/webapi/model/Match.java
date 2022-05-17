@@ -1,6 +1,7 @@
 package com.sam.webapi.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +13,7 @@ public class Match {
 	private String date;
 	private String time;
 	private Report reportsById;
+	private TournamentTeamMatch tournamentTeamMatchesById;
 
 	public Match() {}
 
@@ -97,5 +99,14 @@ public class Match {
 
 	public void setReportsById(Report reportsById) {
 		this.reportsById = reportsById;
+	}
+
+	@OneToOne(mappedBy = "matchByMatchId")
+	public TournamentTeamMatch getTournamentTeamMatchesById() {
+		return tournamentTeamMatchesById;
+	}
+
+	public void setTournamentTeamMatchesById(TournamentTeamMatch tournamentTeamMatchesById) {
+		this.tournamentTeamMatchesById = tournamentTeamMatchesById;
 	}
 }

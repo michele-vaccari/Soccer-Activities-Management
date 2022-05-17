@@ -1,16 +1,14 @@
 package com.sam.webapi.service;
 
 import com.google.common.collect.Iterables;
-import com.sam.webapi.dataaccess.PlayerRepository;
-import com.sam.webapi.dataaccess.TeamRepository;
-import com.sam.webapi.dataaccess.TournamentRepository;
-import com.sam.webapi.dataaccess.TournamentTeamRepository;
+import com.sam.webapi.dataaccess.*;
 import com.sam.webapi.dto.MatchDto;
 import com.sam.webapi.dto.PlayerDto;
 import com.sam.webapi.dto.ShortTournamentDto;
 import com.sam.webapi.dto.TeamDto;
 import com.sam.webapi.model.Player;
 import com.sam.webapi.model.Team;
+import com.sam.webapi.model.TeamPlayerReport;
 import com.sam.webapi.model.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,16 +24,19 @@ public class TeamServiceImpl implements TeamService {
 	private final PlayerRepository playerRepository;
 	private final TournamentTeamRepository tournamentTeamRepository;
 	private final TournamentRepository tournamentRepository;
+	private final TeamPlayerReportRepository teamPlayerReportRepository;
 
 	@Autowired
 	public TeamServiceImpl(TeamRepository teamRepository,
 						   PlayerRepository playerRepository,
 						   TournamentTeamRepository tournamentTeamRepository,
-						   TournamentRepository tournamentRepository) {
+						   TournamentRepository tournamentRepository,
+						   TeamPlayerReportRepository teamPlayerReportRepository) {
 		this.teamRepository = teamRepository;
 		this.playerRepository = playerRepository;
 		this.tournamentTeamRepository = tournamentTeamRepository;
 		this.tournamentRepository = tournamentRepository;
+		this.teamPlayerReportRepository = teamPlayerReportRepository;
 	}
 
 	@Override
@@ -131,6 +132,15 @@ public class TeamServiceImpl implements TeamService {
 					var otherTeamName = teamRepository.getById(otherTeamId).get().getName();
 					var match = tournamentTeamMatch.getMatchByMatchId();
 					var report = match.getReportsById();
+
+					boolean teamLineupSubmitted = false;
+					boolean otherTeamLineupSubmitted = false;
+					if (report != null) {
+						var teamIds = teamPlayerReportRepository.findDistinctTeamIdsByReportId(report.getId());
+						teamLineupSubmitted = teamIds.contains(tournamentTeamMatch.getTeamId());
+						otherTeamLineupSubmitted = teamIds.contains(tournamentTeamMatch.getOtherTeamId());
+					}
+
 					matchesDto.add(new MatchDto(
 							tournamentTeamMatch.getMatchId(),
 							tournament.getName(),
@@ -140,8 +150,8 @@ public class TeamServiceImpl implements TeamService {
 							teamName,
 							otherTeamName,
 							report == null ? null : report.getId(),
-							false, //teamLineupSubmitted
-							false //otherTeamLineupSubmitted
+							teamLineupSubmitted,
+							otherTeamLineupSubmitted
 					));
 				}
 			}
