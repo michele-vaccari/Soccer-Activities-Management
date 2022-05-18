@@ -8,7 +8,6 @@ import com.sam.webapi.dto.ShortTournamentDto;
 import com.sam.webapi.dto.TeamDto;
 import com.sam.webapi.model.Player;
 import com.sam.webapi.model.Team;
-import com.sam.webapi.model.TeamPlayerReport;
 import com.sam.webapi.model.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

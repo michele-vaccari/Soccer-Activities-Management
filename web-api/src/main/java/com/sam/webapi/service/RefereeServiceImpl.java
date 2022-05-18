@@ -2,8 +2,10 @@ package com.sam.webapi.service;
 
 import com.sam.webapi.dataaccess.RefereeRepository;
 import com.sam.webapi.dataaccess.RegisteredUserRepository;
+import com.sam.webapi.dataaccess.TeamRepository;
 import com.sam.webapi.dataaccess.UserRepository;
 import com.sam.webapi.dto.RefereeDto;
+import com.sam.webapi.dto.ReportDto;
 import com.sam.webapi.model.Referee;
 import com.sam.webapi.model.RegisteredUser;
 import com.sam.webapi.model.User;
@@ -19,20 +21,23 @@ public class RefereeServiceImpl implements RefereeService {
 	private final RefereeRepository refereeRepository;
 	private final RegisteredUserRepository registeredUserRepository;
 	private final UserRepository userRepository;
+	private final TeamRepository teamRepository;
 
 	@Autowired
 	public RefereeServiceImpl(RefereeRepository refereeRepository,
 							  RegisteredUserRepository registeredUserRepository,
-							  UserRepository userRepository) {
+							  UserRepository userRepository,
+							  TeamRepository teamRepository) {
 		this.refereeRepository = refereeRepository;
 		this.registeredUserRepository = registeredUserRepository;
 		this.userRepository = userRepository;
+		this.teamRepository = teamRepository;
 	}
 
 	@Override
 	@Transactional
 	public Iterable<RefereeDto> getReferees(String adminEmail) {
-		isAuthorizedUser(adminEmail);
+		isAdminUser(adminEmail);
 
 		var referees = refereeRepository.findAll();
 
@@ -45,7 +50,7 @@ public class RefereeServiceImpl implements RefereeService {
 	@Override
 	@Transactional
 	public RefereeDto getReferee(Integer id, String adminEmail) {
-		isAuthorizedUser(adminEmail);
+		isAdminUser(adminEmail);
 
 		var referee = refereeRepository.findById(id);
 
@@ -58,7 +63,7 @@ public class RefereeServiceImpl implements RefereeService {
 	@Override
 	@Transactional
 	public void createReferee(String adminEmail, RefereeDto refereeDto) {
-		isAuthorizedUser(adminEmail);
+		isAdminUser(adminEmail);
 
 		var adminUser = userRepository.findByEmailAndActive(adminEmail, "Y");
 
@@ -98,8 +103,49 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
+	public Iterable<ReportDto> getReportsOfReferee(Integer id, String refereeEmail) {
+		isRefereeUser(refereeEmail);
+
+		var user = userRepository.findByEmailAndActive(refereeEmail, "Y");
+		if (user.getId() != id)
+			throw new BadRequestException();
+
+		var reports = user.getRegisteredUserById()
+				.getRefereeById()
+				.getReportsById();
+
+		var reportsDto = new ArrayList<ReportDto>();
+		for (var report : reports ) {
+			var match = report.getMatchByMatchId();
+			var tournamentTeamMatch = match.getTournamentTeamMatchesById();
+			var tournamentName = tournamentTeamMatch.getTournamentByTournamentId().getName();
+
+			var teamId = tournamentTeamMatch.getTeamId();
+			var otherTeamId = tournamentTeamMatch.getOtherTeamId();
+			var teamName = teamRepository.getById(teamId).get().getName();
+			var otherTeamName = teamRepository.getById(otherTeamId).get().getName();
+
+			var compiled = report.getResult() != null && !report.getResult().isEmpty() &&
+						   report.getMatchStartTime() != null && !report.getMatchStartTime().isEmpty() &&
+						   report.getMatchEndTime() != null && !report.getMatchEndTime().isEmpty();
+
+			reportsDto.add(new ReportDto(
+					report.getId(),
+					tournamentName,
+					teamName,
+					otherTeamName,
+					match.getDate(),
+					report.getResult(),
+					compiled
+			));
+		}
+		return reportsDto;
+	}
+
+	@Override
+	@Transactional
 	public void updateReferee(Integer id, RefereeDto refereeDto, String adminEmail) {
-		isAuthorizedUser(adminEmail);
+		isAdminUser(adminEmail);
 
 		var user = userRepository.findById(id);
 		if (user.isEmpty())
@@ -145,7 +191,7 @@ public class RefereeServiceImpl implements RefereeService {
 	@Override
 	@Transactional
 	public void deleteReferee(Integer id, String adminEmail) {
-		isAuthorizedUser(adminEmail);
+		isAdminUser(adminEmail);
 
 		if (!refereeRepository.existsById(id))
 			throw new RefereeNotFoundException();
@@ -159,10 +205,17 @@ public class RefereeServiceImpl implements RefereeService {
 		userRepository.deactivateUserById(id);
 	}
 
-	private void isAuthorizedUser(String userEmail) {
+	private void isAdminUser(String userEmail) {
 		var user = userRepository.findByEmailAndActive(userEmail,"Y");
 		if (user == null ||
 				!user.getRole().equals("Admin"))
+			throw new UnauthorizedException();
+	}
+
+	private void isRefereeUser(String userEmail) {
+		var user = userRepository.findByEmailAndActive(userEmail,"Y");
+		if (user == null ||
+				!user.getRole().equals("Referee"))
 			throw new UnauthorizedException();
 	}
 

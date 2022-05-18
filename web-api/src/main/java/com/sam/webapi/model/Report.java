@@ -13,6 +13,7 @@ public class Report {
 	private String matchEndTime;
 	private String result;
 	private Match matchByMatchId;
+	private Referee refereeByRefereeId;
 
 	public Report() { }
 
@@ -105,5 +106,15 @@ public class Report {
 
 	public void setMatchByMatchId(Match matchByMatchId) {
 		this.matchByMatchId = matchByMatchId;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "REFEREE_ID", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+	public Referee getRefereeByRefereeId() {
+		return refereeByRefereeId;
+	}
+
+	public void setRefereeByRefereeId(Referee refereeByRefereeId) {
+		this.refereeByRefereeId = refereeByRefereeId;
 	}
 }
