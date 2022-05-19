@@ -1,7 +1,7 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.dto.RefereeDto;
-import com.sam.webapi.dto.ReportDto;
+import com.sam.webapi.dto.ShortReportDto;
 import com.sam.webapi.security.service.JwtService;
 import com.sam.webapi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -81,7 +81,7 @@ public class RefereeController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the reports",
 					content = { @Content(mediaType = "application/json",
-							array = @ArraySchema(schema = @Schema(implementation = ReportDto.class))) }),
+							array = @ArraySchema(schema = @Schema(implementation = ShortReportDto.class))) }),
 			@ApiResponse(responseCode = "401", description = "Unauthorized, only Referee users can perform this operation", content = @Content(schema = @Schema(hidden = true))),
 			@ApiResponse(responseCode = "404", description = "Referee not found", content = @Content(schema = @Schema(hidden = true)))
 	})
@@ -89,8 +89,8 @@ public class RefereeController {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseStatus(HttpStatus.OK)
-	public Iterable<ReportDto> getRefereeReports(@RequestHeader("Authorization") String authorization,
-								 				 @PathVariable Integer id) {
+	public Iterable<ShortReportDto> getRefereeReports(@RequestHeader("Authorization") String authorization,
+													  @PathVariable Integer id) {
 		var refereeEmail = jwtService.getEmail(authorization);
 		try {
 			return refereeService.getReportsOfReferee(id, refereeEmail);

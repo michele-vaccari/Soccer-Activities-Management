@@ -5,7 +5,7 @@ import com.sam.webapi.dataaccess.RegisteredUserRepository;
 import com.sam.webapi.dataaccess.TeamRepository;
 import com.sam.webapi.dataaccess.UserRepository;
 import com.sam.webapi.dto.RefereeDto;
-import com.sam.webapi.dto.ReportDto;
+import com.sam.webapi.dto.ShortReportDto;
 import com.sam.webapi.model.Referee;
 import com.sam.webapi.model.RegisteredUser;
 import com.sam.webapi.model.User;
@@ -103,7 +103,7 @@ public class RefereeServiceImpl implements RefereeService {
 
 	@Override
 	@Transactional
-	public Iterable<ReportDto> getReportsOfReferee(Integer id, String refereeEmail) {
+	public Iterable<ShortReportDto> getReportsOfReferee(Integer id, String refereeEmail) {
 		isRefereeUser(refereeEmail);
 
 		var user = userRepository.findByEmailAndActive(refereeEmail, "Y");
@@ -114,7 +114,7 @@ public class RefereeServiceImpl implements RefereeService {
 				.getRefereeById()
 				.getReportsById();
 
-		var reportsDto = new ArrayList<ReportDto>();
+		var reportsDto = new ArrayList<ShortReportDto>();
 		for (var report : reports ) {
 			var match = report.getMatchByMatchId();
 			var tournamentTeamMatch = match.getTournamentTeamMatchesById();
@@ -129,7 +129,7 @@ public class RefereeServiceImpl implements RefereeService {
 						   report.getMatchStartTime() != null && !report.getMatchStartTime().isEmpty() &&
 						   report.getMatchEndTime() != null && !report.getMatchEndTime().isEmpty();
 
-			reportsDto.add(new ReportDto(
+			reportsDto.add(new ShortReportDto(
 					report.getId(),
 					tournamentName,
 					teamName,

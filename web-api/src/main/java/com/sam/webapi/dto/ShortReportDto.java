@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 
-public class ReportDto {
+public class ShortReportDto {
 	int id;
 	String tournamentName;
 	String teamName;
@@ -20,15 +20,15 @@ public class ReportDto {
 	String result;
 	boolean compiled;
 
-	public ReportDto() { }
+	public ShortReportDto() { }
 
-	public ReportDto(int id,
-					 String tournamentName,
-					 String teamName,
-					 String otherTeamName,
-					 String matchDate,
-					 String result,
-					 boolean compiled) {
+	public ShortReportDto(int id,
+						  String tournamentName,
+						  String teamName,
+						  String otherTeamName,
+						  String matchDate,
+						  String result,
+						  boolean compiled) {
 		this.id = id;
 		this.tournamentName = tournamentName;
 		this.teamName = teamName;
@@ -38,16 +38,16 @@ public class ReportDto {
 		this.compiled = compiled;
 	}
 
-	public ReportDto(int id,
-					 String tournamentName,
-					 String teamName,
-					 String otherTeamName,
-					 String matchDate,
-					 String refereeName,
-					 String refereeSurname,
-					 String place,
-					 String result,
-					 boolean compiled) {
+	public ShortReportDto(int id,
+						  String tournamentName,
+						  String teamName,
+						  String otherTeamName,
+						  String matchDate,
+						  String refereeName,
+						  String refereeSurname,
+						  String place,
+						  String result,
+						  boolean compiled) {
 		this.id = id;
 		this.tournamentName = tournamentName;
 		this.teamName = teamName;
@@ -144,7 +144,7 @@ public class ReportDto {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		ReportDto reportDto = (ReportDto) o;
+		ShortReportDto reportDto = (ShortReportDto) o;
 		return id == reportDto.id && compiled == reportDto.compiled && Objects.equals(tournamentName, reportDto.tournamentName) && Objects.equals(teamName, reportDto.teamName) && Objects.equals(otherTeamName, reportDto.otherTeamName) && Objects.equals(matchDate, reportDto.matchDate) && Objects.equals(refereeName, reportDto.refereeName) && Objects.equals(refereeSurname, reportDto.refereeSurname) && Objects.equals(place, reportDto.place) && Objects.equals(result, reportDto.result);
 	}
 
