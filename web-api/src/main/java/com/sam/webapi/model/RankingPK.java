@@ -9,6 +9,12 @@ public class RankingPK implements Serializable {
 	private int tournamentId;
 	private int teamId;
 
+	public RankingPK(int tournamentId,
+					 int teamId) {
+		this.tournamentId = tournamentId;
+		this.teamId = teamId;
+	}
+
 	@Column(name = "TOURNAMENT_ID", nullable = false)
 	@Id
 	public int getTournamentId() {

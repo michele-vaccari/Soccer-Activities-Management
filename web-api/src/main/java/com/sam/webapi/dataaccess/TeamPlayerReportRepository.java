@@ -11,4 +11,10 @@ public interface TeamPlayerReportRepository extends CrudRepository<TeamPlayerRep
 
 	@Query(value = "SELECT DISTINCT Team_Id FROM SAM.TEAM_PLAYER_REPORT WHERE Report_Id=?1", nativeQuery = true)
 	List<Integer> findDistinctTeamIdsByReportId(int id);
+
+	@Query(value = "SELECT Player_Id FROM SAM.TEAM_PLAYER_REPORT WHERE Report_Id=?1", nativeQuery = true)
+	List<Integer> findPlayerIdsByReportId(int id);
+
+	@Query(value = "SELECT Player_Id FROM SAM.TEAM_PLAYER_REPORT WHERE Report_Id=?1 AND Team_id=?2", nativeQuery = true)
+	List<Integer> findPlayerIdsByReportIdAndTeamId(int reaportId, int teamId);
 }

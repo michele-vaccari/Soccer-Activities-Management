@@ -14,6 +14,20 @@ public class PlayerReport {
 	private String ejection;
 	private Report reportByReportId;
 
+	public PlayerReport() { }
+
+	public PlayerReport(int reportId,
+						int playerId,
+						Integer goal,
+						Integer admonitions,
+						String ejection) {
+		this.reportId = reportId;
+		this.playerId = playerId;
+		this.goal = goal;
+		this.admonitions = admonitions;
+		this.ejection = ejection;
+	}
+
 	@Id
 	@Column(name = "REPORT_ID", nullable = false)
 	public int getReportId() {

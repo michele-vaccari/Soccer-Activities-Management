@@ -1,6 +1,7 @@
 package com.sam.webapi.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,8 @@ public class Report {
 	private String result;
 	private Match matchByMatchId;
 	private Referee refereeByRefereeId;
+	private List<PlayerReport> playerReportsById;
+	private List<TeamPlayerReport> teamPlayerReportsById;
 
 	public Report() { }
 
@@ -116,5 +119,23 @@ public class Report {
 
 	public void setRefereeByRefereeId(Referee refereeByRefereeId) {
 		this.refereeByRefereeId = refereeByRefereeId;
+	}
+
+	@OneToMany(mappedBy = "reportByReportId")
+	public List<PlayerReport> getPlayerReportsById() {
+		return playerReportsById;
+	}
+
+	public void setPlayerReportsById(List<PlayerReport> playerReportsById) {
+		this.playerReportsById = playerReportsById;
+	}
+
+	@OneToMany(mappedBy = "reportByReportId")
+	public List<TeamPlayerReport> getTeamPlayerReportsById() {
+		return teamPlayerReportsById;
+	}
+
+	public void setTeamPlayerReportsById(List<TeamPlayerReport> teamPlayerReportsById) {
+		this.teamPlayerReportsById = teamPlayerReportsById;
 	}
 }
