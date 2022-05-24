@@ -44,6 +44,11 @@
     "REFEREE_USER": "REFEREE user",
     "USER_UNAUTHORIZED_ERROR": "User unauthorized error",
     "USER_AUTHENTICATION_ERROR": "User authentication error",
-    "LOGIN": "Login"
+    "LOGIN": "Login",
+    "TOURNAMENTS": "TOURNAMENTS",
+    "TOURNAMENT_NAME": "Tournament name",
+    "TYPE": "Type",
+    "ROUND_ROBIN": "Round Robin",
+    "SINGLE_ELIMINATION": "Single Elimination"
   }
 }

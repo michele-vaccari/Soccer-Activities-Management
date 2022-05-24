@@ -26,6 +26,7 @@ import { AuthenticationHtppInterceptorService } from './services/authentication-
 import { HomeComponent } from './home/home.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TournamentsTableComponent } from './tournaments-table/tournaments-table.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     UsersTableComponent,
     UserComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    TournamentsTableComponent
   ],
   imports: [
     BrowserModule,

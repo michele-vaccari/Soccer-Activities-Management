@@ -6,6 +6,14 @@
     <div fxFlex
         fxLayout="row"
         fxLayoutAlign="end center">
+
+        <button mat-button
+            class="toolbar-text"
+            i18n="@@TOURNAMENTS"
+            [routerLink]="['/tournaments']">
+            TOURNAMENTS
+        </button>
+
         <div *ngIf="this.authenticationService.isUserLoggedIn(); then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
             <button matTooltip="Logout"

@@ -44,6 +44,11 @@
     "REFEREE_USER": "utente ARBITRO",
     "USER_UNAUTHORIZED_ERROR": "Errore, utente non autorizzato",
     "USER_AUTHENTICATION_ERROR": "Errore di autenticazione dell'utente",
-    "LOGIN": "Accesso"
+    "LOGIN": "Accesso",
+    "TOURNAMENTS": "TORNEI",
+    "TOURNAMENT_NAME": "Nome del torneo",
+    "TYPE": "Tipo",
+    "ROUND_ROBIN": "Italiana",
+    "SINGLE_ELIMINATION": "Eliminazione"
   }
 }
