@@ -42,6 +42,8 @@
     "ADMINISTRATOR_USER": "ADMINISTRATOR user",
     "TEAM_MANAGER_USER": "TEAM MANAGER user",
     "REFEREE_USER": "REFEREE user",
-    "USER_UNAUTHORIZED_ERROR": "User unauthorized error"
+    "USER_UNAUTHORIZED_ERROR": "User unauthorized error",
+    "USER_AUTHENTICATION_ERROR": "User authentication error",
+    "LOGIN": "Login"
   }
 }
