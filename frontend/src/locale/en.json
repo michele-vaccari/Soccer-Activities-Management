@@ -75,6 +75,10 @@
     "HEADQUARTERS": "Headquarters",
     "ERROR_RETRIEVING_TEAM_TEAM_NOT_FOUND": "Error retrieving team, team not found",
     "CURRENT_HEADQUARTERS": "Current headquarters:",
-    "OFFICIAL_SPONSOR": "Official sponsor:"
+    "OFFICIAL_SPONSOR": "Official sponsor:",
+    "JERSEY_NUMBER": "Jersey number",
+    "BIRTH_DATE": "Birth date",
+    "ERROR_RETRIEVING_PLAYERS_OF_TEAM_TEAM_NOT_FOUND": "Error retrieving players of team, team not found",
+    "PLAYERS": "Players"
   }
 }
