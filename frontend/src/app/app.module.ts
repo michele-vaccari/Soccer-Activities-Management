@@ -30,6 +30,7 @@ import { TournamentsTableComponent } from './tournaments-table/tournaments-table
 import { TournamentComponent } from './tournament/tournament.component';
 import { RoundRobinRoundComponent } from './round-robin-round/round-robin-round.component';
 import { SingleEliminationStageComponent } from './single-elimination-stage/single-elimination-stage.component';
+import { TeamsTableComponent } from './teams-table/teams-table.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { SingleEliminationStageComponent } from './single-elimination-stage/sing
     TournamentsTableComponent,
     TournamentComponent,
     RoundRobinRoundComponent,
-    SingleEliminationStageComponent
+    SingleEliminationStageComponent,
+    TeamsTableComponent
   ],
   imports: [
     BrowserModule,
