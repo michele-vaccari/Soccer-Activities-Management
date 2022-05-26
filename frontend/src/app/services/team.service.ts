@@ -16,4 +16,10 @@ export class TeamService {
       API_ENDPOINT + '/teams'
       );
   }
+
+  getTeam(id: number): Observable<Team> {
+    return this.http.get<Team>(
+      API_ENDPOINT + '/teams/' + id
+      );
+  }
 }

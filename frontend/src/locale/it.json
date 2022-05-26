@@ -63,7 +63,7 @@
     "GOALS_SUFFERED": "Goals subiti",
     "SCORE": "Punteggio",
     "TIED_MATCHES": "Partite pareggiate",
-    "ERROR_RETRIEVING_TOURNAMENT_TOURNAMENT_NOT_FOUND": "Errore nell'ottenimento del torneo, torneo non trovato",
+    "ERROR_RETRIEVING_TOURNAMENT_TOURNAMENT_NOT_FOUND": "Errore nel recupero del torneo, torneo non trovato",
     "TIMETABLE": "Calendario",
     "FIRST_ROUND": "ANDATA",
     "SECOND_ROUND": "RITORNO",
@@ -72,6 +72,9 @@
     "DAY": "Giornata",
     "TO_BE_DEFINED": "Da definire",
     "TEAMS": "SQUADRE",
-    "HEADQUARTERS": "Sede"
+    "HEADQUARTERS": "Sede",
+    "ERROR_RETRIEVING_TEAM_TEAM_NOT_FOUND": "Errore nel recupero della squadra, squadra non trovata",
+    "CURRENT_HEADQUARTERS": "Sede attuale:",
+    "OFFICIAL_SPONSOR": "Sponsor ufficiale:"
   }
 }

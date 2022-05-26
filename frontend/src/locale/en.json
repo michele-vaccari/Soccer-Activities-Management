@@ -72,6 +72,9 @@
     "DAY": "Day",
     "TO_BE_DEFINED": "To be define",
     "TEAMS": "TEAMS",
-    "HEADQUARTERS": "Headquarters"
+    "HEADQUARTERS": "Headquarters",
+    "ERROR_RETRIEVING_TEAM_TEAM_NOT_FOUND": "Error retrieving team, team not found",
+    "CURRENT_HEADQUARTERS": "Current headquarters:",
+    "OFFICIAL_SPONSOR": "Official sponsor:"
   }
 }
