@@ -49,6 +49,27 @@
     "TOURNAMENT_NAME": "Nome del torneo",
     "TYPE": "Tipo",
     "ROUND_ROBIN": "Italiana",
-    "SINGLE_ELIMINATION": "Eliminazione"
+    "SINGLE_ELIMINATION": "Eliminazione",
+    "EIGHTH_FINAL": "Ottavi di finale",
+    "QUARTER_FINAL": "Quarti di finale",
+    "SEMI_FINAL": "Semifinale",
+    "FINAL": "Finale",
+    "POSITION": "Posizione",
+    "TEAM_NAME": "Nome squadra",
+    "PLAYED_MATCHES": "Partite giocate",
+    "WON_MATCHES": "Patite vinte",
+    "LOST_MATCHES": "Partite perse",
+    "GOALS_MADE": "Goals fatti",
+    "GOALS_SUFFERED": "Goals subiti",
+    "SCORE": "Punteggio",
+    "TIED_MATCHES": "Partite pareggiate",
+    "ERROR_RETRIEVING_TOURNAMENT_TOURNAMENT_NOT_FOUND": "Errore nell'ottenimento del torneo, torneo non trovato",
+    "TIMETABLE": "Calendario",
+    "FIRST_ROUND": "ANDATA",
+    "SECOND_ROUND": "RITORNO",
+    "RANKING": "Classifica",
+    "TOURNAMENT_INFORMATION": "Informazioni sul torneo",
+    "DAY": "Giornata",
+    "TO_BE_DEFINED": "Da definire"
   }
 }

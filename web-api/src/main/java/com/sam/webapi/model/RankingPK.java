@@ -9,6 +9,8 @@ public class RankingPK implements Serializable {
 	private int tournamentId;
 	private int teamId;
 
+	public RankingPK() { }
+
 	public RankingPK(int tournamentId,
 					 int teamId) {
 		this.tournamentId = tournamentId;

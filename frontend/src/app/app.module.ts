@@ -27,6 +27,9 @@ import { HomeComponent } from './home/home.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TournamentsTableComponent } from './tournaments-table/tournaments-table.component';
+import { TournamentComponent } from './tournament/tournament.component';
+import { RoundRobinRoundComponent } from './round-robin-round/round-robin-round.component';
+import { SingleEliminationStageComponent } from './single-elimination-stage/single-elimination-stage.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { TournamentsTableComponent } from './tournaments-table/tournaments-table
     UserComponent,
     LoginComponent,
     HomeComponent,
-    TournamentsTableComponent
+    TournamentsTableComponent,
+    TournamentComponent,
+    RoundRobinRoundComponent,
+    SingleEliminationStageComponent
   ],
   imports: [
     BrowserModule,

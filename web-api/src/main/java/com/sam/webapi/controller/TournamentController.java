@@ -49,7 +49,7 @@ public class TournamentController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the tournament",
 					content = { @Content(mediaType = "application/json",
-					schema = @Schema(implementation = AdminDto.class)) }),
+					schema = @Schema(implementation = TournamentDto.class)) }),
 			@ApiResponse(responseCode = "404", description = "Tournament not found", content = @Content(schema = @Schema(hidden = true)))
 	})
 	@RequestMapping(value = "/tournaments/{id}",

@@ -19,7 +19,7 @@ export class TournamentsTableComponent implements OnInit {
     {
       columnDef: 'type',
       header: $localize `:@@TYPE:Type`,
-      cell: (element: ShortTournament) => `${element.type}`,
+      cell: (element: ShortTournament) => `${element.type == "RoundRobin" ? $localize `:@@ROUND_ROBIN:Round Robin` : $localize `:@@SINGLE_ELIMINATION:Single Elimination`}`,
     }
   ];
   displayedColumns = this.columns.map(c => c.columnDef).concat(['actions']);

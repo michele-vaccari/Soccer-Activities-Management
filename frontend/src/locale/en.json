@@ -49,6 +49,27 @@
     "TOURNAMENT_NAME": "Tournament name",
     "TYPE": "Type",
     "ROUND_ROBIN": "Round Robin",
-    "SINGLE_ELIMINATION": "Single Elimination"
+    "SINGLE_ELIMINATION": "Single Elimination",
+    "EIGHTH_FINAL": "Eighth final",
+    "QUARTER_FINAL": "Quarter final",
+    "SEMI_FINAL": "Semi final",
+    "FINAL": "Final",
+    "POSITION": "Position",
+    "TEAM_NAME": "Team name",
+    "PLAYED_MATCHES": "Played matches",
+    "WON_MATCHES": "Won matches",
+    "LOST_MATCHES": "Lost matches",
+    "GOALS_MADE": "Goals made",
+    "GOALS_SUFFERED": "Goals suffered",
+    "SCORE": "Score",
+    "TIED_MATCHES": "Tied matches",
+    "ERROR_RETRIEVING_TOURNAMENT_TOURNAMENT_NOT_FOUND": "Error retrieving tournament, tournament not found",
+    "TIMETABLE": "Timetable",
+    "FIRST_ROUND": "FIRST ROUND",
+    "SECOND_ROUND": "SECOND ROUND",
+    "RANKING": "Ranking",
+    "TOURNAMENT_INFORMATION": "Tournament information",
+    "DAY": "Day",
+    "TO_BE_DEFINED": "To be define"
   }
 }

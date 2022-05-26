@@ -1,13 +1,16 @@
 package com.sam.webapi.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sam.webapi.dataaccess.*;
 import com.sam.webapi.dto.*;
 import com.sam.webapi.model.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -73,29 +76,152 @@ public class TournamentServiceImpl implements TournamentService {
 
 	private TournamentDto convertEntityToDto(Tournament tournament) {
 
-		var tournamentTeamMatches = tournament.getTournamentTeamMatchesById();
-		var matchesDto = new ArrayList<MatchDto>();
+		var isRoundRobinTournament = tournament.getType().equals("R");
 
-		for (var tournamentTeamMatch : tournamentTeamMatches) {
-			var match = tournamentTeamMatch.getMatchByMatchId();
-			var teamId = tournamentTeamMatch.getTeamId();
-			var team = teamRepository.getById(teamId).get();
-			var otherTeamId = tournamentTeamMatch.getOtherTeamId();
-			var otherTeam = teamRepository.getById(otherTeamId).get();
-			var report = match.getReportsById();
-			matchesDto.add(new MatchDto(
-					match.getId(),
-					null,
-					tournamentTeamMatch.getMatchName(),
-					teamId,
-					otherTeamId,
-					team.getName(),
-					otherTeam.getName(),
-					report == null ? null : report.getId(),
-					false, //teamLineupSubmitted
-					false //otherTeamLineupSubmitted
-			));
+		var tournamentTeamMatches = tournament.getTournamentTeamMatchesById();
+
+		// create roundRobin matches
+		var firstRoundMatches = new HashMap<Integer, ArrayList<MatchDto>>();
+		var secondRoundMatches = new HashMap<Integer, ArrayList<MatchDto>>();
+
+		var eighthFinalsMatches = new HashMap<Integer, ArrayList<MatchDto>>();
+		var quarterFinalsMatches = new HashMap<Integer, ArrayList<MatchDto>>();
+		var semifinalMatches = new HashMap<Integer, ArrayList<MatchDto>>();
+		var finalMatch = new MatchDto();
+
+		if (isRoundRobinTournament) {
+			var numberOfMatch = tournamentTeamMatches.size();
+
+			for (var tournamentTeamMatch : tournamentTeamMatches) {
+
+				var match = tournamentTeamMatch.getMatchByMatchId();
+				var teamId = tournamentTeamMatch.getTeamId();
+				var team = teamRepository.getById(teamId).get();
+				var otherTeamId = tournamentTeamMatch.getOtherTeamId();
+				var otherTeam = teamRepository.getById(otherTeamId).get();
+				var report = match.getReportsById();
+
+				var matchDto = new MatchDto(
+						match.getId(),
+						null,
+						tournamentTeamMatch.getMatchName(),
+						teamId,
+						otherTeamId,
+						team.getName(),
+						otherTeam.getName(),
+						report == null ? null : report.getId(),
+						false, //teamLineupSubmitted
+						false //otherTeamLineupSubmitted
+				);
+
+				var matchNumber = Integer.parseInt(tournamentTeamMatch.getMatchName());
+				var isFirstDayMatch = matchNumber <= (numberOfMatch / 4);
+
+				if (isFirstDayMatch)
+					addMatchToMap(firstRoundMatches, matchNumber, matchDto);
+				else
+					addMatchToMap(secondRoundMatches, matchNumber, matchDto);
+			}
 		}
+		else { // create single elimination matches
+
+			var numberOfTeams = tournamentTeamRepository.findTeamIdsByTournamentId(tournament.getId()).size();
+
+			var hasEighthFinals = numberOfTeams >= 16;
+			var hasQuarterFinals = numberOfTeams >= 8;
+			var hasSemifinal = numberOfTeams >= 2;
+
+			for (var tournamentTeamMatch : tournamentTeamMatches) {
+
+				var match = tournamentTeamMatch.getMatchByMatchId();
+				var teamId = tournamentTeamMatch.getTeamId();
+				var team = teamRepository.getById(teamId).get();
+				var otherTeamId = tournamentTeamMatch.getOtherTeamId();
+				var otherTeam = teamRepository.getById(otherTeamId).get();
+				var report = match.getReportsById();
+
+				var matchDto = new MatchDto(
+						match.getId(),
+						null,
+						tournamentTeamMatch.getMatchName(),
+						teamId,
+						otherTeamId,
+						team.getName(),
+						otherTeam.getName(),
+						report == null ? null : report.getId(),
+						false, //teamLineupSubmitted
+						false //otherTeamLineupSubmitted
+				);
+
+				var matchNumber = Integer.parseInt(tournamentTeamMatch.getMatchName());
+
+				if (hasEighthFinals == false &&
+					hasQuarterFinals == false &&
+					hasSemifinal == false) {
+					finalMatch = matchDto;
+				} else if (hasEighthFinals == false &&
+						   hasQuarterFinals == false &&
+						   hasSemifinal == true) {
+					var isFinalMatch = matchNumber == 3;
+
+					finalMatch = new MatchDto();
+					finalMatch.setMatchName("3");
+
+					if (isFinalMatch)
+						finalMatch = matchDto;
+					else {
+						var matches = new ArrayList<MatchDto>();
+						if (semifinalMatches.containsKey(matchNumber))
+							matches = semifinalMatches.get(matchNumber);
+						matches.add(matchDto);
+						semifinalMatches.put(matchNumber, matches);
+					}
+				} else if (hasEighthFinals == false &&
+						hasQuarterFinals == true &&
+						hasSemifinal == true) {
+					var isFinalMatch = matchNumber == 7;
+					var isSemifinalMatch = matchNumber == 5 &&
+										   matchNumber == 6;
+
+					finalMatch = new MatchDto();
+					finalMatch.setMatchName("7");
+					semifinalMatches.put(5, new ArrayList<MatchDto>());
+					semifinalMatches.put(6, new ArrayList<MatchDto>());
+
+					if (isFinalMatch)
+						finalMatch = matchDto;
+					else if (isSemifinalMatch)
+						addMatchToMap(semifinalMatches, matchNumber, matchDto);
+					else
+						addMatchToMap(quarterFinalsMatches, matchNumber, matchDto);
+				} else if (hasEighthFinals == true &&
+						   hasQuarterFinals == true &&
+						   hasSemifinal == true) {
+					var isFinalMatch = matchNumber == 15;
+					var isSemifinalMatch = matchNumber == 13 &&
+							               matchNumber == 14;
+					var isQuaterMatch = matchNumber >= 9 && matchNumber <= 12;
+
+					finalMatch = new MatchDto();
+					finalMatch.setMatchName("15");
+					semifinalMatches.put(13, new ArrayList<MatchDto>());
+					semifinalMatches.put(14, new ArrayList<MatchDto>());
+					for (var index = 9; matchNumber >= 9 && matchNumber <= 12; ++index)
+						quarterFinalsMatches.put(index, new ArrayList<MatchDto>());
+
+					if (isFinalMatch)
+						finalMatch = matchDto;
+					else if (isSemifinalMatch)
+						addMatchToMap(semifinalMatches, matchNumber, matchDto);
+					else if (isQuaterMatch)
+						addMatchToMap(quarterFinalsMatches, matchNumber, matchDto);
+					else
+						addMatchToMap(eighthFinalsMatches, matchNumber, matchDto);
+				}
+			}
+		}
+
+		// create ranking
 
 		var rankingLines = tournament.getRankingsById();
 		rankingLines.sort((o1, o2) -> o1.getScore().compareTo(o2.getScore()));
@@ -106,15 +232,35 @@ public class TournamentServiceImpl implements TournamentService {
 			rankingLinesDto.add(createRankingLineDto(tournament.getType(), ++position, team.get().getName(), rankingLine));
 		}
 
-		var matches = new ArrayList<MatchDto>();
+		// return tournamentDto
+		if (isRoundRobinTournament)
+			return new TournamentDto(
+					tournament.getId(),
+					tournament.getName(),
+					tournament.getType(),
+					tournament.getDescription(),
+					firstRoundMatches,
+					secondRoundMatches,
+					rankingLinesDto);
+		else
+			return new TournamentDto(
+					tournament.getId(),
+					tournament.getName(),
+					tournament.getType(),
+					tournament.getDescription(),
+					eighthFinalsMatches,
+					quarterFinalsMatches,
+					semifinalMatches,
+					finalMatch,
+					rankingLinesDto);
+	}
 
-		return new TournamentDto(
-				tournament.getId(),
-				tournament.getName(),
-				tournament.getType(),
-				tournament.getDescription(),
-				matchesDto,
-				rankingLinesDto);
+	private void addMatchToMap(HashMap<Integer, ArrayList<MatchDto>> map, Integer key, MatchDto matchDto) {
+		var matches = new ArrayList<MatchDto>();
+		if (map.containsKey(key))
+			matches = map.get(key);
+		matches.add(matchDto);
+		map.put(key, matches);
 	}
 
 	private RankingLineDto createRankingLineDto(String tournamentType, Integer position, String teamName, Ranking ranking) {
@@ -227,26 +373,26 @@ public class TournamentServiceImpl implements TournamentService {
 
 		int teamsSize = teams.size();
 
-		var result = new ArrayList<Match>();
-
 		for (int day = 0; day < numDays; day++)
 		{
 			var goRoundMatchName = Integer.toString(day + 1);
-			var backRoundMatchName = Integer.toString(2 * (day + 1));
+			var backRoundMatchName = Integer.toString(numDays + day + 1);
 
 			for (int idx = 1; idx < halfSize; idx++)
 			{
-				int firstTeam = (day + idx) % teamsSize;
-				int secondTeam = (day  + teamsSize - idx) % teamsSize;
+				int firstTeamIndex = (day + idx) % teamsSize;
+				int secondTeamIndex = (day  + teamsSize - idx) % teamsSize;
 
-				if (teams.get(firstTeam) == DUMMY_TEAM_ID ||
-					teams.get(secondTeam) == DUMMY_TEAM_ID)
+				var firstTeamId = teams.get(firstTeamIndex);
+				var secondTeamId = teams.get(secondTeamIndex);
+
+				if (firstTeamId== DUMMY_TEAM_ID || secondTeamId == DUMMY_TEAM_ID)
 					continue;
 
 				// create go round match
-				saveMatchOfTournament(tournament.getId(), tournament.getType(), goRoundMatchName, teams.get(firstTeam), teams.get(secondTeam));
+				saveMatchOfTournament(tournament.getId(), tournament.getType(), goRoundMatchName, firstTeamId, secondTeamId);
 				// create back round match
-				saveMatchOfTournament(tournament.getId(), tournament.getType(), backRoundMatchName, teams.get(firstTeam), teams.get(secondTeam));
+				saveMatchOfTournament(tournament.getId(), tournament.getType(), backRoundMatchName, secondTeamId, firstTeamId);
 			}
 
 			int teamIdx = day % teamsSize;
@@ -257,7 +403,7 @@ public class TournamentServiceImpl implements TournamentService {
 			// create go round match
 			saveMatchOfTournament(tournament.getId(), tournament.getType(), goRoundMatchName, teams.get(teamIdx), listTeam.get(0));
 			// create back round match
-			saveMatchOfTournament(tournament.getId(), tournament.getType(), backRoundMatchName, teams.get(teamIdx), listTeam.get(0));
+			saveMatchOfTournament(tournament.getId(), tournament.getType(), backRoundMatchName, listTeam.get(0), teams.get(teamIdx));
 		}
 	}
 
