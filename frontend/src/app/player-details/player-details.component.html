@@ -1,0 +1,30 @@
+
+<div style="margin: auto;">
+    <mat-card>
+        <mat-card-title>{{player?.name}} {{player?.surname}}</mat-card-title>
+        <mat-card-content fxLayout="column" fxLayoutGap="20px">
+            <div>
+                <div><span class="key"><span i18n="@@CITIZENSHIP">Citizenship</span>:</span><span class="value"> {{player?.citizenship}}</span></div>
+                <div><span class="key"><span i18n="@@BIRTH_DATE">Birth date</span>:</span><span class="value"> {{player?.birthDate}}</span></div>
+                <div><span class="key"><span i18n="@@JERSEY_NUMBER">Jersey number</span>:</span><span class="value"> {{player?.jerseyNumber}}</span></div>
+                <div><span class="key"><span i18n="@@ROLE">Role</span>:</span><span class="value"> {{player?.role}}</span></div>
+            </div>
+    
+            <div fxLayout="column" fxLayoutGap="20px">
+                <div>
+                    <div class="key"><span i18n="@@TECHNICAL_CHARACTERISTICS">Technical characteristics</span>:</div>
+                    <div class="value">{{player?.description}}</div>
+                </div>
+                <div class="value">
+                    <span i18n="@@IN_THE_TEAM">In the team</span> {{teamName}}, <span i18n="@@SEASON_2021_2022">season 2021/2022</span>
+                </div>
+            </div>
+
+            <div>
+                <div><span class="key"><span i18n="@@GOALS_SCORED">Goals scored</span>:</span><span class="value"> {{player?.goal}}</span></div>
+                <div><span class="key"><span class="key" i18n="@@ADMONITIONS">Admonitions</span>:</span><span class="value"> {{player?.admonitions}}</span></div>
+                <div><span class="key"><span class="key" i18n="@@EJECTIONS">Ejections</span>:</span><span class="value"> {{player?.ejections}}</span></div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

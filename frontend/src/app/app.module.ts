@@ -33,6 +33,7 @@ import { SingleEliminationStageComponent } from './single-elimination-stage/sing
 import { TeamsTableComponent } from './teams-table/teams-table.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
+import { PlayerDetailsComponent } from './player-details/player-details.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TeamPlayersTableComponent } from './team-players-table/team-players-tab
     SingleEliminationStageComponent,
     TeamsTableComponent,
     TeamDetailsComponent,
-    TeamPlayersTableComponent
+    TeamPlayersTableComponent,
+    PlayerDetailsComponent
   ],
   imports: [
     BrowserModule,

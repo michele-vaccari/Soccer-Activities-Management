@@ -80,6 +80,14 @@
     "BIRTH_DATE": "Data di nascita",
     "ERROR_RETRIEVING_PLAYERS_OF_TEAM_TEAM_NOT_FOUND": "Errore nel recupero dei giocatori della squadra, squadra non trovata",
     "PLAYERS": "Giocatori",
-    "ERROR_RETRIEVING_TOURNAMENTS_OF_TEAM_TEAM_NOT_FOUND": "Errore nel recupero dei tornei della squadra, squadra non trovata"
+    "ERROR_RETRIEVING_TOURNAMENTS_OF_TEAM_TEAM_NOT_FOUND": "Errore nel recupero dei tornei della squadra, squadra non trovata",
+    "CITIZENSHIP": "Cittadinanza",
+    "TECHNICAL_CHARACTERISTICS": "Caratteristiche tecniche",
+    "IN_THE_TEAM": "Nella squadra",
+    "SEASON_2021_2022": "stagione 2021/2022",
+    "GOALS_SCORED": "Goal fatti",
+    "ADMONITIONS": "Ammonizioni",
+    "EJECTIONS": "Espulsioni",
+    "ERROR_RETRIEVING_PLAYER_PLAYER_NOT_FOUND": "Errore nel recupero del giocatore, giocatore non trovato"
   }
 }
