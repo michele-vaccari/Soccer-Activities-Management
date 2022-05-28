@@ -8,9 +8,14 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class ToolbarComponent implements OnInit {
 
+  name?: string;
+  surname?: string;
+
   constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.name = this.authenticationService.getUserName();
+    this.surname = this.authenticationService.getUserSurname();
   }
 
 }

@@ -34,6 +34,7 @@ import { TeamsTableComponent } from './teams-table/teams-table.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { PlayerDetailsComponent } from './player-details/player-details.componen
     MatSidenavModule,
     MatCardModule,
     MatListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule
   ],
   providers: [
     {

@@ -26,6 +26,10 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'admins/:id',
+    component: UserComponent
+  },
+  {
     path: 'teams',
     component: TeamsTableComponent
   },

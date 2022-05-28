@@ -88,6 +88,10 @@
     "GOALS_SCORED": "Goal fatti",
     "ADMONITIONS": "Ammonizioni",
     "EJECTIONS": "Espulsioni",
-    "ERROR_RETRIEVING_PLAYER_PLAYER_NOT_FOUND": "Errore nel recupero del giocatore, giocatore non trovato"
+    "ERROR_RETRIEVING_PLAYER_PLAYER_NOT_FOUND": "Errore nel recupero del giocatore, giocatore non trovato",
+    "USERS": "UTENTI",
+    "REPORTS": "REFERTI",
+    "DETAILS": "Dettagli",
+    "LOGOUT": "Esci"
   }
 }

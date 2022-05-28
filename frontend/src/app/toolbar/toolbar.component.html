@@ -7,7 +7,24 @@
         fxLayout="row"
         fxLayoutAlign="end center">
 
-        <button mat-button
+        <button *ngIf="this.authenticationService.isAdminUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@USERS"
+            [routerLink]="['/users']">
+            USERS
+        </button>
+
+        <button *ngIf="this.authenticationService.isAdminUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@REPORTS"
+            [routerLink]="['/reports']">
+            REPORTS
+        </button>
+
+        <button *ngIf="!this.authenticationService.isAdminUser()"
+            mat-button
             class="toolbar-text"
             i18n="@@TEAMS"
             [routerLink]="['/teams']">
@@ -23,11 +40,19 @@
 
         <div *ngIf="this.authenticationService.isUserLoggedIn(); then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
-            <button matTooltip="Logout"
-                mat-icon-button
-                (click)="this.authenticationService.logOut()">
-                <mat-icon class="toolbar-text">logout</mat-icon>
-            </button>
+            <button mat-button [matMenuTriggerFor]="menu" class="toolbar-text"><span class="material-icons">account_circle</span> <span class="material-icons">expand_more</span></button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item
+                        [routerLink]="['/admins', this.authenticationService.getUserId()]"
+                        i18n="@@DETAILS">
+                    Details
+                </button>
+                <button mat-menu-item
+                        (click)="this.authenticationService.logOut()"
+                        i18n="@@LOGOUT">
+                    Logout
+                </button>
+            </mat-menu>
         </ng-template>
         <ng-template #elseBlock>
             <button matTooltip="Login"

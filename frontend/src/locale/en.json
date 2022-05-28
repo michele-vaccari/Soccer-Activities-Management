@@ -88,6 +88,10 @@
     "GOALS_SCORED": "Goals scored",
     "ADMONITIONS": "Admonitions",
     "EJECTIONS": "Ejections",
-    "ERROR_RETRIEVING_PLAYER_PLAYER_NOT_FOUND": "Error retrieving player, player not found"
+    "ERROR_RETRIEVING_PLAYER_PLAYER_NOT_FOUND": "Error retrieving player, player not found",
+    "USERS": "USERS",
+    "REPORTS": "REPORTS",
+    "DETAILS": "Details",
+    "LOGOUT": "Logout"
   }
 }

@@ -26,7 +26,7 @@
 
 <mat-card *ngIf="this.authenticationService.isUserLoggedIn()">
     <mat-card-title>
-        <ng-container i18n="@@HOME_REGISTERED_USER_TITLE">Welcome back </ng-container>{{this.authenticationService.getUserNameAndSurname()}}
+        <ng-container i18n="@@HOME_REGISTERED_USER_TITLE">Welcome back </ng-container>{{this.authenticationService.getUserName()}} {{this.authenticationService.getUserSurname()}}
     </mat-card-title>
 
     <mat-card-content>
