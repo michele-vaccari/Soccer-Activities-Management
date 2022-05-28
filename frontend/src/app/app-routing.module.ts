@@ -37,6 +37,10 @@ const routes: Routes = [
     component: TeamPlayersTableComponent
   },
   {
+    path: 'teams/:id/tournaments',
+    component: TournamentsTableComponent
+  },
+  {
     path: 'tournaments',
     component: TournamentsTableComponent
   },

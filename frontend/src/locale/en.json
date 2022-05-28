@@ -79,6 +79,7 @@
     "JERSEY_NUMBER": "Jersey number",
     "BIRTH_DATE": "Birth date",
     "ERROR_RETRIEVING_PLAYERS_OF_TEAM_TEAM_NOT_FOUND": "Error retrieving players of team, team not found",
-    "PLAYERS": "Players"
+    "PLAYERS": "Players",
+    "ERROR_RETRIEVING_TOURNAMENTS_OF_TEAM_TEAM_NOT_FOUND": "Error retrieving tournaments of team, team not found"
   }
 }

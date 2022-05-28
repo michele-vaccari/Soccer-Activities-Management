@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../constants';
 import { Player } from '../interfaces/player';
+import { ShortTournament } from '../interfaces/short-tournament';
 import { Team } from '../interfaces/team';
 
 @Injectable({
@@ -27,6 +28,12 @@ export class TeamService {
   getAllPlayersOfTeam(id: number): Observable<Player[]> {
     return this.http.get<Player[]>(
       API_ENDPOINT + '/teams/' + id + '/players'
+      );
+  }
+
+  getAllTournamentsOfTeam(id: number): Observable<ShortTournament[]> {
+    return this.http.get<ShortTournament[]>(
+      API_ENDPOINT + '/teams/' + id + '/tournaments'
       );
   }
 }

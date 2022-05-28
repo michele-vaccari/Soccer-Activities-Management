@@ -79,6 +79,7 @@
     "JERSEY_NUMBER": "Numero di maglia",
     "BIRTH_DATE": "Data di nascita",
     "ERROR_RETRIEVING_PLAYERS_OF_TEAM_TEAM_NOT_FOUND": "Errore nel recupero dei giocatori della squadra, squadra non trovata",
-    "PLAYERS": "Giocatori"
+    "PLAYERS": "Giocatori",
+    "ERROR_RETRIEVING_TOURNAMENTS_OF_TEAM_TEAM_NOT_FOUND": "Errore nel recupero dei tornei della squadra, squadra non trovata"
   }
 }
