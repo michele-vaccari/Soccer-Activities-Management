@@ -109,7 +109,7 @@
     "ERROR_UPDATING_REFEREE": "Errore nell'aggiornamento dell'arbitro",
     "ERROR_UPDATING_REFEREE_REFEREE_NOT_FOUND": "Errore nell'aggiornamento dell'arbitro, arbitro non trovato",
     "ERROR_UPDATING_REFEREE_EMAIL_HAS_ALREADY_BEEN_USED": "Errore nell'aggiornamento dell'arbitro, l'e-mail è già stata utilizzata",
-    "REFEREE_SUCCESSFULLY_UPDATED": "Arbitro aggiunto con successo",
+    "REFEREE_SUCCESSFULLY_UPDATED": "Arbitro aggiornato con successo",
     "ERROR_RETRIEVING_REFEREE_REFEREE_NOT_FOUND": "Errore nel recupero dell'arbitro, arbitro non trovato",
     "RESUME": "Carriera",
     "NOT_A_VALID_DATE": "Data non valida. Formato accettato: DD-MM-YYYY",
@@ -118,6 +118,17 @@
     "ERROR_DEACTIVATING_REFEREE": "Errore nella disattivazione dell'arbitro",
     "INACTIVE": "Non attivo",
     "REFEREE_SUCCESSFULLY_DEACTIVATED": "Arbitro disattivato con successo",
-    "STATUS": "Stato"
+    "STATUS": "Stato",
+    "ADD_NEW_TEAM_MANAGER": "Aggiungi nuovo gestore squadra",
+    "TEAM_MANAGERS": "Gestori squadra",
+    "ERROR_DEACTIVATING_TEAM_MANAGER": "Errore nella disattivazione del gestore della squadra",
+    "TEAM_MANAGER_SUCCESSFULLY_DEACTIVATED": "Gestore della squadra disattivato con successo",
+    "ERROR_ADDING_TEAM_MANAGER": "Errore nell'aggiunta del gestore della squadra",
+    "TEAM_MANAGER_SUCCESSFULLY_ADDED": "Gestore della squadra aggiunto con successo",
+    "ERROR_UPDATING_TEAM_MANAGER": "Errore nell'aggiornamento del gestore della squadra",
+    "ERROR_UPDATING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND": "Errore nell'aggiornamento del gestore della squadra, gestore della squadra non trovato",
+    "ERROR_UPDATING_TEAM_MANAGER_EMAIL_HAS_ALREADY_BEEN_USED": "Errore nell'aggiornamento del gestpre della squadra, l'e-mail è già stata utilizzata",
+    "TEAM_MANAGER_SUCCESSFULLY_UPDATED": "Gestore della squadra aggiornato con successo",
+    "ERROR_RETRIEVING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND": "Errore nel recupero del gestore della squadra, gestore della squadra non trovato"
   }
 }

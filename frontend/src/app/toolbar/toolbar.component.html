@@ -10,6 +10,11 @@
         <button *ngIf="this.authenticationService.isAdminUser()" mat-button [matMenuTriggerFor]="usersMenu" class="toolbar-text"><span i18n="@@USERS">USERS</span> <span class="material-icons">expand_more</span></button>
         <mat-menu #usersMenu="matMenu">
             <button mat-menu-item
+                    [routerLink]="['/teammanagers']"
+                    i18n="@@TEAM_MANAGERS">
+                Team managers
+            </button>
+            <button mat-menu-item
                     [routerLink]="['/referees']"
                     i18n="@@REFEREES">
                 Referees

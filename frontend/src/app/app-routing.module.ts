@@ -7,6 +7,8 @@ import { RefereeComponent } from './referee/referee.component';
 import { RefereesTableComponent } from './referees-table/referees-table.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
+import { TeamManagerComponent } from './team-manager/team-manager.component';
+import { TeamManagersTableComponent } from './team-managers-table/team-managers-table.component';
 import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
 import { TeamsTableComponent } from './teams-table/teams-table.component';
 import { TournamentComponent } from './tournament/tournament.component';
@@ -63,6 +65,18 @@ const routes: Routes = [
   {
     path: 'reports',
     component: ReportTableComponent
+  },
+  {
+    path: 'teammanagers',
+    component: TeamManagersTableComponent
+  },
+  {
+    path: 'teammanager',
+    component: TeamManagerComponent
+  },
+  {
+    path: 'teammanagers/:id',
+    component: TeamManagerComponent
   },
   {
     path: 'referees',

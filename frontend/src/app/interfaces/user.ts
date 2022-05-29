@@ -10,5 +10,6 @@ export interface User {
     birthDate?: string;
     citizenship?: string;
     resume?: string;
+    teamName?: string;
     password?: string;
 }

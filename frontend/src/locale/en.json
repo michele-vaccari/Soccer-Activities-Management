@@ -118,6 +118,17 @@
     "ERROR_DEACTIVATING_REFEREE": "Error deactivating referee",
     "INACTIVE": "Inactive",
     "REFEREE_SUCCESSFULLY_DEACTIVATED": "Referee successfully deactivated",
-    "STATUS": "Status"
+    "STATUS": "Status",
+    "ADD_NEW_TEAM_MANAGER": "Add new team manager",
+    "TEAM_MANAGERS": "Team managers",
+    "ERROR_DEACTIVATING_TEAM_MANAGER": "Error deactivating team manager",
+    "TEAM_MANAGER_SUCCESSFULLY_DEACTIVATED": "Team manager successfully deactivated",
+    "ERROR_ADDING_TEAM_MANAGER": "Error adding team manager",
+    "TEAM_MANAGER_SUCCESSFULLY_ADDED": "Team manager successfully added",
+    "ERROR_UPDATING_TEAM_MANAGER": "Error updating team manager",
+    "ERROR_UPDATING_TEAM_MANAGER_REFEREE_NOT_FOUND": "Error updating team manager, team manager not found",
+    "ERROR_UPDATING_TEAM_MANAGER_EMAIL_HAS_ALREADY_BEEN_USED": "Error updating team manager, email has already been used",
+    "TEAM_MANAGER_SUCCESSFULLY_UPDATED": "Team manager successfully updated",
+    "ERROR_RETRIEVING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND": "Error retrieving team manager, team manager not found"
   }
 }

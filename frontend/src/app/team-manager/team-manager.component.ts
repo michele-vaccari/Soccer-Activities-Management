@@ -3,41 +3,39 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../interfaces/user';
-import { RefereeService } from '../services/referee.service';
+import { TeamManagerService } from '../services/team-manager.service';
 
 @Component({
-  selector: 'app-referee',
-  templateUrl: './referee.component.html',
-  styleUrls: ['./referee.component.css']
+  selector: 'app-team-manager',
+  templateUrl: './team-manager.component.html',
+  styleUrls: ['./team-manager.component.css']
 })
-export class RefereeComponent implements OnInit {
+export class TeamManagerComponent implements OnInit {
 
-  postNewReferee() {
+  postNewTeamManager() {
     const user: User = {
       name: this.userForm.controls['name'].value,
       surname: this.userForm.controls['surname'].value,
       address: this.userForm.controls['address'].value,
-      birthDate: this.userForm.controls['birthDate'].value,
       phone: this.userForm.controls['phone'].value,
-      citizenship: this.userForm.controls['citizenship'].value,
-      resume: this.userForm.controls['resume'].value,
+      teamName: this.userForm.controls['teamName'].value,
       email: this.userForm.controls['email'].value,
       password: this.userForm.controls['password'].value
     };
-    this.refereeService.addReferee(user).subscribe(
+    this.teamManagerService.addTeamManager(user).subscribe(
       {
         error: () => {
-          this.snackBar.open($localize `:@@ERROR_ADDING_REFEREE:Error adding referee`);
+          this.snackBar.open($localize `:@@ERROR_ADDING_TEAM_MANAGER:Error adding team manager`);
         },
         complete: () => {
-          this.snackBar.open($localize `:@@REFEREE_SUCCESSFULLY_ADDED:Referee successfully added`);
-          this.router.navigate(['/referees']);
+          this.snackBar.open($localize `:@@TEAM_MANAGER_SUCCESSFULLY_ADDED:Team manager successfully added`);
+          this.router.navigate(['/teammanagers']);
         }
       }
     );
   }
 
-  updateReferee() {
+  updateTeamManager() {
     if (this.id == null)
       return;
 
@@ -45,27 +43,25 @@ export class RefereeComponent implements OnInit {
       name: this.userForm.controls['name'].value,
       surname: this.userForm.controls['surname'].value,
       address: this.userForm.controls['address'].value,
-      birthDate: this.userForm.controls['birthDate'].value,
       phone: this.userForm.controls['phone'].value,
-      citizenship: this.userForm.controls['citizenship'].value,
-      resume: this.userForm.controls['resume'].value,
+      teamName: this.userForm.controls['teamName'].value,
       email: this.userForm.controls['email'].value,
       password: this.userForm.controls['password'].value
     };
 
-    this.refereeService.updateReferee(this.id, user).subscribe(
+    this.teamManagerService.updateTeamManager(this.id, user).subscribe(
       {
         error: (e) => {
-          let message = $localize `:@@ERROR_UPDATING_REFEREE:Error updating referee`;
+          let message = $localize `:@@ERROR_UPDATING_TEAM_MANAGER:Error updating team manager`;
 
         if (e.status == 404)
-          message = $localize `:@@ERROR_UPDATING_REFEREE_REFEREE_NOT_FOUND:Error updating referee, referee not found`;
+          message = $localize `:@@ERROR_UPDATING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND:Error updating team manager, team manager not found`;
         else if (e.status == 409)
-          message = $localize `:@@ERROR_UPDATING_REFEREE_EMAIL_HAS_ALREADY_BEEN_USED:Error updating referee, email has already been used`;
+          message = $localize `:@@ERROR_UPDATING_TEAM_MANAGER_EMAIL_HAS_ALREADY_BEEN_USED:Error updating team manager, email has already been used`;
         this.snackBar.open(message);
         },
         complete: () => {
-          this.snackBar.open($localize `:@@REFEREE_SUCCESSFULLY_UPDATED:Referee successfully updated`);
+          this.snackBar.open($localize `:@@TEAM_MANAGER_SUCCESSFULLY_UPDATED:Team manager successfully updated`);
         }
       }
     );
@@ -78,14 +74,7 @@ export class RefereeComponent implements OnInit {
     return this.userForm.controls['email'].hasError('email') ? $localize `:@@NOT_A_VALID_EMAIL:Not a valid email` : '';
   }
 
-  getBirthDateErrorMessage() {
-    if (this.userForm.controls['birthDate'].hasError('required'))
-      return $localize `:@@YOU_MUST_ENTER_A_VALUE:You must enter a value`;
-
-    return this.userForm.controls['birthDate'].hasError('pattern') ? $localize `:@@NOT_A_VALID_DATE:Not a valid date. Accepted date format: DD-MM-YYYY` : '';
-  }
-
-  constructor(private refereeService: RefereeService,
+  constructor(private teamManagerService: TeamManagerService,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
               private router: Router) {
@@ -97,22 +86,20 @@ export class RefereeComponent implements OnInit {
 
     this.id = +id;
 
-    this.refereeService.getReferee(this.id).subscribe(
+    this.teamManagerService.getTeamManager(this.id).subscribe(
       {
         next: (user: User) => {
           this.userForm.controls['name'].setValue(user.name);
           this.userForm.controls['surname'].setValue(user.surname);
           this.userForm.controls['address'].setValue(user.address);
-          this.userForm.controls['birthDate'].setValue(user.birthDate);
           this.userForm.controls['phone'].setValue(user.phone);
-          this.userForm.controls['citizenship'].setValue(user.citizenship);
-          this.userForm.controls['resume'].setValue(user.resume);
+          this.userForm.controls['teamName'].setValue(user.teamName);
           this.userForm.controls['email'].setValue(user.email);
           this.userForm.controls['password'].setValue(user.password);
         },
         error: () => {
-          this.snackBar.open($localize `:@@ERROR_RETRIEVING_REFEREE_REFEREE_NOT_FOUND:Error retrieving referee, referee not found`);
-          this.router.navigate(['referees']);
+          this.snackBar.open($localize `:@@ERROR_RETRIEVING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND:Error retrieving team manager, team manager not found`);
+          this.router.navigate(['teammanagers']);
         }
       }
     );
@@ -129,10 +116,8 @@ export class RefereeComponent implements OnInit {
     return this.userForm.controls['name'].valid &&
       this.userForm.controls['surname'].valid &&
       this.userForm.controls['address'].valid &&
-      this.userForm.controls['birthDate'].valid &&
       this.userForm.controls['phone'].valid &&
-      this.userForm.controls['citizenship'].valid &&
-      this.userForm.controls['resume'].valid &&
+      this.userForm.controls['teamName'].valid &&
       this.userForm.controls['email'].valid &&
       this.userForm.controls['password'].valid;
   }
@@ -141,10 +126,8 @@ export class RefereeComponent implements OnInit {
     return this.formHasValueAndIsValid('name') &&
       this.formHasValueAndIsValid('surname') &&
       this.formHasValueAndIsValid('address') &&
-      this.formHasValueAndIsValid('birthDate') &&
       this.formHasValueAndIsValid('phone') &&
-      this.formHasValueAndIsValid('citizenship') &&
-      this.formHasValueAndIsValid('resume') &&
+      this.formHasValueAndIsValid('teamName') &&
       this.formHasValueAndIsValid('email') &&
       this.formHasValueAndIsValid('password');
   }
@@ -153,10 +136,8 @@ export class RefereeComponent implements OnInit {
     name: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
-    birthDate: new FormControl('', [Validators.required, Validators.pattern('^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$')]),
     phone: new FormControl('', Validators.required),
-    citizenship: new FormControl('', Validators.required),
-    resume: new FormControl('', Validators.required),
+    teamName: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required)
   }, );

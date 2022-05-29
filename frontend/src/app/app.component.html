@@ -11,6 +11,11 @@
       <mat-nav-list>
         <a mat-list-item
           *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/teammanager']">
+          <span mat-line i18n="@@ADD_NEW_TEAM_MANAGER">Add new team manager</span>
+        </a>
+        <a mat-list-item
+          *ngIf="this.authenticationService.isAdminUser()"
           [routerLink]="['/referee']">
           <span mat-line i18n="@@ADD_NEW_REFEREE">Add new referee</span>
         </a>
