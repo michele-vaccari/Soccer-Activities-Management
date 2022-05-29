@@ -35,6 +35,9 @@ import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { ReportTableComponent } from './report-table/report-table.component';
+import { RefereesTableComponent } from './referees-table/referees-table.component';
+import { RefereeComponent } from './referee/referee.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,10 @@ import {MatMenuModule} from '@angular/material/menu';
     TeamsTableComponent,
     TeamDetailsComponent,
     TeamPlayersTableComponent,
-    PlayerDetailsComponent
+    PlayerDetailsComponent,
+    ReportTableComponent,
+    RefereesTableComponent,
+    RefereeComponent
   ],
   imports: [
     BrowserModule,

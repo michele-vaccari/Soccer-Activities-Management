@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import { User } from '../interfaces/user';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { User } from '../interfaces/user';
 import { RefereeService } from '../services/referee.service';
 
 @Component({
-  selector: 'app-users-table',
-  templateUrl: './users-table.component.html',
-  styleUrls: ['./users-table.component.css']
+  selector: 'app-referees-table',
+  templateUrl: './referees-table.component.html',
+  styleUrls: ['./referees-table.component.css']
 })
-export class UsersTableComponent implements OnInit {
+export class RefereesTableComponent implements OnInit {
   columns = [
     {
       columnDef: 'id',
