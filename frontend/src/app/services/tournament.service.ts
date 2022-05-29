@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ShortTournament } from '../interfaces/short-tournament';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../constants';
@@ -24,4 +24,17 @@ export class TournamentService {
       );
   }
 
+  addTournament(tournament: Tournament): Observable<Tournament> {
+    return this.http.post<Tournament>(
+      API_ENDPOINT + '/tournaments',
+      tournament,
+      this.httpOptionsContentTypeJson
+    );
+  }
+  
+  private httpOptionsContentTypeJson = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 }

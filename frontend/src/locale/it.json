@@ -129,6 +129,11 @@
     "ERROR_UPDATING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND": "Errore nell'aggiornamento del gestore della squadra, gestore della squadra non trovato",
     "ERROR_UPDATING_TEAM_MANAGER_EMAIL_HAS_ALREADY_BEEN_USED": "Errore nell'aggiornamento del gestpre della squadra, l'e-mail è già stata utilizzata",
     "TEAM_MANAGER_SUCCESSFULLY_UPDATED": "Gestore della squadra aggiornato con successo",
-    "ERROR_RETRIEVING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND": "Errore nel recupero del gestore della squadra, gestore della squadra non trovato"
+    "ERROR_RETRIEVING_TEAM_MANAGER_TEAM_MANAGER_NOT_FOUND": "Errore nel recupero del gestore della squadra, gestore della squadra non trovato",
+    "ADD_NEW_TOURNAMENT": "Aggiungi nuovo torneo",
+    "DESCRIPTION": "Descrizione",
+    "ERROR_ADDING_TOURNAMENT": "Errore nell'aggiunta del torneo",
+    "TOURNAMENT_SUCCESSFULLY_ADDED": "Torneo aggiunto con successo",
+    "SELECT_TEAMS": "Seleziona le squadre"
   }
 }

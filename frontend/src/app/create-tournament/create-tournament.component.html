@@ -1,0 +1,40 @@
+
+<form [formGroup]="tournamentForm" fxLayout="column">
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@TYPE">Type</ng-container>
+        </mat-label>
+        <mat-select formControlName="type">
+            <mat-option value="RoundRobin" i18n="@@ROUND_ROBIN">Round Robin</mat-option>
+            <mat-option value="SingleElimination" i18n="@@SINGLE_ELIMINATION">Single Elimination</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@NAME">Name</ng-container>
+        </mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@DESCRIPTION">Description</ng-container>
+        </mat-label>
+        <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+</form>
+
+<div style="margin-bottom: 20px">
+    <div style="margin-bottom: 10px">
+        <label i18n="@@SELECT_TEAMS">Select teams</label>
+    </div>
+    <div *ngFor="let team of teams">
+        <mat-checkbox [(ngModel)]="team.checked">{{team.name}}</mat-checkbox>
+    </div>
+</div>
+
+<button (click)="postNewTournament()"
+    mat-stroked-button color="primary"
+    [disabled]="!areTournamentFormValid()">
+    <ng-container i18n="@@ADD">Add</ng-container>
+</button>

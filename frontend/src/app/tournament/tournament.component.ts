@@ -88,7 +88,8 @@ export class TournamentComponent implements OnInit {
       {
         next: (tournament: Tournament) => {
           this.tournament = tournament;
-          this.dataSource.data = tournament.ranking;
+          if (tournament.ranking !== undefined)
+            this.dataSource.data = tournament.ranking;
           this.isRoundRobinTournament = tournament.type == "R";
 
           if (this.isRoundRobinTournament) {
@@ -106,16 +107,22 @@ export class TournamentComponent implements OnInit {
             );
             this.displayedColumns = this.columns.map(c => c.columnDef);
 
-            this.firstRoundDayMatchMap = this.tournament.firstRoundMatches;
-            this.secondRoundDayMatchMap = this.tournament.secondRoundMatches;
+            if (this.tournament.firstRoundMatches !== undefined)
+              this.firstRoundDayMatchMap = this.tournament.firstRoundMatches;
+            if (this.tournament.secondRoundMatches !== undefined)
+              this.secondRoundDayMatchMap = this.tournament.secondRoundMatches;
           }
           else {
-            this.eighthFinalsMatches = tournament.eighthFinalsMatches;
-            this.quarterFinalsMatches = tournament.quarterFinalsMatches;
-            this.semiFinalsMatches = tournament.semifinalMatches;
-            this.finalMatch = new Map<number, TournamentMatch[]>([
-              [parseInt(tournament.finalMatch.matchName), [tournament.finalMatch]]
-            ]);
+            if (tournament.eighthFinalsMatches !== undefined)
+              this.eighthFinalsMatches = tournament.eighthFinalsMatches;
+            if (tournament.quarterFinalsMatches !== undefined)
+              this.quarterFinalsMatches = tournament.quarterFinalsMatches;
+            if (tournament.semifinalMatches !== undefined)
+              this.semiFinalsMatches = tournament.semifinalMatches;
+            if (tournament.finalMatch !== undefined)
+              this.finalMatch = new Map<number, TournamentMatch[]>([
+                [parseInt(tournament.finalMatch.matchName), [tournament.finalMatch]]
+              ]);
 
             this.hasEighthFinals = Object.keys(this.eighthFinalsMatches).length > 0;
             this.hasQuarterFinals = Object.keys(this.quarterFinalsMatches).length > 0;

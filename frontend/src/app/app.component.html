@@ -20,8 +20,9 @@
           <span mat-line i18n="@@ADD_NEW_REFEREE">Add new referee</span>
         </a>
         <a mat-list-item
-          *ngIf="this.authenticationService.isAdminUser()">
-          <span mat-line>Aggiungi torneo</span>
+          *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/tournament']">
+          <span mat-line i18n="@@ADD_NEW_TOURNAMENT">Add new tournament</span>
         </a>
         <a mat-list-item
           *ngIf="this.authenticationService.isAdminUser()">

@@ -34,12 +34,14 @@ import { TeamsTableComponent } from './teams-table/teams-table.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { RefereesTableComponent } from './referees-table/referees-table.component';
 import { RefereeComponent } from './referee/referee.component';
 import { TeamManagersTableComponent } from './team-managers-table/team-managers-table.component';
 import { TeamManagerComponent } from './team-manager/team-manager.component';
+import { CreateTournamentComponent } from './create-tournament/create-tournament.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,8 @@ import { TeamManagerComponent } from './team-manager/team-manager.component';
     RefereesTableComponent,
     RefereeComponent,
     TeamManagersTableComponent,
-    TeamManagerComponent
+    TeamManagerComponent,
+    CreateTournamentComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,8 @@ import { TeamManagerComponent } from './team-manager/team-manager.component';
     MatCardModule,
     MatListModule,
     MatTooltipModule,
-    MatMenuModule
+    MatMenuModule,
+    MatCheckboxModule
   ],
   providers: [
     {
