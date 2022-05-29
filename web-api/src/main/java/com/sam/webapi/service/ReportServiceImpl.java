@@ -25,6 +25,7 @@ public class ReportServiceImpl implements ReportService {
 	private final TournamentTeamRepository tournamentTeamRepository;
 	private final TournamentTeamMatchRepository tournamentTeamMatchRepository;
 	private final MatchRepository matchRepository;
+	private final UserRepository userRepository;
 
 	@Autowired
 	public ReportServiceImpl(TeamRepository teamRepository,
@@ -35,7 +36,8 @@ public class ReportServiceImpl implements ReportService {
 							 RankingRepository rankingRepository,
 							 TournamentTeamRepository tournamentTeamRepository,
 							 TournamentTeamMatchRepository tournamentTeamMatchRepository,
-							 MatchRepository matchRepository) {
+							 MatchRepository matchRepository,
+							 UserRepository userRepository) {
 		this.reportRepository = reportRepository;
 		this.teamRepository = teamRepository;
 		this.playerRepository = playerRepository;
@@ -45,11 +47,13 @@ public class ReportServiceImpl implements ReportService {
 		this.tournamentTeamRepository = tournamentTeamRepository;
 		this.tournamentTeamMatchRepository = tournamentTeamMatchRepository;
 		this.matchRepository = matchRepository;
+		this.userRepository = userRepository;
 	}
 
 	@Override
 	@Transactional
-	public Iterable<ShortReportDto> getReports(String refereeEmail) {
+	public Iterable<ShortReportDto> getReports(String adminEmail) {
+		isAuthorizedUser(adminEmail);
 
 		var reports = reportRepository.findAll();
 
@@ -478,5 +482,12 @@ public class ReportServiceImpl implements ReportService {
 					"Y"
 			));
 		}
+	}
+
+	private void isAuthorizedUser(String userEmail) {
+		var user = userRepository.findByEmailAndActive(userEmail,"Y");
+		if (user == null ||
+				!user.getRole().equals("Admin"))
+			throw new UnauthorizedException();
 	}
 }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,12 @@ public class ReportController {
 		this.jwtService = jwtService;
 	}
 
-	@Operation(summary = "Get reports")
+	@Operation(summary = "Get reports", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Reports found",
 					content = { @Content(mediaType = "application/json",
 					schema = @Schema(implementation = ShortReportDto.class)) }),
-			@ApiResponse(responseCode = "401", description = "Unauthorized, only Referee can perform this operation", content = @Content(schema = @Schema(hidden = true)))
+			@ApiResponse(responseCode = "401", description = "Unauthorized, only Admin users can perform this operation", content = @Content(schema = @Schema(hidden = true)))
 	})
 	@RequestMapping(value = "/reports",
 			method = RequestMethod.GET,
