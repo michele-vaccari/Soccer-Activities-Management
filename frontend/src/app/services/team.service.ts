@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../constants';
@@ -36,4 +36,18 @@ export class TeamService {
       API_ENDPOINT + '/teams/' + id + '/tournaments'
       );
   }
+
+  updateTeam(id: number, team: Team): Observable<Team> {
+    return this.http.patch<Team>(
+      API_ENDPOINT + '/teams/' + id,
+      team,
+      this.httpOptionsContentTypeJson
+      );
+    }
+
+  private httpOptionsContentTypeJson = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 }

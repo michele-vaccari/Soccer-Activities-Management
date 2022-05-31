@@ -149,6 +149,9 @@
     "NO_MATCH_AVAILABLE": "Nessuna partita disponibile",
     "TEAM": "SQUADRA",
     "EDIT": "Modifica",
-    "VIEW": "Visualizza"
+    "VIEW": "Visualizza",
+    "ERROR_UPDATING_TEAM": "Errore nell'aggiornamento della squadra",
+    "ERROR_UPDATING_TEAM_TEAM_NOT_FOUND": "Errore nell'aggiornamento della squadra, squadra non trovata",
+    "TEAM_SUCCESSFULLY_UPDATED": "Squadra aggiornata con successo"
   }
 }

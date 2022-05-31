@@ -48,7 +48,7 @@
         <button *ngIf="this.authenticationService.isTeamManagerUser()" mat-button [matMenuTriggerFor]="teamMenu" class="toolbar-text"><span i18n="@@TEAM">TEAM</span> <span class="material-icons">expand_more</span></button>
         <mat-menu #teamMenu="matMenu">
             <button mat-menu-item
-                    [routerLink]="['/teams', this.authenticationService.getTeamId()]"
+                    [routerLink]="['/team', this.authenticationService.getTeamId()]"
                     i18n="@@EDIT">
                 Edit
             </button>

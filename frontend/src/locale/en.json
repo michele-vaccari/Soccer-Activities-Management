@@ -149,6 +149,9 @@
     "NO_MATCH_AVAILABLE": "No match available",
     "TEAM": "TEAM",
     "EDIT": "Edit",
-    "VIEW": "View"
+    "VIEW": "View",
+    "ERROR_UPDATING_TEAM": "Error updating team",
+    "ERROR_UPDATING_TEAM_TEAM_NOT_FOUND": "Error updating team, team not found",
+    "TEAM_SUCCESSFULLY_UPDATED": "Team successfully updated"
   }
 }

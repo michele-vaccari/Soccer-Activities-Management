@@ -12,6 +12,7 @@ import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamManagerComponent } from './team-manager/team-manager.component';
 import { TeamManagersTableComponent } from './team-managers-table/team-managers-table.component';
 import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
+import { TeamComponent } from './team/team.component';
 import { TeamsTableComponent } from './teams-table/teams-table.component';
 import { TournamentComponent } from './tournament/tournament.component';
 import { TournamentsTableComponent } from './tournaments-table/tournaments-table.component';
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'admins/:id',
     component: UserComponent
+  },
+  {
+    path: 'team/:id',
+    component: TeamComponent
   },
   {
     path: 'teams',
