@@ -40,11 +40,16 @@ public class MatchServiceImpl implements MatchService {
 		if (match.isEmpty())
 			throw new MatchNotFoundException();
 
+		var existedReport = reportRepository.findByMatchId(id);
+		if (existedReport.isPresent())
+			throw new MatchUpdateException();
+
 		var referee = refereeRepository.findById(matchDto.getRefereeId());
 		if (referee.isEmpty())
 			throw new BadRequestException();
 
 		match.get().setDate(matchDto.getDate());
+		match.get().setTime(matchDto.getTime());
 		match.get().setPlace(matchDto.getPlace());
 
 		matchRepository.save(match.get());

@@ -129,7 +129,7 @@ public class TournamentServiceImpl implements TournamentService {
 
 			var hasEighthFinals = numberOfTeams >= 16;
 			var hasQuarterFinals = numberOfTeams >= 8;
-			var hasSemifinal = numberOfTeams >= 2;
+			var hasSemifinal = numberOfTeams > 2;
 
 			for (var tournamentTeamMatch : tournamentTeamMatches) {
 

@@ -25,8 +25,9 @@
           <span mat-line i18n="@@ADD_NEW_TOURNAMENT">Add new tournament</span>
         </a>
         <a mat-list-item
-          *ngIf="this.authenticationService.isAdminUser()">
-          <span mat-line>Assegna arbitro</span>
+          *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/report']">
+          <span mat-line i18n="@@ASSIGN_REFEREE">Assign referee</span>
         </a>
         <a mat-list-item
           *ngIf="this.authenticationService.isTeamManagerUser()">

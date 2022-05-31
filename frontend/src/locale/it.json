@@ -134,6 +134,18 @@
     "DESCRIPTION": "Descrizione",
     "ERROR_ADDING_TOURNAMENT": "Errore nell'aggiunta del torneo",
     "TOURNAMENT_SUCCESSFULLY_ADDED": "Torneo aggiunto con successo",
-    "SELECT_TEAMS": "Seleziona le squadre"
+    "SELECT_TEAMS": "Seleziona le squadre",
+    "ASSIGN_REFEREE": "Assegna arbitro",
+    "PHASE": "Fase",
+    "TOURNAMENT": "Torneo",
+    "MATCH_DATE": "Data partita",
+    "MATCH_TIME": "Orario partita",
+    "NOT_A_VALID_TIME": "Orario non valido. Formato orario accettato: HH:MM",
+    "ASSIGNMENT_CONFIRMATION": "Conferma assegnazione",
+    "ERROR_UPDATING_MATCH": "Errore nell'aggiornamento della partita",
+    "ERROR_UPDATING_MATCH_MATCH_NOT_FOUND": "Errore nell'aggiornamento della partita, partita non trovato",
+    "ERROR_UPDATING_MATCH_UPDATE_HAS_ALREADY_BEEN_MADE": "Errore nell'aggiornamento della partita, una richiesta di aggiornamento è già stata fatta",
+    "MATCH_SUCCESSFULLY_UPDATED": "Partita aggiornata con successo",
+    "NO_MATCH_AVAILABLE": "Nessuna partita disponibile"
   }
 }

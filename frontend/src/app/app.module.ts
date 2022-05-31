@@ -42,6 +42,7 @@ import { TeamManagersTableComponent } from './team-managers-table/team-managers-
 import { TeamManagerComponent } from './team-manager/team-manager.component';
 import { CreateTournamentComponent } from './create-tournament/create-tournament.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     RefereeComponent,
     TeamManagersTableComponent,
     TeamManagerComponent,
-    CreateTournamentComponent
+    CreateTournamentComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,

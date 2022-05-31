@@ -134,6 +134,18 @@
     "DESCRIPTION": "Description",
     "ERROR_ADDING_TOURNAMENT": "Error adding tournament",
     "TOURNAMENT_SUCCESSFULLY_ADDED": "Tournament successfully added",
-    "SELECT_TEAMS": "Select teams"
+    "SELECT_TEAMS": "Select teams",
+    "ASSIGN_REFEREE": "Assign referee",
+    "PHASE": "Phase",
+    "TOURNAMENT": "Tournament",
+    "MATCH_DATE": "Match date",
+    "MATCH_TIME": "Match time",
+    "NOT_A_VALID_TIME": "Not a valid time. Accepted time format: HH:MM",
+    "ASSIGNMENT_CONFIRMATION": "Assignment confirmation",
+    "ERROR_UPDATING_MATCH": "Error updating match",
+    "ERROR_UPDATING_MATCH_MATCH_NOT_FOUND": "Error updating match, match not found",
+    "ERROR_UPDATING_MATCH_UPDATE_HAS_ALREADY_BEEN_MADE": "Error updating match, a request for an update has already been made",
+    "MATCH_SUCCESSFULLY_UPDATED": "Match successfully updated",
+    "NO_MATCH_AVAILABLE": "No match available"
   }
 }
