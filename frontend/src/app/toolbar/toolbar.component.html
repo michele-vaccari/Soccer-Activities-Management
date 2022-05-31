@@ -29,7 +29,7 @@
             REPORTS
         </button>
 
-        <button *ngIf="!this.authenticationService.isAdminUser()"
+        <button *ngIf="!this.authenticationService.isAdminUser() && !this.authenticationService.isTeamManagerUser()"
             mat-button
             class="toolbar-text"
             i18n="@@TEAMS"
@@ -37,18 +37,34 @@
             TEAMS
         </button>
 
-        <button mat-button
+        <button *ngIf="!this.authenticationService.isTeamManagerUser()"
+            mat-button
             class="toolbar-text"
             i18n="@@TOURNAMENTS"
             [routerLink]="['/tournaments']">
             TOURNAMENTS
         </button>
 
+        <button *ngIf="this.authenticationService.isTeamManagerUser()" mat-button [matMenuTriggerFor]="teamMenu" class="toolbar-text"><span i18n="@@TEAM">TEAM</span> <span class="material-icons">expand_more</span></button>
+        <mat-menu #teamMenu="matMenu">
+            <button mat-menu-item
+                    [routerLink]="['/teams', this.authenticationService.getTeamId()]"
+                    i18n="@@EDIT">
+                Edit
+            </button>
+            <button mat-menu-item
+                    [routerLink]="['/teams', this.authenticationService.getTeamId()]"
+                    i18n="@@VIEW">
+                View
+            </button>
+        </mat-menu>
+
         <div *ngIf="this.authenticationService.isUserLoggedIn(); then thenBlock else elseBlock"></div>
         <ng-template #thenBlock>
             <button mat-button [matMenuTriggerFor]="userMenu" class="toolbar-text"><span class="material-icons">account_circle</span> <span class="material-icons">expand_more</span></button>
             <mat-menu #userMenu="matMenu">
                 <button mat-menu-item
+                        *ngIf="this.authenticationService.isAdminUser()"
                         [routerLink]="['/admins', this.authenticationService.getUserId()]"
                         i18n="@@DETAILS">
                     Details

@@ -146,6 +146,9 @@
     "ERROR_UPDATING_MATCH_MATCH_NOT_FOUND": "Error updating match, match not found",
     "ERROR_UPDATING_MATCH_UPDATE_HAS_ALREADY_BEEN_MADE": "Error updating match, a request for an update has already been made",
     "MATCH_SUCCESSFULLY_UPDATED": "Match successfully updated",
-    "NO_MATCH_AVAILABLE": "No match available"
+    "NO_MATCH_AVAILABLE": "No match available",
+    "TEAM": "TEAM",
+    "EDIT": "Edit",
+    "VIEW": "View"
   }
 }

@@ -38,7 +38,7 @@ public class JwtService {
 		}
 	}
 
-	public String createJwt(String email, Integer id, String role, String name, String surname) {
+	public String createJwt(String email, Integer id, String role, String name, String surname, int teamId) {
 		var currentTime = System.currentTimeMillis();
 
 		return JWT.create()
@@ -50,6 +50,7 @@ public class JwtService {
 				.withClaim("role", role)
 				.withClaim("name", name)
 				.withClaim("surname", surname)
+				.withClaim("teamId", teamId)
 				.sign(algorithm);
 	}
 

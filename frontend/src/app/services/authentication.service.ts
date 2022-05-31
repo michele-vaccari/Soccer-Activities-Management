@@ -59,6 +59,15 @@ export class AuthenticationService {
     return decodedToken.id;
   }
 
+  getTeamId() {
+    const token = sessionStorage.getItem('token');
+    if (token === null)
+      return;
+    
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken.teamId;
+  }
+
   isAdminUser() {
     return this.getUserRole() == 'Admin';
   }

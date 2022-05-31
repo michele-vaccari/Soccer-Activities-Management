@@ -146,6 +146,9 @@
     "ERROR_UPDATING_MATCH_MATCH_NOT_FOUND": "Errore nell'aggiornamento della partita, partita non trovato",
     "ERROR_UPDATING_MATCH_UPDATE_HAS_ALREADY_BEEN_MADE": "Errore nell'aggiornamento della partita, una richiesta di aggiornamento è già stata fatta",
     "MATCH_SUCCESSFULLY_UPDATED": "Partita aggiornata con successo",
-    "NO_MATCH_AVAILABLE": "Nessuna partita disponibile"
+    "NO_MATCH_AVAILABLE": "Nessuna partita disponibile",
+    "TEAM": "SQUADRA",
+    "EDIT": "Modifica",
+    "VIEW": "Visualizza"
   }
 }
