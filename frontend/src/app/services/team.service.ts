@@ -45,6 +45,12 @@ export class TeamService {
       );
     }
 
+  deactivatePlayer(id: number) {
+    return this.http.delete(
+      API_ENDPOINT + '/players/' + id
+    );
+  }
+
   private httpOptionsContentTypeJson = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'

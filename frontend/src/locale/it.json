@@ -152,6 +152,9 @@
     "VIEW": "Visualizza",
     "ERROR_UPDATING_TEAM": "Errore nell'aggiornamento della squadra",
     "ERROR_UPDATING_TEAM_TEAM_NOT_FOUND": "Errore nell'aggiornamento della squadra, squadra non trovata",
-    "TEAM_SUCCESSFULLY_UPDATED": "Squadra aggiornata con successo"
+    "TEAM_SUCCESSFULLY_UPDATED": "Squadra aggiornata con successo",
+    "YOU_ENTERED": "Hai inserito",
+    "ERROR_DEACTIVATING_PLAYER": "Errore nella disattivazione del giocatore",
+    "PLAYER_SUCCESSFULLY_DEACTIVATED": "Giocatore disattivato con successo"
   }
 }

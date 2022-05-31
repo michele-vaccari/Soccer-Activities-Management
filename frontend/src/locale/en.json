@@ -152,6 +152,9 @@
     "VIEW": "View",
     "ERROR_UPDATING_TEAM": "Error updating team",
     "ERROR_UPDATING_TEAM_TEAM_NOT_FOUND": "Error updating team, team not found",
-    "TEAM_SUCCESSFULLY_UPDATED": "Team successfully updated"
+    "TEAM_SUCCESSFULLY_UPDATED": "Team successfully updated",
+    "YOU_ENTERED": "You entered",
+    "ERROR_DEACTIVATING_PLAYER": "Error deactivating player",
+    "PLAYER_SUCCESSFULLY_DEACTIVATED": "Player successfully deactivated"
   }
 }

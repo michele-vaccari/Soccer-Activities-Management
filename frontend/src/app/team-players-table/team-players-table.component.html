@@ -6,6 +6,10 @@
     <h2 i18n="@@PLAYERS">Players</h2>
 </div>
 
+<div *ngIf="this.authenticationService.isTeamManagerUser()" fxLayout="row" fxLayoutAlign="center">
+    <p><span i18n="@@YOU_ENTERED">You entered</span> {{dataSource.data.length}} / {{MAX_PLAYER_NUMBER}} <span i18n="@@PLAYERS" style="text-transform:lowercase;">players</span></p>
+</div>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
 
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
@@ -19,12 +23,27 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-        <button
-            mat-icon-button
-            color="primary"
-            [routerLink]="['/players', element.id]">
-            <mat-icon>info</mat-icon>
-        </button>
+            <button
+                mat-icon-button
+                color="primary"
+                [routerLink]="['/players', element.id]">
+                <mat-icon>info</mat-icon>
+            </button>
+            <button
+                *ngIf="this.authenticationService.isTeamManagerUser()"
+                mat-icon-button
+                color="primary"
+                [routerLink]="['/players', element.id]">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button
+                *ngIf="this.authenticationService.isTeamManagerUser()"
+                mat-icon-button
+                color="primary"
+                [disabled]="element.active == 'N'"
+                (click)="deactivatePlayer(element.id)">
+                <mat-icon>delete</mat-icon>
+            </button>
         </td>
     </ng-container>
     
