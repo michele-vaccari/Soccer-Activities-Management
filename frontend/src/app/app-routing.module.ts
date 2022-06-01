@@ -4,6 +4,7 @@ import { CreateTournamentComponent } from './create-tournament/create-tournament
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
+import { PlayerComponent } from './player/player.component';
 import { RefereeComponent } from './referee/referee.component';
 import { RefereesTableComponent } from './referees-table/referees-table.component';
 import { ReportTableComponent } from './report-table/report-table.component';
@@ -56,6 +57,14 @@ const routes: Routes = [
   {
     path: 'teams/:id/tournaments',
     component: TournamentsTableComponent
+  },
+  {
+    path: 'players/new',
+    component: PlayerComponent
+  },
+  {
+    path: 'players/edit/:id',
+    component: PlayerComponent
   },
   {
     path: 'players/:id',

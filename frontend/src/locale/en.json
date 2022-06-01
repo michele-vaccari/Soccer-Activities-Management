@@ -155,6 +155,13 @@
     "TEAM_SUCCESSFULLY_UPDATED": "Team successfully updated",
     "YOU_ENTERED": "You entered",
     "ERROR_DEACTIVATING_PLAYER": "Error deactivating player",
-    "PLAYER_SUCCESSFULLY_DEACTIVATED": "Player successfully deactivated"
+    "PLAYER_SUCCESSFULLY_DEACTIVATED": "Player successfully deactivated",
+    "ADD_NEW_PLAYER": "Add new player",
+    "ERROR_ADDING_PLAYER": "Error adding player",
+    "ERROR_UPDATING_PLAYER": "Error updating player",
+    "ERROR_ADDING_PLAYER_REACHED_MAXIMUM_LIMIT_OF_ACTIVE_PLAYERS": "Error adding player, you have reached the maximum limit of active players per team",
+    "ERROR_UPDATING_PLAYER_PLAYER_NOT_FOUND": "Error updating player, player not found",
+    "PLAYER_SUCCESSFULLY_ADDED": "Player successfully added",
+    "PLAYER_SUCCESSFULLY_UPDATED": "Player successfully updated"
   }
 }

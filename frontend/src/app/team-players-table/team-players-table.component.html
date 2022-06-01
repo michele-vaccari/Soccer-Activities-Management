@@ -33,7 +33,7 @@
                 *ngIf="this.authenticationService.isTeamManagerUser()"
                 mat-icon-button
                 color="primary"
-                [routerLink]="['/players', element.id]">
+                [routerLink]="['/players/edit', element.id]">
                 <mat-icon>edit</mat-icon>
             </button>
             <button

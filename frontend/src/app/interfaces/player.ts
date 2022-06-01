@@ -1,5 +1,5 @@
 export interface Player {
-    id: number,
+    id?: number,
     teamId: number,
     active: string,
     jerseyNumber: number,
