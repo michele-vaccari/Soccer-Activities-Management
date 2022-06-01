@@ -47,6 +47,7 @@ import { TeamComponent } from './team/team.component';
 import { PlayerComponent } from './player/player.component';
 import { LineupsTableComponent } from './lineups-table/lineups-table.component';
 import { LineupComponent } from './lineup/lineup.component';
+import { RefereeReportTableComponent } from './referee-report-table/referee-report-table.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { LineupComponent } from './lineup/lineup.component';
     TeamComponent,
     PlayerComponent,
     LineupsTableComponent,
-    LineupComponent
+    LineupComponent,
+    RefereeReportTableComponent
   ],
   imports: [
     BrowserModule,

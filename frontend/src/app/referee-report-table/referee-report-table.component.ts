@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Report } from '../interfaces/report';
+import { AuthenticationService } from '../services/authentication.service';
 import { ReportService } from '../services/report.service';
 
 @Component({
-  selector: 'app-report-table',
-  templateUrl: './report-table.component.html',
-  styleUrls: ['./report-table.component.css']
+  selector: 'app-referee-report-table',
+  templateUrl: './referee-report-table.component.html',
+  styleUrls: ['./referee-report-table.component.css']
 })
-export class ReportTableComponent implements OnInit {
+export class RefereeReportTableComponent implements OnInit {
+
   columns = [
     {
       columnDef: 'tournamentName',
@@ -27,19 +28,9 @@ export class ReportTableComponent implements OnInit {
       cell: (element: Report) => `${element.matchDate}`,
     },
     {
-      columnDef: 'place',
-      header: $localize `:@@PLACE:Place`,
-      cell: (element: Report) => `${element.place}`,
-    },
-    {
       columnDef: 'result',
       header: $localize `:@@RESULT:Result`,
       cell: (element: Report) => `${element.result === null || element.result === undefined ?  $localize `:@@TO_BE_DEFINED:To be defined` : element.result}`,
-    },
-    {
-      columnDef: 'referee',
-      header: $localize `:@@REFEREE:Referee`,
-      cell: (element: Report) => `${element.refereeName} ${element.refereeSurname}`,
     },
     {
       columnDef: 'info',
@@ -50,11 +41,12 @@ export class ReportTableComponent implements OnInit {
   displayedColumns = this.columns.map(c => c.columnDef);
   dataSource = new MatTableDataSource<Report>();
 
-  constructor(private reportService: ReportService) {
+  constructor(private reportService: ReportService,
+              private authenticationService: AuthenticationService) {
   }
 
   getAllReports() {
-    this.reportService.getAllReports().subscribe((data: Report[]) => this.dataSource.data = data);
+    this.reportService.getReportsOfReferee(this.authenticationService.getUserId()).subscribe((data: Report[]) => this.dataSource.data = data);
   }
 
   ngOnInit() {

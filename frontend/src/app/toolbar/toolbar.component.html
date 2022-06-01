@@ -29,7 +29,7 @@
             REPORTS
         </button>
 
-        <button *ngIf="!this.authenticationService.isAdminUser() && !this.authenticationService.isTeamManagerUser()"
+        <button *ngIf="!this.authenticationService.isAdminUser() && !this.authenticationService.isTeamManagerUser() && !this.authenticationService.isRefereeUser()"
             mat-button
             class="toolbar-text"
             i18n="@@TEAMS"
@@ -37,7 +37,7 @@
             TEAMS
         </button>
 
-        <button *ngIf="!this.authenticationService.isTeamManagerUser()"
+        <button *ngIf="!this.authenticationService.isTeamManagerUser() && !this.authenticationService.isRefereeUser()"
             mat-button
             class="toolbar-text"
             i18n="@@TOURNAMENTS"

@@ -12,9 +12,15 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  getAllUsers(): Observable<Report[]> {
+  getAllReports(): Observable<Report[]> {
     return this.http.get<Report[]>(
       API_ENDPOINT + '/reports'
+      );
+  }
+
+  getReportsOfReferee(refereeId: number): Observable<Report[]> {
+    return this.http.get<Report[]>(
+      API_ENDPOINT + '/referees/' + refereeId + '/reports'
       );
   }
 

@@ -73,7 +73,7 @@ public class ReportController {
 		}
 	}
 
-	@Operation(summary = "Get linrups of report by its id")
+	@Operation(summary = "Get lineups of report by its id")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Report found",
 					content = { @Content(mediaType = "application/json",

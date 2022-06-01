@@ -1,9 +1,6 @@
 package com.sam.webapi.service;
 
-import com.sam.webapi.dataaccess.RefereeRepository;
-import com.sam.webapi.dataaccess.RegisteredUserRepository;
-import com.sam.webapi.dataaccess.TeamRepository;
-import com.sam.webapi.dataaccess.UserRepository;
+import com.sam.webapi.dataaccess.*;
 import com.sam.webapi.dto.RefereeDto;
 import com.sam.webapi.dto.ShortReportDto;
 import com.sam.webapi.model.Referee;
@@ -22,16 +19,19 @@ public class RefereeServiceImpl implements RefereeService {
 	private final RegisteredUserRepository registeredUserRepository;
 	private final UserRepository userRepository;
 	private final TeamRepository teamRepository;
+	private final TeamPlayerReportRepository teamPlayerReportRepository;
 
 	@Autowired
 	public RefereeServiceImpl(RefereeRepository refereeRepository,
 							  RegisteredUserRepository registeredUserRepository,
 							  UserRepository userRepository,
-							  TeamRepository teamRepository) {
+							  TeamRepository teamRepository,
+							  TeamPlayerReportRepository teamPlayerReportRepository) {
 		this.refereeRepository = refereeRepository;
 		this.registeredUserRepository = registeredUserRepository;
 		this.userRepository = userRepository;
 		this.teamRepository = teamRepository;
+		this.teamPlayerReportRepository = teamPlayerReportRepository;
 	}
 
 	@Override
@@ -119,6 +119,14 @@ public class RefereeServiceImpl implements RefereeService {
 			var match = report.getMatchByMatchId();
 			var tournamentTeamMatch = match.getTournamentTeamMatchesById();
 			var tournamentName = tournamentTeamMatch.getTournamentByTournamentId().getName();
+
+			var teamIds = teamPlayerReportRepository.findDistinctTeamIdsByReportId(report.getId());
+			var teamLineupSubmitted = teamIds.contains(tournamentTeamMatch.getTeamId());
+			var otherTeamLineupSubmitted = teamIds.contains(tournamentTeamMatch.getOtherTeamId());
+
+			if (!teamLineupSubmitted ||
+				!otherTeamLineupSubmitted)
+				continue;
 
 			var teamId = tournamentTeamMatch.getTeamId();
 			var otherTeamId = tournamentTeamMatch.getOtherTeamId();
