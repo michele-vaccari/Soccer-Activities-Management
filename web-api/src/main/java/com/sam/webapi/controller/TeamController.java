@@ -113,11 +113,12 @@ public class TeamController {
 		}
 	}
 
-	@Operation(summary = "Get the list of matches")
+	@Operation(summary = "Get the list of matches", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Found the matches",
 					content = {@Content(mediaType = "application/json",
 							array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized, only the team manager can perform this operation", content = @Content(schema = @Schema(hidden = true))),
 			@ApiResponse(responseCode = "404", description = "Team not found", content = @Content(schema = @Schema(hidden = true)))
 	})
 	@RequestMapping(value = "/teams/{id}/matches",

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateTournamentComponent } from './create-tournament/create-tournament.component';
 import { HomeComponent } from './home/home.component';
+import { LineupsTableComponent } from './lineups-table/lineups-table.component';
 import { LoginComponent } from './login/login.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
 import { PlayerComponent } from './player/player.component';
@@ -57,6 +58,10 @@ const routes: Routes = [
   {
     path: 'teams/:id/tournaments',
     component: TournamentsTableComponent
+  },
+  {
+    path: 'teams/:id/matches',
+    component: LineupsTableComponent
   },
   {
     path: 'players/new',

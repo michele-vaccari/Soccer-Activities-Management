@@ -48,6 +48,14 @@
         <button *ngIf="this.authenticationService.isTeamManagerUser()"
             mat-button
             class="toolbar-text"
+            i18n="@@LINEUPS"
+            [routerLink]="['/teams', this.authenticationService.getTeamId(), 'matches']">
+            LINEUPS
+        </button>
+
+        <button *ngIf="this.authenticationService.isTeamManagerUser()"
+            mat-button
+            class="toolbar-text"
             i18n="@@PLAYERS"
             [routerLink]="['/teams', this.authenticationService.getTeamId(), 'players']"
             style="text-transform:uppercase;">

@@ -45,6 +45,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReportComponent } from './report/report.component';
 import { TeamComponent } from './team/team.component';
 import { PlayerComponent } from './player/player.component';
+import { LineupsTableComponent } from './lineups-table/lineups-table.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { PlayerComponent } from './player/player.component';
     CreateTournamentComponent,
     ReportComponent,
     TeamComponent,
-    PlayerComponent
+    PlayerComponent,
+    LineupsTableComponent
   ],
   imports: [
     BrowserModule,

@@ -144,6 +144,7 @@ public class TeamServiceImpl implements TeamService {
 							tournamentTeamMatch.getMatchId(),
 							tournament.getName(),
 							tournamentTeamMatch.getMatchName(),
+							match.getDate(),
 							tournamentTeamMatch.getTeamId(),
 							tournamentTeamMatch.getOtherTeamId(),
 							teamName,

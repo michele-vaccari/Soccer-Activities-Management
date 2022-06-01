@@ -162,6 +162,7 @@
     "ERROR_ADDING_PLAYER_REACHED_MAXIMUM_LIMIT_OF_ACTIVE_PLAYERS": "Error adding player, you have reached the maximum limit of active players per team",
     "ERROR_UPDATING_PLAYER_PLAYER_NOT_FOUND": "Error updating player, player not found",
     "PLAYER_SUCCESSFULLY_ADDED": "Player successfully added",
-    "PLAYER_SUCCESSFULLY_UPDATED": "Player successfully updated"
+    "PLAYER_SUCCESSFULLY_UPDATED": "Player successfully updated",
+    "LINEUPS": "LINEUPS"
   }
 }

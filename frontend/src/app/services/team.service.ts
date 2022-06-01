@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_ENDPOINT } from '../constants';
+import { LineupMatch } from '../interfaces/lineup-match';
 import { Player } from '../interfaces/player';
 import { ShortTournament } from '../interfaces/short-tournament';
 import { Team } from '../interfaces/team';
@@ -34,6 +35,12 @@ export class TeamService {
   getAllTournamentsOfTeam(id: number): Observable<ShortTournament[]> {
     return this.http.get<ShortTournament[]>(
       API_ENDPOINT + '/teams/' + id + '/tournaments'
+      );
+  }
+
+  getAllLineupsOfTeam(id: number): Observable<LineupMatch[]> {
+    return this.http.get<LineupMatch[]>(
+      API_ENDPOINT + '/teams/' + id + '/matches'
       );
   }
 
