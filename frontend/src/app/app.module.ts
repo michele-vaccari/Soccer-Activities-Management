@@ -46,6 +46,7 @@ import { ReportComponent } from './report/report.component';
 import { TeamComponent } from './team/team.component';
 import { PlayerComponent } from './player/player.component';
 import { LineupsTableComponent } from './lineups-table/lineups-table.component';
+import { LineupComponent } from './lineup/lineup.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { LineupsTableComponent } from './lineups-table/lineups-table.component';
     ReportComponent,
     TeamComponent,
     PlayerComponent,
-    LineupsTableComponent
+    LineupsTableComponent,
+    LineupComponent
   ],
   imports: [
     BrowserModule,

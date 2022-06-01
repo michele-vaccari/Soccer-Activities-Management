@@ -163,6 +163,13 @@
     "ERROR_UPDATING_PLAYER_PLAYER_NOT_FOUND": "Errore nell'aggiornamento del giocatore, giocatore non trovato",
     "PLAYER_SUCCESSFULLY_ADDED": "Giocatore aggiunto con successo",
     "PLAYER_SUCCESSFULLY_UPDATED": "Giocatore aggiornato con successo",
-    "LINEUPS": "FORMAZIONI"
+    "LINEUPS": "FORMAZIONI",
+    "ERROR_ADDING_LINEUP": "Errore nell'aggiunta della formazione",
+    "ERROR_ADDING_LINEUP_REPORT_NOT_FOUND": "Errore nell'aggiunta della formazione, referto non trovato",
+    "LINEUP_SUCCESSFULLY_ADDED": "Formazione aggiunta con successo",
+    "MAIN_PLAYERS": "giocatori titolari",
+    "RESERVE_PLAYERS": "giocatori di riserva",
+    "SUBMIT": "Invia",
+    "YOU_SELECTED": "Hai selezionato"
   }
 }

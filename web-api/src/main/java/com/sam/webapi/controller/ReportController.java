@@ -129,11 +129,12 @@ public class ReportController {
 	}
 	}
 
-	@Operation(summary = "Add a lineup to report by its id")
+	@Operation(summary = "Add a lineup to report by its id", security = { @SecurityRequirement(name = "Bearer") })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Lineup added",
 					content = { @Content(mediaType = "application/json",
 					schema = @Schema(implementation = LineupDto.class)) }),
+			@ApiResponse(responseCode = "401", description = "Unauthorized, only team manager can perform this operation", content = @Content(schema = @Schema(hidden = true))),
 			@ApiResponse(responseCode = "404", description = "Tournament not found", content = @Content(schema = @Schema(hidden = true)))
 	})
 	@RequestMapping(value = "/reports/{id}/lineups",

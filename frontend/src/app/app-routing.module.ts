@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateTournamentComponent } from './create-tournament/create-tournament.component';
 import { HomeComponent } from './home/home.component';
+import { LineupComponent } from './lineup/lineup.component';
 import { LineupsTableComponent } from './lineups-table/lineups-table.component';
 import { LoginComponent } from './login/login.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
@@ -94,6 +95,10 @@ const routes: Routes = [
   {
     path: 'reports',
     component: ReportTableComponent
+  },
+  {
+    path: 'reports/:id/lineup',
+    component: LineupComponent
   },
   {
     path: 'teammanagers',

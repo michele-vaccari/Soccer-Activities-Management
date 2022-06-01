@@ -163,6 +163,13 @@
     "ERROR_UPDATING_PLAYER_PLAYER_NOT_FOUND": "Error updating player, player not found",
     "PLAYER_SUCCESSFULLY_ADDED": "Player successfully added",
     "PLAYER_SUCCESSFULLY_UPDATED": "Player successfully updated",
-    "LINEUPS": "LINEUPS"
+    "LINEUPS": "LINEUPS",
+    "ERROR_ADDING_LINEUP": "Error adding lineup",
+    "ERROR_ADDING_LINEUP_REPORT_NOT_FOUND": "Error adding lineup, report not found",
+    "LINEUP_SUCCESSFULLY_ADDED": "Lineup successfully added",
+    "MAIN_PLAYERS": "main players",
+    "RESERVE_PLAYERS": "reserve players",
+    "SUBMIT": "Submit",
+    "YOU_SELECTED": "You selected"
   }
 }
