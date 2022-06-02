@@ -27,7 +27,7 @@ export class ReportDetailsComponent implements OnInit {
     },
     {
       columnDef: 'cards',
-      header: $localize `:@@CARDs:Cards`,
+      header: $localize `:@@CARDS:Cards`,
       cell: (element: PlayerReport) => `${(element.admonitions === undefined || element.admonitions === 0) && !element.ejection ? '' : (element.admonitions === 1 ? this.admonition : (element.ejection ? this.expulsion : '' ))}`,
     }
     
@@ -35,7 +35,7 @@ export class ReportDetailsComponent implements OnInit {
   displayedColumns = this.columns.map(c => c.columnDef);
   reportId: number = 0;
   admonition: string = $localize `:@@ADMONITION:Admonition`;
-  expulsion: string = $localize `:@@EXPULSION:expulsion`;
+  expulsion: string = $localize `:@@EXPULSION:Expulsion`;
 
   constructor(public authenticationService: AuthenticationService,
               private reportService: ReportService,

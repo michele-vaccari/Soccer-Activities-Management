@@ -170,6 +170,23 @@
     "MAIN_PLAYERS": "giocatori titolari",
     "RESERVE_PLAYERS": "giocatori di riserva",
     "SUBMIT": "Invia",
-    "YOU_SELECTED": "Hai selezionato"
+    "YOU_SELECTED": "Hai selezionato",
+    "ERROR_RETRIEVING_LINEUPS_OF_REPORT_REPORT_NOT_FOUND": "Errore nel recupero delle formazioni del referto, referto non trovato",        
+    "ERROR_UPDATING_REPORT": "Erorre nell'aggiornamento del referto",
+    "ERROR_UPDATING_REPORT_REPORT_NOT_FOUND": "Errore nell'aggiornamento del referto, referto non trovato",
+    "REPORT_SUCCESSFULLY_UPDATED": "Referto aggiornato con successo",
+    "AUTOGOALS": "Autogoals",
+    "ERROR_RETRIEVING_REPORT_REPORT_NOT_FOUND": "Errore nel recupero del referto, referto non trovato",
+    "GOALS": "Goals",
+    "MATCH_START_TIME": "Orario inizio partita",
+    "MATCH_END_TIME": "Orario fine partita",
+    "PLAYER": "Giocatore",
+    "MAIN": "Main",
+    "RESERVE": "Reserve",
+    "MATCH_PLACE": "Luogo partita",
+    "EXPULSION": "Espulsione",
+    "CARDS": "Cartellini",
+    "ADMONITION": "Ammonizione",
+    "NO_LINEUP_TO_FILL_OUT": "Nessuna formazione da compilare"
   }
 }

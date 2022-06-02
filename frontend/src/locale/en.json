@@ -170,6 +170,23 @@
     "MAIN_PLAYERS": "main players",
     "RESERVE_PLAYERS": "reserve players",
     "SUBMIT": "Submit",
-    "YOU_SELECTED": "You selected"
+    "YOU_SELECTED": "You selected",
+    "ERROR_RETRIEVING_LINEUPS_OF_REPORT_REPORT_NOT_FOUND": "Error retrieving lineups of report, report not found",        
+    "ERROR_UPDATING_REPORT": "Error updating report",
+    "ERROR_UPDATING_REPORT_REPORT_NOT_FOUND": "Error updating lineup, report not found",
+    "REPORT_SUCCESSFULLY_UPDATED": "Report successfully updated",
+    "AUTOGOALS": "Autogoals",
+    "ERROR_RETRIEVING_REPORT_REPORT_NOT_FOUND": "Error retrieving report, report not found",
+    "GOALS": "Goals",
+    "MATCH_END_TIME": "Match end time",
+    "MATCH_START_TIME": "Match start time",
+    "PLAYER": "Player",
+    "MAIN": "Main",
+    "RESERVE": "Reserve",
+    "MATCH_PLACE": "Match place",
+    "EXPULSION": "Expulsion",
+    "CARDS": "Cards",
+    "ADMONITION": "Admonition",
+    "NO_LINEUP_TO_FILL_OUT": "No lineup to fill out"
   }
 }
