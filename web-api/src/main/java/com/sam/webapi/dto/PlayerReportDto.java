@@ -11,6 +11,8 @@ public class PlayerReportDto {
 	int admonitions;
 	boolean ejection;
 
+	public PlayerReportDto() { }
+
 	public PlayerReportDto(int id,
 						   int jerseyNumber,
 						   String name,

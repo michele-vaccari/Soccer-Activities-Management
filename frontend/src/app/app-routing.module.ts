@@ -7,8 +7,10 @@ import { LineupsTableComponent } from './lineups-table/lineups-table.component';
 import { LoginComponent } from './login/login.component';
 import { PlayerDetailsComponent } from './player-details/player-details.component';
 import { PlayerComponent } from './player/player.component';
+import { RefereeReportComponent } from './referee-report/referee-report.component';
 import { RefereeComponent } from './referee/referee.component';
 import { RefereesTableComponent } from './referees-table/referees-table.component';
+import { ReportDetailsComponent } from './report-details/report-details.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { ReportComponent } from './report/report.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
@@ -99,6 +101,14 @@ const routes: Routes = [
   {
     path: 'reports/:id/lineup',
     component: LineupComponent
+  },
+  {
+    path: 'reports/edit/:id',
+    component: RefereeReportComponent
+  },
+  {
+    path: 'reports/view/:id',
+    component: ReportDetailsComponent
   },
   {
     path: 'teammanagers',

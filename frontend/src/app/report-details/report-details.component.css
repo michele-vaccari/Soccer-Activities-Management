@@ -1,0 +1,47 @@
+.mat-table {
+    overflow-x: scroll;
+    max-width: 99%;
+  }
+  
+  .mat-cell,
+  .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 10px;
+    line-break: unset;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  
+  .mat-row,
+  .mat-header-row {
+    display: table-row;
+  }
+
+
+th.mat-header-cell {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.sectionTitle {
+    text-align: center;
+    margin: 24px 0 16px 0;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.sectionValue {
+  text-align: center;
+  font-weight: 400;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .no-wrapper .mat-form-field-wrapper{
+    margin: 0 !important;
+    padding: 0;
+   }

@@ -42,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			"/tournaments/**",
 			"/teams/**",
 			"/players/**",
+			"/reports/**",
 			// Swagger UI v2
 			"/v2/api-docs",
 			"/swagger-resources",

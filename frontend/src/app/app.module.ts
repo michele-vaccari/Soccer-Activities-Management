@@ -48,6 +48,8 @@ import { PlayerComponent } from './player/player.component';
 import { LineupsTableComponent } from './lineups-table/lineups-table.component';
 import { LineupComponent } from './lineup/lineup.component';
 import { RefereeReportTableComponent } from './referee-report-table/referee-report-table.component';
+import { RefereeReportComponent } from './referee-report/referee-report.component';
+import { ReportDetailsComponent } from './report-details/report-details.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { RefereeReportTableComponent } from './referee-report-table/referee-repo
     PlayerComponent,
     LineupsTableComponent,
     LineupComponent,
-    RefereeReportTableComponent
+    RefereeReportTableComponent,
+    RefereeReportComponent,
+    ReportDetailsComponent
   ],
   imports: [
     BrowserModule,

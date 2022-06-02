@@ -46,7 +46,6 @@ export class LineupComponent implements OnInit {
   reportId: number = 0;
 
   postLineup() {
-    console.log(this.reportId)
     const lineup: Lineup = {
       teamId: this.authenticationService.getTeamId(),
       mainPlayerIds: [...this.mainPlayers],
@@ -84,7 +83,6 @@ export class LineupComponent implements OnInit {
 
     this.reportId = parseInt(id);
 
-    console.log(this.reportId)
     this.teamService.getTeam(this.authenticationService.getTeamId()).subscribe(
       {
         next: (team: Team) => {
@@ -116,14 +114,12 @@ export class LineupComponent implements OnInit {
   reservePlayers = new Set<number>();
 
   onClickMainPlayerCheckBox(event: any, elementId: number) {
-    console.log(event);
     if (this.mainPlayers.size == this.MAIN_PLAYER_NUMBER &&
         !this.mainPlayers.has(elementId))
       event.preventDefault();
   }
 
   onClickReservePlayerCheckBox(event: any, elementId: number) {
-    console.log(event)
     if (this.reservePlayers.size >= this.RESERVE_PLAYER_NUMBER &&
        !this.reservePlayers.has(elementId))
       event.preventDefault();

@@ -38,7 +38,7 @@ export class RefereeReportTableComponent implements OnInit {
       cell: (element: Report) => `${element.compiled ? $localize `:@@COMPILED:Compiled` : $localize `:@@NOT_COMPILED:Not compiled`}`,
     },
   ];
-  displayedColumns = this.columns.map(c => c.columnDef);
+  displayedColumns = this.columns.map(c => c.columnDef).concat(['actions']);
   dataSource = new MatTableDataSource<Report>();
 
   constructor(private reportService: ReportService,

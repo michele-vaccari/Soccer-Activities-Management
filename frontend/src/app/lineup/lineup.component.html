@@ -24,8 +24,8 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-            <mat-checkbox style="margin: 0 10px;" [checked]="mainPlayers.has(element.id)" (change)="onMainPlayer($event.checked, element.id)" (click)="onClickMainPlayerCheckBox($event, element.id)" >Titolare</mat-checkbox>
-            <mat-checkbox style="margin: 0 10px;" [checked]="reservePlayers.has(element.id)" (change)="onReservePlayer($event.checked, element.id)" (click)="onClickReservePlayerCheckBox($event, element.id)" >Riserva</mat-checkbox>
+            <mat-checkbox style="margin: 0 10px;" [checked]="mainPlayers.has(element.id)" (change)="onMainPlayer($event.checked, element.id)" (click)="onClickMainPlayerCheckBox($event, element.id)" i18n="@@MAIN">Main</mat-checkbox>
+            <mat-checkbox style="margin: 0 10px;" [checked]="reservePlayers.has(element.id)" (change)="onReservePlayer($event.checked, element.id)" (click)="onClickReservePlayerCheckBox($event, element.id)" i18n="@@RESERVE">Reserve</mat-checkbox>
         </td>
     </ng-container>
     

@@ -169,13 +169,13 @@ public class ReportServiceImpl implements ReportService {
 			);
 
 			if (teamPlayerReport.getTeamId() == teamId) {
-				if (teamPlayerReport.getReserve() == "Y")
+				if (!teamPlayerReport.getReserve().equals("Y"))
 					mainTeamPlayerReportsDto.add(playerReportDto);
 				else
 					reserveTeamPlayerReportsDto.add(playerReportDto);
 			}
 			else {
-				if (teamPlayerReport.getReserve() == "Y")
+				if (!teamPlayerReport.getReserve().equals("Y"))
 					mainOtherTeamPlayerReportsDto.add(playerReportDto);
 				else
 					reserveOtherTeamPlayerReportsDto.add(playerReportDto);
@@ -258,13 +258,13 @@ public class ReportServiceImpl implements ReportService {
 			);
 
 			if (teamPlayerReport.getTeamId() == teamId) {
-				if (teamPlayerReport.getReserve() == "Y")
+				if (!teamPlayerReport.getReserve().equals("Y"))
 					mainTeamPlayerReportsDto.add(playerReportDto);
 				else
 					reserveTeamPlayerReportsDto.add(playerReportDto);
 			}
 			else {
-				if (teamPlayerReport.getReserve() == "Y")
+				if (!teamPlayerReport.getReserve().equals("Y"))
 					mainOtherTeamPlayerReportsDto.add(playerReportDto);
 				else
 					reserveOtherTeamPlayerReportsDto.add(playerReportDto);
@@ -308,7 +308,7 @@ public class ReportServiceImpl implements ReportService {
 				reportDto.getMainTeamPlayerReportsDto(),
 				reportDto.getReserveTeamPlayerReportsDto(),
 				reportDto.getMainOtherTeamPlayerReportsDto(),
-				reportDto.getReserveTeamPlayerReportsDto()
+				reportDto.getReserveOtherTeamPlayerReportsDto()
 				);
 		for (var playerReport : playersReportDto) {
 			if (!playerIds.contains(playerReport.getId()))
@@ -320,9 +320,17 @@ public class ReportServiceImpl implements ReportService {
 					report.get().getId(),
 					playerReport.getId(),
 					playerReport.getGoal(),
-					playerReport.getAdmonitions(),
-					playerReport.isEjection() ? "Y" : "N"
+					playerReport.getAdmonitions() % 2,
+					playerReport.isEjection() || playerReport.getAdmonitions() >= 2 ? "Y" : "N"
 					));
+		}
+
+		//update player statistics
+		for (var playerReport : playersReportDto) {
+			var player = playerRepository.findById(playerReport.getId()).get();
+			player.setGoal(player.getGoal() + playerReport.getGoal());
+			player.setAdmonitions(player.getAdmonitions() + (playerReport.getAdmonitions() % 2));
+			player.setEjections(player.getEjections() + (playerReport.getAdmonitions() >= 2 ? 1 : 0));
 		}
 
 		report.get().setMatchStartTime(reportDto.getMatchStartTime());
@@ -331,15 +339,22 @@ public class ReportServiceImpl implements ReportService {
 		var tournamentTeamMatch = report.get().getMatchByMatchId().getTournamentTeamMatchesById();
 		var teamId = tournamentTeamMatch.getTeamId();
 		var otherTeamId = tournamentTeamMatch.getOtherTeamId();
-		var playersOfTeam = teamPlayerReportRepository.findPlayerIdsByReportIdAndTeamId(report.get().getId(), teamId);
+
 		var goalOfTeam = 0;
+		var playersOfTeam = Iterables.concat(
+				reportDto.getMainTeamPlayerReportsDto(),
+				reportDto.getReserveTeamPlayerReportsDto()
+		);
+		for (var player : playersOfTeam)
+			goalOfTeam += player.getGoal();
 		var goalOfOtherTeam = 0;
-		for (var playerReport : playersReportDto) {
-			if (playersOfTeam.contains(playerReport))
-				goalOfTeam += playerReport.getGoal();
-			else
-				goalOfOtherTeam += playerReport.getGoal();
-		}
+		var playersOfOtherTeam = Iterables.concat(
+				reportDto.getMainOtherTeamPlayerReportsDto(),
+				reportDto.getReserveOtherTeamPlayerReportsDto()
+		);
+		for (var player : playersOfOtherTeam)
+			goalOfOtherTeam += player.getGoal();
+
 		goalOfTeam += reportDto.getAutogoalOtherTeam();
 		goalOfOtherTeam += reportDto.getAutogoalTeam();
 		var result = goalOfTeam + " - " + goalOfOtherTeam;
@@ -352,7 +367,7 @@ public class ReportServiceImpl implements ReportService {
 		var teamRanking = rankingRepository.findById(new RankingPK(tournamentId, teamId)).get();
 		var otherTeamRanking = rankingRepository.findById(new RankingPK(tournamentId, otherTeamId)).get();
 
-		if (goalOfTeam == goalOfTeam) {
+		if (goalOfTeam == goalOfOtherTeam) {
 			teamRanking.setScore(teamRanking.getScore() + 1);
 			teamRanking.setTiedMatches(teamRanking.getTiedMatches() + 1);
 
@@ -374,11 +389,11 @@ public class ReportServiceImpl implements ReportService {
 
 		teamRanking.setPlayedMatches(teamRanking.getPlayedMatches() + 1);
 		teamRanking.setGoalsMade(teamRanking.getGoalsMade() + goalOfTeam);
-		teamRanking.setGoalsSuffered(teamRanking.getGoalsMade() + goalOfOtherTeam);
+		teamRanking.setGoalsSuffered(teamRanking.getGoalsSuffered() + goalOfOtherTeam);
 
-		otherTeamRanking.setPlayedMatches(teamRanking.getPlayedMatches() + 1);
-		otherTeamRanking.setGoalsMade(teamRanking.getGoalsMade() + goalOfOtherTeam);
-		otherTeamRanking.setGoalsSuffered(teamRanking.getGoalsMade() + goalOfTeam);
+		otherTeamRanking.setPlayedMatches(otherTeamRanking.getPlayedMatches() + 1);
+		otherTeamRanking.setGoalsMade(otherTeamRanking.getGoalsMade() + goalOfOtherTeam);
+		otherTeamRanking.setGoalsSuffered(otherTeamRanking.getGoalsSuffered() + goalOfTeam);
 
 		// create new single elimination match or update the existing one
 		var winnerTeamId = goalOfTeam > goalOfOtherTeam ? teamId : otherTeamId;

@@ -8,7 +8,7 @@
                         <mat-icon mat-list-icon
                         *ngIf="match.reportId !== null && match.reportId !== undefined"
                         color="primary"
-                        [routerLink]="['/reports', match.reportId]">info</mat-icon>
+                        [routerLink]="['/reports', 'view' ,match.reportId]">info</mat-icon>
                         <div mat-line>{{match.teamName === undefined ? toBeDefined : match.teamName}} - {{match.otherTeamName === undefined ? toBeDefined : match.otherTeamName}}</div>
                     </mat-list-item>
                 </div>

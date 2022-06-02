@@ -1,0 +1,106 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <h1>{{tournamentName}}</h1>
+</div>
+
+<div fxLayout="column" fxLayoutAlign="center">
+    <h4 class="sectionTitle" i18n="@@RESULT">Result</h4>
+    <h4 class="sectionValue">{{result}}</h4>
+</div>
+
+<form [formGroup]="reportForm" fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center">
+    
+        <!-- Team -->
+        <div fxLayout="column" fxLayoutAlign="center" style="margin-right: 64px;">
+            <h2 style="text-align: center">{{teamName}}</h2>
+    
+            <h3 class="sectionTitle" i18n="@@MAIN_PLAYERS">MAIN PLAYERS</h3>
+            <table mat-table [dataSource]="teamMainPlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+    
+            <h3 class="sectionTitle" i18n="@@RESERVE_PLAYERS">RESERVE PLAYERS</h3>
+            <table mat-table [dataSource]="teamReservePlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </div>
+    
+        <!-- Other team -->
+        <div fxLayout="column" fxLayoutAlign="center">
+            <h2 style="text-align: center">{{otherTeamName}}</h2>
+
+            <h3 class="sectionTitle" i18n="@@MAIN_PLAYERS">MAIN PLAYERS</h3>
+            <table mat-table [dataSource]="otherTeamMainPlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+    
+            <h3 class="sectionTitle" i18n="@@RESERVE_PLAYERS">RESERVE PLAYERS</h3>
+            <table mat-table [dataSource]="otherTeamReservePlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</form>
+
+<div fxLayout="column" fxLayoutAlign="center">
+
+    <h4 class="sectionTitle" i18n="@@MATCH_PLACE">Match place</h4>
+    <h4 class="sectionValue">{{matchPlace}}</h4>
+
+    <h4 class="sectionTitle" i18n="@@MATCH_DATE">Match date</h4>
+    <h4 class="sectionValue">{{matchDate}}</h4>
+
+    <h4 class="sectionTitle" i18n="@@MATCH_START_TIME">Match start time</h4>
+    <h4 class="sectionValue">{{matchStartTime}}</h4>
+
+    <h4 class="sectionTitle" i18n="@@MATCH_END_TIME">Match end time</h4>
+    <h4 class="sectionValue">{{matchEndTime}}</h4>
+
+    <h4 class="sectionTitle" i18n="@@REFEREE">Referee</h4>
+    <h4 class="sectionValue">{{refereeName}} {{refereeSurname}}</h4>
+</div>

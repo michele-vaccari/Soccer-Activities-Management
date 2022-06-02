@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LineupMatch } from '../interfaces/lineup-match';
 import { AuthenticationService } from '../services/authentication.service';
 import { TeamService } from '../services/team.service';
@@ -39,12 +38,11 @@ export class LineupsTableComponent implements OnInit {
   dataSource = new MatTableDataSource<LineupMatch>();
   teamId: number = 0;
   toBeDefined: string = $localize `:@@TO_BE_DEFINED:To be defined`;
+  hasLineupsToCompile: boolean = false;
 
   constructor(private teamService: TeamService,
               public authenticationService: AuthenticationService,
-              private route: ActivatedRoute,
-              private snackBar: MatSnackBar,
-              private router: Router) {
+              private route: ActivatedRoute) {
 
     const id = this.route.snapshot.paramMap.get('id');
 
@@ -54,12 +52,19 @@ export class LineupsTableComponent implements OnInit {
     this.teamId = parseInt(id);
 
     this.teamService.getAllLineupsOfTeam(this.teamId).subscribe(
-      (lineups: LineupMatch[]) =>this.dataSource.data = lineups.filter(item => this.hasLineupToCompile(item)));
+      (lineups: LineupMatch[]) =>
+      {
+        this.dataSource.data = lineups.filter(item => this.hasLineupToCompile(item))
+        this.hasLineupsToCompile = this.dataSource.data.length > 0;
+      }
+        );
   }
 
   hasLineupToCompile(match: LineupMatch) {
-    return (match.teamId === this.authenticationService.getTeamId() && !match.teamLineupSubmitted) ||
-           (match.otherTeamId === this.authenticationService.getTeamId() && !match.otherTeamLineupSubmitted);
+    return match.reportId !== undefined && match.reportId !== null &&
+           (match.teamId === this.authenticationService.getTeamId() || match.otherTeamId === this.authenticationService.getTeamId()) &&
+           ((match.teamId === this.authenticationService.getTeamId() && !match.teamLineupSubmitted) ||
+           (match.otherTeamId === this.authenticationService.getTeamId() && !match.otherTeamLineupSubmitted));
   }
 
   ngOnInit(): void {

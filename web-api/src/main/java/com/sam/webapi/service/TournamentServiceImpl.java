@@ -226,7 +226,7 @@ public class TournamentServiceImpl implements TournamentService {
 		// create ranking
 
 		var rankingLines = tournament.getRankingsById();
-		rankingLines.sort((o1, o2) -> o1.getScore().compareTo(o2.getScore()));
+		rankingLines.sort((o1, o2) -> o2.getScore().compareTo(o1.getScore()));
 		var rankingLinesDto =  new ArrayList<RankingLineDto>();
 		var position = 0;
 		for (var rankingLine : rankingLines) {

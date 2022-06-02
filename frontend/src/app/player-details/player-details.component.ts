@@ -29,20 +29,26 @@ export class PlayerDetailsComponent implements OnInit {
 
     this.playerService.getPlayer(+id).subscribe(
       {
-        next: (player: Player) => { this.player = player; },
+        next: (player: Player) => {
+          this.player = player;
+          this.getTeamName();
+        },
         error: () => {
           this.snackBar.open($localize `:@@ERROR_RETRIEVING_PLAYER_PLAYER_NOT_FOUND:Error retrieving player, player not found`);
           this.router.navigate(['teams']);
         }
       }
     );
+  }
 
+  getTeamName() {
     if (this.player == null)
       return;
 
     this.teamService.getTeam(this.player.teamId).subscribe(
       {
-        next: (team: Team) => { this.teamName = team.name; },
+        next: (team: Team) => {
+          this.teamName = team.name; },
         error: () => {
           this.snackBar.open($localize `:@@ERROR_RETRIEVING_TEAM_TEAM_NOT_FOUND:Error retrieving team, team not found`);
           this.router.navigate(['teams']);
