@@ -15,6 +15,7 @@ services:
       - DB2INST1_PASSWORD=${DATABASE_PASSWORD}
       - DBNAME=${DATABASE_NAME}
       - PERSISTENT_HOME=false
+      - USE_DEMO_DATA=${DATABASE_USE_DEMO_DATA}
     ports:
       - "50000:50000"
     volumes:

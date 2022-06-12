@@ -11,5 +11,6 @@ FROM ibmcom/db2
 RUN mkdir /var/custom
 COPY initialization-scripts/createschema.sh /var/custom
 COPY initialization-scripts/init.sql /var/custom
+COPY initialization-scripts/demo_data.sql /var/custom
 COPY --from=build /home/output.sql /var/custom/add_default_admin_user.sql
 RUN chmod a+x /var/custom/createschema.sh
