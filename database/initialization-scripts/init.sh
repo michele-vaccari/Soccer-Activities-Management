@@ -10,13 +10,13 @@ echo "Connect to $DBNAME database"
 cd /home/db2inst1/sqllib/bin/
 ./db2 connect to $DBNAME
 
-sql_init_script_path=/var/custom/init.sql
+sql_init_script_path=/var/custom/ddl.sql
 echo "Run $sql_init_script"
 ./db2 -tvf $sql_init_script_path
 
 if [ "$USE_DEMO_DATA" = true ] ; then
     echo "Add demo data"
-    sql_demo_data_script_path=/var/custom/demo_data.sql
+    sql_demo_data_script_path=/var/custom/add_demo_data.sql
     ./db2 -tvf $sql_demo_data_script_path
 else
     echo "Add default admin user"
