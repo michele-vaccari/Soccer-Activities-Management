@@ -2,13 +2,22 @@ version: "2.1"
 services:
   database:
     privileged: true
-    build: database/.
+    build:
+      context: database/.
+      args:
+        SAM_DEFAULT_ADMIN_USER_EMAIL: ${SAM_DEFAULT_ADMIN_USER_EMAIL}
+        SAM_DEFAULT_ADMIN_USER_PASSWORD: ${SAM_DEFAULT_ADMIN_USER_PASSWORD}
+        SAM_DEFAULT_ADMIN_USER_NAME: ${SAM_DEFAULT_ADMIN_USER_NAME}
+        SAM_DEFAULT_ADMIN_USER_SURNAME: ${SAM_DEFAULT_ADMIN_USER_SURNAME}
     restart: on-failure
     environment:
       - LICENSE=accept
       - DB2INST1_PASSWORD=${DATABASE_PASSWORD}
       - DBNAME=${DATABASE_NAME}
       - PERSISTENT_HOME=false
+      - USE_DEMO_DATA=${DATABASE_USE_DEMO_DATA}
+    ports:
+      - "50000:50000"
     volumes:
       - C:\docker-volumes\soccer-activities-management-database:/database
     healthcheck:
@@ -17,7 +26,13 @@ services:
       retries: 10
   web-api:
     build:
-      context: web-api/.
+      context: .
+      dockerfile: web-api/Dockerfile
+      args:
+        JWT_PUBLIC_KEY_SOURCE_PATH: ${JWT_PUBLIC_KEY_SOURCE_PATH}
+        JWT_PRIVATE_KEY_SOURCE_PATH: ${JWT_PRIVATE_KEY_SOURCE_PATH}
+        JWT_PUBLIC_KEY_DESTINATION_PATH: ${JWT_PUBLIC_KEY_DESTINATION_PATH}
+        JWT_PRIVATE_KEY_DESTINATION_PATH: ${JWT_PRIVATE_KEY_DESTINATION_PATH}
     restart: on-failure
     environment:
       - DATABASE_USERNAME=${DATABASE_USERNAME}
@@ -26,6 +41,8 @@ services:
       - DATABASE_NAME=${DATABASE_NAME}
       - CORS_ALLOWED_ORIGINS=${FRONTEND_URL}:${FRONTEND_PORT}
       - CORS_ALLOWED_METHODS=${CORS_ALLOWED_METHODS}
+      - JWT_PUBLIC_KEY_DESTINATION_PATH=${JWT_PUBLIC_KEY_DESTINATION_PATH}
+      - JWT_PRIVATE_KEY_DESTINATION_PATH=${JWT_PRIVATE_KEY_DESTINATION_PATH}
     ports:
       - "8080:8080"
     depends_on:

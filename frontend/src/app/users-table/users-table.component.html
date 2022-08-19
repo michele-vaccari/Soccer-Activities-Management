@@ -1,9 +1,13 @@
+<div fxLayoutAlign="start center">
+  <h1 i18n="@@REFEREES">Referees</h1>
+</div>
+
 <div class="actions-bar"
      fxLayout="row"
      fxLayoutAlign="start center">
   <button [routerLink]="['/user']"
     mat-stroked-button color="primary">
-      <ng-container i18n="@@ADD_NEW_USER">Add new user</ng-container>
+      <ng-container i18n="@@ADD_NEW_REFEREE">Add new referee</ng-container>
   </button>
 </div>
 
@@ -23,14 +27,14 @@
         <button
           mat-icon-button
           color="primary"
-          [routerLink]="['/users', element.id]">
+          [routerLink]="['/referees', element.id]">
           <mat-icon>edit</mat-icon>
         </button>
         <button
           mat-icon-button
           color="primary"
-          [disabled]="element.isActive == 'N'"
-          (click)="deactivateUser(element.id)">
+          [disabled]="element.active == 'N'"
+          (click)="deactivateReferee(element.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

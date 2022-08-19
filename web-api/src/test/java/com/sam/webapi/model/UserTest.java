@@ -11,7 +11,7 @@ class UserTest {
 	void setUp() {
 		user = new User(
 				1,
-				"SystemAdministrator",
+				"Admin",
 				"John",
 				"Doe",
 				"j.doe@sam.com",
@@ -35,14 +35,14 @@ class UserTest {
 	@Test
 	@DisplayName("Should get type")
 	void shouldGetType() {
-		Assertions.assertEquals("SystemAdministrator", user.getType());
+		Assertions.assertEquals("Admin", user.getRole());
 	}
 
 	@Test
 	@DisplayName("Should set type")
 	void shouldSetType() {
-		user.setType("Refree");
-		Assertions.assertEquals("Refree", user.getType());
+		user.setRole("Refree");
+		Assertions.assertEquals("Refree", user.getRole());
 	}
 
 	@Test
@@ -98,16 +98,16 @@ class UserTest {
 	}
 
 	@Test
-	@DisplayName("Should get is active")
-	void shouldGetIsActive() {
-		Assertions.assertEquals("Y", user.getIsActive());
+	@DisplayName("Should get active")
+	void shouldGetActive() {
+		Assertions.assertEquals("Y", user.getActive());
 	}
 
 	@Test
-	@DisplayName("Should set is active")
-	void shouldSetIsActive() {
-		user.setIsActive("N");
-		Assertions.assertEquals("N", user.getIsActive());
+	@DisplayName("Should set active")
+	void shouldSetActive() {
+		user.setActive("N");
+		Assertions.assertEquals("N", user.getActive());
 	}
 
 	@Test
@@ -115,7 +115,7 @@ class UserTest {
 	void shouldVerifyEquals() {
 		var otherUser = new User(
 				1,
-				"SystemAdministrator",
+				"Admin",
 				"John",
 				"Doe",
 				"j.doe@sam.com",

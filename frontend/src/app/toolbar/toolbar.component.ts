@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { APPLICATION_NAME } from '../constants';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -8,11 +8,14 @@ import { APPLICATION_NAME } from '../constants';
 })
 export class ToolbarComponent implements OnInit {
 
-  applicationName = APPLICATION_NAME;
+  name?: string;
+  surname?: string;
 
-  constructor() { }
+  constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.name = this.authenticationService.getUserName();
+    this.surname = this.authenticationService.getUserSurname();
   }
 
 }

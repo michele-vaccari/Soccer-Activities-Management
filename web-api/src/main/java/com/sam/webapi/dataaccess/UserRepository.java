@@ -10,10 +10,12 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 	boolean existsByEmail(String email);
 	boolean existsByEmailAndIdNot(String email, Integer id);
 
-	@Query(value = "SELECT MAX(Id) FROM Users.User", nativeQuery=true)
+	@Query(value = "SELECT MAX(Id) FROM SAM.USER", nativeQuery=true)
 	Integer getMaxId();
 
 	@Modifying
-	@Query(value = "UPDATE Users.User SET isActive='N' WHERE Id=?1", nativeQuery=true)
+	@Query(value = "UPDATE SAM.USER SET Active='N' WHERE Id=?1", nativeQuery=true)
 	void deactivateUserById(Integer id);
+
+	User findByEmailAndActive(String email, String active);
 }

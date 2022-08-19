@@ -5,33 +5,47 @@
   <mat-drawer-container fxFlex>
       
     <mat-drawer
+      *ngIf="this.authenticationService.isUserLoggedIn() &&
+             !this.authenticationService.isRefereeUser()"
       mode="side"
       opened>
-      <div fxLayout="column"
-      fxLayoutAlign="center">
-        <button
-            mat-icon-button
-            color="primary"
-            [routerLink]="['/users']">
-            <mat-icon>people</mat-icon>
-        </button>
-        <button
-            mat-icon-button
-            color="primary"
-            [routerLink]="['/user']">
-            <mat-icon>person_add</mat-icon>
-        </button>
-      </div>
+      <mat-nav-list>
+        <a mat-list-item
+          *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/teammanager']">
+          <span mat-line i18n="@@ADD_NEW_TEAM_MANAGER">Add new team manager</span>
+        </a>
+        <a mat-list-item
+          *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/referee']">
+          <span mat-line i18n="@@ADD_NEW_REFEREE">Add new referee</span>
+        </a>
+        <a mat-list-item
+          *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/tournament']">
+          <span mat-line i18n="@@ADD_NEW_TOURNAMENT">Add new tournament</span>
+        </a>
+        <a mat-list-item
+          *ngIf="this.authenticationService.isAdminUser()"
+          [routerLink]="['/report']">
+          <span mat-line i18n="@@ASSIGN_REFEREE">Assign referee</span>
+        </a>
+        <a mat-list-item
+          *ngIf="this.authenticationService.isTeamManagerUser()"
+          [routerLink]="['/players/new']">
+          <span mat-line i18n="@@ADD_NEW_PLAYER">Add new player</span>
+        </a>
+      </mat-nav-list>
     </mat-drawer>
 
-    <mat-drawer-content>
-      <!-- Main content -->
-      <div fxFlex fxLayoutAlign="center center">
-        <div fxLayout="column">
-          <router-outlet></router-outlet>
+      <mat-drawer-content>
+        <!-- Main content -->
+        <div fxFlex fxLayoutAlign="center" style="align-items: center; justify-content: center;">
+          <div fxLayout="column" style="margin: auto;">
+            <router-outlet></router-outlet>
+          </div>
         </div>
-      </div>
-    </mat-drawer-content>
+      </mat-drawer-content>
   </mat-drawer-container>
 
 </div>

@@ -1,11 +1,10 @@
 
 <form [formGroup]="userForm" fxLayout="column">
-    <mat-form-field appearance="fill">
+    <mat-form-field *ngIf="!isAdminUser" appearance="fill">
         <mat-label>
-            <ng-container i18n="@@TYPE">Type</ng-container>
+            <ng-container i18n="@@ROLE">Role</ng-container>
         </mat-label>
-        <mat-select formControlName="type">
-            <mat-option value="SystemAdministrator">System administrator</mat-option>
+        <mat-select formControlName="role">
             <mat-option value="Referee">Referee</mat-option>
             <mat-option value="TeamManager">Team manager</mat-option>
         </mat-select>

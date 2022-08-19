@@ -1,9 +1,15 @@
 export interface User {
     id?: number;
-    type: string;
+    role?: string;
     name: string;
     surname: string;
     email: string;
-    password: string;
-    isActive?: string;
+    active?: string;
+    phone?: string;
+    address?: string;
+    birthDate?: string;
+    citizenship?: string;
+    resume?: string;
+    teamName?: string;
+    password?: string;
 }

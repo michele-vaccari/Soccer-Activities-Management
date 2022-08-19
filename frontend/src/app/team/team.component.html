@@ -1,0 +1,37 @@
+
+<form [formGroup]="teamForm" fxLayout="column">
+    
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@NAME">Name</ng-container>
+        </mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@DESCRIPTION">Description</ng-container>
+        </mat-label>
+        <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@HEADQUARTERS">Headquarters</ng-container>
+        </mat-label>
+        <input matInput formControlName="headquarters">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@OFFICIAL_SPONSOR">Official sponsor</ng-container>
+        </mat-label>
+        <input matInput formControlName="officialSponsor">
+    </mat-form-field>
+</form>
+
+<button (click)="updateTeam()"
+    [disabled]="!areTeamFormValid()"
+    mat-stroked-button color="primary">
+    <ng-container i18n="@@UPDATE">Update</ng-container>
+</button>

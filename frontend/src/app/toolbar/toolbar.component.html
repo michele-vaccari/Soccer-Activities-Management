@@ -1,3 +1,104 @@
 <mat-toolbar color="primary" class="mat-elevation-z4">
-    <span class="toolbar-text">{{applicationName}}</span>
+    <span class="toolbar-text">
+        <ng-container i18n="@@APPLICATION_NAME">Soccer Activities Management</ng-container>
+    </span>
+
+    <div fxFlex
+        fxLayout="row"
+        fxLayoutAlign="end center">
+
+        <button *ngIf="this.authenticationService.isAdminUser()" mat-button [matMenuTriggerFor]="usersMenu" class="toolbar-text"><span i18n="@@USERS">USERS</span> <span class="material-icons">expand_more</span></button>
+        <mat-menu #usersMenu="matMenu">
+            <button mat-menu-item
+                    [routerLink]="['/teammanagers']"
+                    i18n="@@TEAM_MANAGERS">
+                Team managers
+            </button>
+            <button mat-menu-item
+                    [routerLink]="['/referees']"
+                    i18n="@@REFEREES">
+                Referees
+            </button>
+        </mat-menu>
+
+        <button *ngIf="this.authenticationService.isAdminUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@REPORTS"
+            [routerLink]="['/reports']">
+            REPORTS
+        </button>
+
+        <button *ngIf="!this.authenticationService.isAdminUser() && !this.authenticationService.isTeamManagerUser() && !this.authenticationService.isRefereeUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@TEAMS"
+            [routerLink]="['/teams']">
+            TEAMS
+        </button>
+
+        <button *ngIf="!this.authenticationService.isTeamManagerUser() && !this.authenticationService.isRefereeUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@TOURNAMENTS"
+            [routerLink]="['/tournaments']">
+            TOURNAMENTS
+        </button>
+
+        <button *ngIf="this.authenticationService.isTeamManagerUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@LINEUPS"
+            [routerLink]="['/teams', this.authenticationService.getTeamId(), 'matches']">
+            LINEUPS
+        </button>
+
+        <button *ngIf="this.authenticationService.isTeamManagerUser()"
+            mat-button
+            class="toolbar-text"
+            i18n="@@PLAYERS"
+            [routerLink]="['/teams', this.authenticationService.getTeamId(), 'players']"
+            style="text-transform:uppercase;">
+            PLAYERS
+        </button>
+
+        <button *ngIf="this.authenticationService.isTeamManagerUser()" mat-button [matMenuTriggerFor]="teamMenu" class="toolbar-text"><span i18n="@@TEAM">TEAM</span> <span class="material-icons">expand_more</span></button>
+        <mat-menu #teamMenu="matMenu">
+            <button mat-menu-item
+                    [routerLink]="['/team', this.authenticationService.getTeamId()]"
+                    i18n="@@EDIT">
+                Edit
+            </button>
+            <button mat-menu-item
+                    [routerLink]="['/teams', this.authenticationService.getTeamId()]"
+                    i18n="@@VIEW">
+                View
+            </button>
+        </mat-menu>
+
+        <div *ngIf="this.authenticationService.isUserLoggedIn(); then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <button mat-button [matMenuTriggerFor]="userMenu" class="toolbar-text"><span class="material-icons">account_circle</span> <span class="material-icons">expand_more</span></button>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item
+                        *ngIf="this.authenticationService.isAdminUser()"
+                        [routerLink]="['/admins', this.authenticationService.getUserId()]"
+                        i18n="@@DETAILS">
+                    Details
+                </button>
+                <button mat-menu-item
+                        (click)="this.authenticationService.logOut()"
+                        i18n="@@LOGOUT">
+                    Logout
+                </button>
+            </mat-menu>
+        </ng-template>
+        <ng-template #elseBlock>
+            <button matTooltip="Login"
+                mat-icon-button
+                [routerLink]="['/login']">
+                <mat-icon class="toolbar-text">login</mat-icon>
+            </button>
+        </ng-template>
+    </div>
 </mat-toolbar>

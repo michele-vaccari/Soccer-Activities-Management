@@ -1,0 +1,20 @@
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center">
+    <div *ngFor="let item of roundDayMatchMap | keyvalue: keyDescOrder">
+        <div fxLayoutAlign="space-around center">
+            <mat-card>
+                <mat-card-title fxLayout="row" fxLayoutAlign="center"><span i18n="@@DAY">Day</span> &nbsp;{{item.key}}</mat-card-title>
+                <mat-card-content>
+                    <mat-list>
+                        <mat-list-item *ngFor="let match of item.value" fxLayout="row" fxLayoutAlign="center">
+                          <mat-icon mat-list-icon
+                            *ngIf="match.reportId !== null && match.reportId !== undefined"
+                            color="primary"
+                            [routerLink]="['/reports', 'view', match.reportId]">info</mat-icon>
+                          <div mat-line>{{match.teamName}} - {{match.otherTeamName}}</div>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

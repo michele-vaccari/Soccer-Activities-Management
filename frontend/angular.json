@@ -45,6 +45,26 @@
             "scripts": []
           },
           "configurations": {
+            "en": { 
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "localize": ["en"],
+              "baseHref": "/en/"
+            },
+            "it": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "localize": ["it"],
+              "baseHref": "/it/"
+            },
             "production": {
               "budgets": [
                 {
@@ -80,6 +100,12 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
+            "en": {
+              "browserTarget": "frontend:build:en"
+            },
+            "it": {
+              "browserTarget": "frontend:build:it"
+            },
             "production": {
               "browserTarget": "frontend:build:production"
             },

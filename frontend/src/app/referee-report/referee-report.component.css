@@ -1,0 +1,29 @@
+th.mat-header-cell {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+td {
+    text-align: center;
+}
+
+.mat-row {
+    height: auto;
+}  
+
+.mat-cell {
+    padding: 6px 16px 6px 16px;
+}
+
+.sectionTitle {
+    text-align: center;
+    margin: 24px 0 16px 0;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+:host ::ng-deep .no-wrapper .mat-form-field-wrapper{
+    margin: 0 !important;
+    padding: 0;
+   }

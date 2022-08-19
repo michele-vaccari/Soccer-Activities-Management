@@ -1,0 +1,64 @@
+
+<form [formGroup]="playerForm" fxLayout="column">
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@NAME">Name</ng-container>
+        </mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@SURNAME">Surname</ng-container>
+        </mat-label>
+        <input matInput formControlName="surname">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@BIRTH_DATE">Birth date</ng-container>
+        </mat-label>
+        <input matInput formControlName="birthDate">
+        <mat-error *ngIf="playerForm.controls['birthDate'].invalid">{{getBirthDateErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@CITIZENSHIP">Citizenship</ng-container>
+        </mat-label>
+        <input matInput formControlName="citizenship">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@JERSEY_NUMBER">Jersey number</ng-container>
+        </mat-label>
+        <input matInput formControlName="jerseyNumber">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@ROLE">Role</ng-container>
+        </mat-label>
+        <input matInput formControlName="role">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@DESCRIPTION">Description</ng-container>
+        </mat-label>
+        <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+</form>
+
+<button *ngIf="!isUpdateMode" (click)="postNewPlayer()"
+    mat-stroked-button color="primary"
+    [disabled]="!arePlayerFormValid()">
+    <ng-container i18n="@@ADD">Add</ng-container>
+</button>
+
+<button *ngIf="isUpdateMode" (click)="updatePlayer()"
+    mat-stroked-button color="primary"
+    [disabled]="!arePlayerFormWithValueValid()">
+    <ng-container i18n="@@UPDATE">Update</ng-container>
+</button>

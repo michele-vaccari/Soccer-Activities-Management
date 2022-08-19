@@ -1,0 +1,18 @@
+<div fxLayoutAlign="space-around center">
+    <mat-card>
+        <mat-card-title fxLayout="row" fxLayoutAlign="center">{{stageName}}</mat-card-title>
+        <mat-card-content>
+            <mat-list>
+                <div *ngFor="let item of matchMap | keyvalue">
+                    <mat-list-item *ngFor="let match of item.value" fxLayout="row" fxLayoutAlign="center">
+                        <mat-icon mat-list-icon
+                        *ngIf="match.reportId !== null && match.reportId !== undefined"
+                        color="primary"
+                        [routerLink]="['/reports', 'view' ,match.reportId]">info</mat-icon>
+                        <div mat-line>{{match.teamName === undefined ? toBeDefined : match.teamName}} - {{match.otherTeamName === undefined ? toBeDefined : match.otherTeamName}}</div>
+                    </mat-list-item>
+                </div>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>

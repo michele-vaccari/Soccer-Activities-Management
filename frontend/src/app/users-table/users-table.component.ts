@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import { UserService } from '../services/user.service';
 import { User } from '../interfaces/user';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RefereeService } from '../services/referee.service';
 
 @Component({
   selector: 'app-users-table',
@@ -15,11 +15,6 @@ export class UsersTableComponent implements OnInit {
       columnDef: 'id',
       header: $localize `:@@ID:Id`,
       cell: (element: User) => `${element.id}`,
-    },
-    {
-      columnDef: 'type',
-      header: $localize `:@@TYPE:Type`,
-      cell: (element: User) => `${element.type}`,
     },
     {
       columnDef: 'name',
@@ -37,42 +32,47 @@ export class UsersTableComponent implements OnInit {
       cell: (element: User) => `${element.email}`,
     },
     {
-      columnDef: 'password',
-      header: $localize `:@@PASSWORD:Password`,
-      cell: (element: User) => `${element.password}`,
+      columnDef: 'phone',
+      header: $localize `:@@PHONE:Phone`,
+      cell: (element: User) => `${element.phone}`,
     },
     {
-      columnDef: 'isActive',
-      header: $localize `:@@IS_ACTIVE:Is Active`,
-      cell: (element: User) => `${element.isActive}`,
-    }
+      columnDef: 'address',
+      header: $localize `:@@ADDRESS:Address`,
+      cell: (element: User) => `${element.address}`,
+    },
+    {
+      columnDef: 'status',
+      header: $localize `:@@STATUS:Status`,
+      cell: (element: User) => `${element.active == 'Y' ? $localize `:@@ACTIVE:Active` : $localize `:@@INACTIVE:Inactive`}`,
+    },
   ];
   displayedColumns = this.columns.map(c => c.columnDef).concat(['actions']);
   dataSource = new MatTableDataSource<User>();
 
-  constructor(private userService: UserService,
+  constructor(private refereeService: RefereeService,
               private snackBar: MatSnackBar) {
   }
 
-  getAllUsers() {
-    this.userService.getAllUsers().subscribe((data: User[]) => this.dataSource.data = data);
-  }
-
-  deactivateUser(id: number) {
-    this.userService.deactivateUser(id).subscribe(
+  deactivateReferee(id: number) {
+    this.refereeService.deactivateReferee(id).subscribe(
       {
         error: () => {
-          this.snackBar.open($localize `:@@ERROR_DEACTIVATING_USER:Error deactivating user`);
+          this.snackBar.open($localize `:@@ERROR_DEACTIVATING_REFEREE:Error deactivating referee`);
         },
         complete: () => {
-          this.getAllUsers();
-          this.snackBar.open($localize `:@@USER_SUCCESSFULLY_DEACTIVATED:User successfully deactivated`);
+          this.getAllReferees();
+          this.snackBar.open($localize `:@@REFEREE_SUCCESSFULLY_DEACTIVATED:Referee successfully deactivated`);
         }
       }
     );
   }
 
   ngOnInit() {
-    this.getAllUsers();
+    this.getAllReferees();
+  }
+
+  private getAllReferees() {
+    this.refereeService.getAllReferees().subscribe((data: User[]) => this.dataSource.data = data);
   }
 }
