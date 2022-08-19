@@ -50,7 +50,11 @@ public class AuthenticateController {
 			if (!user.getPassword().equals(authentication.getPassword()))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-			var token = jwtService.createJwt(user.getEmail(), user.getRole(), user.getName(), user.getSurname());
+			var teamId = 0;
+			if (user.getRole().equals("TeamManager"))
+				teamId = user.getRegisteredUserById().getTeamManagerById().getTeamById().getId();
+
+			var token = jwtService.createJwt(user.getEmail(), user.getId(), user.getRole(), user.getName(), user.getSurname(), teamId);
 			return Optional.of(new JWT(token));
 		}
 		catch (UserNotFoundException ex) {

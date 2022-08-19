@@ -1,0 +1,82 @@
+
+<form [formGroup]="userForm" fxLayout="column">
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@NAME">Name</ng-container>
+        </mat-label>
+        <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@SURNAME">Surname</ng-container>
+        </mat-label>
+        <input matInput formControlName="surname">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@ADDRESS">Address</ng-container>
+        </mat-label>
+        <input matInput formControlName="address">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@BIRTH_DATE">Birth date</ng-container>
+        </mat-label>
+        <input matInput formControlName="birthDate">
+        <mat-error *ngIf="userForm.controls['birthDate'].invalid">{{getBirthDateErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@PHONE">Phone</ng-container>
+        </mat-label>
+        <input matInput formControlName="phone">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@CITIZENSHIP">Citizenship</ng-container>
+        </mat-label>
+        <input matInput formControlName="citizenship">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@RESUME">Resume</ng-container>
+        </mat-label>
+        <textarea matInput formControlName="resume"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@EMAIL">Email</ng-container>
+        </mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="userForm.controls['email'].invalid">{{getEmailErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@PASSWORD">Password</ng-container>
+        </mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field>
+</form>
+
+<button *ngIf="!isUpdateMode" (click)="postNewReferee()"
+    mat-stroked-button color="primary"
+    [disabled]="!areUserFormValid()">
+    <ng-container i18n="@@ADD">Add</ng-container>
+</button>
+
+<button *ngIf="isUpdateMode" (click)="updateReferee()"
+    mat-stroked-button color="primary"
+    [disabled]="!areUserFormWithValueValid()">
+    <ng-container i18n="@@UPDATE">Update</ng-container>
+</button>

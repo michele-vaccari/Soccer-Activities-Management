@@ -1,6 +1,8 @@
 package com.sam.webapi.controller;
 
+import com.sam.webapi.dto.MatchDto;
 import com.sam.webapi.dto.PlayerDto;
+import com.sam.webapi.dto.ShortTournamentDto;
 import com.sam.webapi.dto.TeamDto;
 import com.sam.webapi.security.service.JwtService;
 import com.sam.webapi.service.*;
@@ -87,6 +89,54 @@ public class TeamController {
 		}
 		catch (TeamNotFoundException ex) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found", ex);
+		}
+	}
+
+	@Operation(summary = "Get the list of tournaments")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the tournaments",
+					content = {@Content(mediaType = "application/json",
+							array = @ArraySchema(schema = @Schema(implementation = ShortTournamentDto.class)))}),
+			@ApiResponse(responseCode = "404", description = "Team not found", content = @Content(schema = @Schema(hidden = true)))
+	})
+	@RequestMapping(value = "/teams/{id}/tournaments",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	@ResponseStatus(HttpStatus.OK)
+	public Iterable<ShortTournamentDto> getTournaments(@PathVariable Integer id) {
+
+		try {
+			return teamService.getTournamentsOfTeam(id);
+		}
+		catch (TeamNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@Operation(summary = "Get the list of matches", security = { @SecurityRequirement(name = "Bearer") })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the matches",
+					content = {@Content(mediaType = "application/json",
+							array = @ArraySchema(schema = @Schema(implementation = MatchDto.class)))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized, only the team manager can perform this operation", content = @Content(schema = @Schema(hidden = true))),
+			@ApiResponse(responseCode = "404", description = "Team not found", content = @Content(schema = @Schema(hidden = true)))
+	})
+	@RequestMapping(value = "/teams/{id}/matches",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	@ResponseStatus(HttpStatus.OK)
+	public Iterable<MatchDto> getMatches(@RequestHeader("Authorization") String authorization,
+										 @PathVariable Integer id) {
+		var userEmail = jwtService.getEmail(authorization);
+
+		try {
+			return teamService.getMatchesOfTeam(id, userEmail);
+		}
+		catch (TeamNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized", ex);
 		}
 	}
 

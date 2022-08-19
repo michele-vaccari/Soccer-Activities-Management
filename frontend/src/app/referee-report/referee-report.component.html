@@ -1,0 +1,210 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <h1>{{tournamentName}}</h1>
+</div>
+
+<form [formGroup]="reportForm" fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center">
+    
+        <!-- Team -->
+        <div fxLayout="column" fxLayoutAlign="center" style="margin-right: 64px;">
+            <h2 style="text-align: center">{{teamName}}</h2>
+    
+            <h3 class="sectionTitle" i18n="@@MAIN_PLAYERS">MAIN PLAYERS</h3>
+            <table mat-table [dataSource]="teamMainPlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="playerReport">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+    
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 60px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@GOALS">Goals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="goal" type="number" min="0" [(ngModel)]="element.goal">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 80px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@AUTOGOALS">Autogoals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="autogoals" type="number" min="0" [(ngModel)]="element.autogoals">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 90px;">
+                            <mat-label>
+                                <ng-container i18n="@@ADMONITIONS">Admonitions</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="admonitions" type="number" min="0" max="2" [(ngModel)]="element.admonitions">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+    
+            <h3 class="sectionTitle" i18n="@@RESERVE_PLAYERS">RESERVE PLAYERS</h3>
+            <table mat-table [dataSource]="teamReservePlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="playerReport">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+    
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 60px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@GOALS">Goals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="goal" type="number" min="0" [(ngModel)]="element.goal">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 80px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@AUTOGOALS">Autogoals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="autogoals" type="number" min="0" [(ngModel)]="element.autogoals">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 90px;">
+                            <mat-label>
+                                <ng-container i18n="@@ADMONITIONS">Admonitions</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="admonitions" type="number" min="0" max="2" [(ngModel)]="element.admonitions">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+        </div>
+    
+        <!-- Other team -->
+        <div fxLayout="column" fxLayoutAlign="center">
+            <h2 style="text-align: center">{{otherTeamName}}</h2>
+
+            <h3 class="sectionTitle" i18n="@@MAIN_PLAYERS">MAIN PLAYERS</h3>
+            <table mat-table [dataSource]="otherTeamMainPlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="playerReport">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+    
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 60px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@GOALS">Goals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="goal" type="number" min="0" [(ngModel)]="element.goal">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 80px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@AUTOGOALS">Autogoals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="autogoals" type="number" min="0" [(ngModel)]="element.autogoals">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 90px;">
+                            <mat-label>
+                                <ng-container i18n="@@ADMONITIONS">Admonitions</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="admonitions" type="number" min="0" max="2" [(ngModel)]="element.admonitions">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+    
+            <h3 class="sectionTitle" i18n="@@RESERVE_PLAYERS">RESERVE PLAYERS</h3>
+            <table mat-table [dataSource]="otherTeamReservePlayers" class="mat-elevation-z0">
+    
+                <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+                    <th mat-header-cell *matHeaderCellDef>
+                        {{column.header}}
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{column.cell(row)}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="playerReport">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+    
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 60px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@GOALS">Goals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="goal" type="number" min="0" [(ngModel)]="element.goal">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 80px; margin-right: 10px;">
+                            <mat-label>
+                                <ng-container i18n="@@AUTOGOALS">Autogoals</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="autogoals" type="number" min="0" [(ngModel)]="element.autogoals">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="no-wrapper" style="width: 90px;">
+                            <mat-label>
+                                <ng-container i18n="@@ADMONITIONS">Admonitions</ng-container>
+                            </mat-label>
+                            <input matInput formControlName="admonitions" type="number" min="0" max="2" [(ngModel)]="element.admonitions">
+                        </mat-form-field>
+                    </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+    
+    <div fxLayout="column" fxLayoutAlign="center" style="width: 200px; margin: auto; padding-top: 40px;">
+        <mat-form-field appearance="fill">
+            <mat-label>
+                <ng-container i18n="@@MATCH_START_TIME">Match start time</ng-container>
+            </mat-label>
+            <input matInput formControlName="matchStartTime">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>
+                <ng-container i18n="@@MATCH_END_TIME">Match end time</ng-container>
+            </mat-label>
+            <input matInput formControlName="matchEndTime">
+        </mat-form-field>
+    </div>
+</form>
+
+<div fxLayout="row" fxLayoutAlign="center" style="padding: 20px 0 20px 0;">
+    <button (click)="patchReport()"
+        mat-stroked-button color="primary"
+        [disabled]="!canSubmitReport()">
+        <ng-container i18n="@@SUBMIT">Submit</ng-container>
+    </button>
+</div>

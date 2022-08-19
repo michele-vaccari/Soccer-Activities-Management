@@ -1,0 +1,78 @@
+<form [formGroup]="reportForm" fxLayout="column">
+    <mat-form-field appearance="fill">
+        <mat-label>
+            <ng-container i18n="@@TOURNAMENT">Tournament</ng-container>
+        </mat-label>
+        <mat-select formControlName="tournament" (selectionChange)="onTournamentChange($event.value)">
+            <span *ngFor="let tournament of tournaments">
+                <mat-option value={{tournament.id}}>{{tournament.name}}</mat-option>
+            </span>
+        </mat-select>
+    </mat-form-field>
+    <div *ngIf="showPhase" fxLayout="column">
+        <mat-form-field appearance="fill">
+            <mat-label>
+                <ng-container i18n="@@PHASE">Phase</ng-container>
+            </mat-label>
+            <mat-select formControlName="phase" (selectionChange)="onPhaseChange($event.value)">
+                <span *ngFor="let phase of phases">
+                    <mat-option value={{phase.value}}>{{phase.displayValue}}</mat-option>
+                </span>
+            </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="showMatch && matches.length > 0; then compile; else showAlert"></ng-container>
+    
+        <ng-template #compile>
+            <mat-form-field appearance="fill">
+                <mat-label>
+                    <ng-container i18n="@@MATCH">Match</ng-container>
+                </mat-label>
+                <mat-select formControlName="match" (selectionChange)="onMatchesChange($event.value)">
+                    <span *ngFor="let match of matches">
+                        <mat-option value={{match.id}}>{{match.teamName === undefined ? toBeDefined : match.teamName}} - {{match.otherTeamName === undefined ? toBeDefined : match.otherTeamName}}</mat-option>
+                    </span>
+                </mat-select>
+            </mat-form-field>
+            <div *ngIf="showOtherFields" fxLayout="column">
+                <mat-form-field *ngIf="showOtherFields" appearance="fill">
+                    <mat-label>
+                        <ng-container i18n="@@REFEREE">Referee</ng-container>
+                    </mat-label>
+                    <mat-select formControlName="referee">
+                        <span *ngFor="let referee of referees">
+                            <mat-option value={{referee.id}}>{{referee.name}} {{referee.surname}}</mat-option>
+                        </span>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        <ng-container i18n="@@MATCH_DATE">Match date</ng-container>
+                    </mat-label>
+                    <input matInput formControlName="matchDate">
+                    <mat-error *ngIf="reportForm.controls['matchDate'].invalid">{{getDateErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        <ng-container i18n="@@MATCH_TIME">Match time</ng-container>
+                    </mat-label>
+                    <input matInput formControlName="matchTime">
+                    <mat-error *ngIf="reportForm.controls['matchDate'].invalid">{{getTimeErrorMessage()}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>
+                        <ng-container i18n="@@PLACE">Place</ng-container>
+                    </mat-label>
+                    <input matInput formControlName="place">
+                </mat-form-field>
+            </div>
+        </ng-template>
+        <ng-template #showAlert>
+            <mat-error i18n="@@NO_MATCH_AVAILABLE">No match available</mat-error>
+        </ng-template>
+    </div>
+</form>
+
+<button (click)="updateMatch()"
+    mat-stroked-button color="primary">
+    <ng-container i18n="@@ASSIGNMENT_CONFIRMATION">Assignment confirmation</ng-container>
+</button>

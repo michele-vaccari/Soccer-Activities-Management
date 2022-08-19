@@ -4,7 +4,6 @@ import com.sam.webapi.dataaccess.AdminUserRepository;
 import com.sam.webapi.dataaccess.UserRepository;
 import com.sam.webapi.dto.AdminDto;
 import com.sam.webapi.model.AdminUser;
-import com.sam.webapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +25,6 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	@Transactional
-	public Iterable<AdminDto> getAdmins(String adminEmail) {
-		isAuthorizedUser(adminEmail);
-
-		var admins = adminUserRepository.findAll();
-
-		var adminsDto = new ArrayList<AdminDto>();
-		admins.forEach(admin -> adminsDto.add(convertEntityToDto(admin)));
-
-		return adminsDto;
-	}
-
-	@Override
-	@Transactional
 	public AdminDto getAdmin(Integer id, String adminEmail) {
 		isAuthorizedUser(adminEmail);
 
@@ -48,34 +34,6 @@ public class AdminServiceImpl implements AdminService {
 			throw new AdminUserNotFoundException();
 
 		return convertEntityToDto(admin.get());
-	}
-
-	@Override
-	@Transactional
-	public void createAdmin(String adminEmail, AdminDto adminDto) {
-		isAuthorizedUser(adminEmail);
-
-		if (userRepository.existsByEmail(adminDto.getEmail()))
-			throw new SingleEmailConstraintException();
-
-		var userId = userRepository.getMaxId();
-
-		var user = new User(
-				++userId,
-				"Admin",
-				adminDto.getName(),
-				adminDto.getSurname(),
-				adminDto.getEmail(),
-				adminDto.getPassword(),
-				"Y"
-		);
-
-		var admin = new AdminUser(
-				user.getId()
-		);
-
-		userRepository.save(user);
-		adminUserRepository.save(admin);
 	}
 
 	@Override
@@ -107,20 +65,6 @@ public class AdminServiceImpl implements AdminService {
 
 		userRepository.save(user.get());
 		adminUserRepository.save(admin.get());
-	}
-
-	@Override
-	@Transactional
-	public void deleteAdmin(Integer id, String adminEmail) {
-		isAuthorizedUser(adminEmail);
-
-		if (!adminUserRepository.existsById(id))
-			throw new AdminUserNotFoundException();
-
-		if (!userRepository.existsById(id))
-			throw new UserNotFoundException();
-
-		userRepository.deactivateUserById(id);
 	}
 
 	private void isAuthorizedUser(String userEmail) {

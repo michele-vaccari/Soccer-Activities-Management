@@ -33,7 +33,7 @@ public class PlayerController {
 
 	@Operation(summary = "Get a player by its id")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Player the team",
+			@ApiResponse(responseCode = "200", description = "Player found",
 					content = { @Content(mediaType = "application/json",
 					schema = @Schema(implementation = PlayerDto.class)) }),
 			@ApiResponse(responseCode = "404", description = "Player not found", content = @Content(schema = @Schema(hidden = true)))

@@ -32,13 +32,40 @@ export class AuthenticationService {
     return decodedToken.email;
   }
 
-  getUserNameAndSurname() {
+  getUserName() {
     const token = sessionStorage.getItem('token');
     if (token === null)
       return;
     
     const decodedToken = this.jwtHelper.decodeToken(token);
-    return decodedToken.name + " " + decodedToken.surname;
+    return decodedToken.name;
+  }
+
+  getUserSurname() {
+    const token = sessionStorage.getItem('token');
+    if (token === null)
+      return;
+    
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken.surname;
+  }
+
+  getUserId() {
+    const token = sessionStorage.getItem('token');
+    if (token === null)
+      return;
+    
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken.id;
+  }
+
+  getTeamId() {
+    const token = sessionStorage.getItem('token');
+    if (token === null)
+      return;
+    
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    return decodedToken.teamId;
   }
 
   isAdminUser() {

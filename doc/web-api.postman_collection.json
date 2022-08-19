@@ -1,0 +1,1681 @@
+{
+	"info": {
+		"_postman_id": "6c2fd054-b0da-4308-8c87-3187d38f97c5",
+		"name": "web-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18627113"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "authenticate admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"admin_bearer_token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@sam.com\",\r\n    \"password\": \"Password01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authenticate team manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"teamManager_bearer_token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"t4@a\",\r\n    \"password\": \"4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "authenticate referee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"referee_bearer_token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"p@c\",\r\n    \"password\": \"p\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users whith ID=1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admins/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"type\": \"SystemAdministrator\",\r\n    \"name\": \"Michele\",\r\n    \"surname\": \"Vaccari\",\r\n    \"email\": \"m.vaccari@sam.com\",\r\n    \"password\": \"Password01\",\r\n    \"isActive\": \"Y\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"type\": \"SystemAdministrator\",\r\n    \"name\": \"Michele\",\r\n    \"surname\": \"Vaccari\",\r\n    \"email\": \"m.vaccari@sam.com\",\r\n    \"password\": \"Password01\",\r\n    \"isActive\": \"Y\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user with ID=23",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"23"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Referees",
+			"item": [
+				{
+					"name": "Get referees",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/referees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get referees whith ID=3",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/referees/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get reports of referees whith ID=3",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{referee_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/referees/2/reports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees",
+								"2",
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post referee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Arianna\",\r\n    \"surname\": \"Boninsegna\",\r\n    \"email\": \"a.boninsegna@sam.it\",\r\n    \"adminUserId\": 1,\r\n    \"password\": \"Password01\",\r\n    \"phone\": \"3335248448\",\r\n    \"address\": \"Via Legnago\",\r\n    \"birthDate\": \"07-09-1983\",\r\n    \"citizenship\": \"Italian\",\r\n    \"resume\": \"TBD.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/referees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete referee with ID=4",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJyb2xlIjoiQWRtaW4iLCJzdXJuYW1lIjoiVmFjY2FyaSIsImlzcyI6IlNvY2NlciBBY3Rpdml0aWVzIE1hbmFnZW1lbnQiLCJuYW1lIjoiTWljaGVsZSIsImV4cCI6MTY0NTYzMDk5OSwiaWF0IjoxNjQ1NTU4OTk5LCJlbWFpbCI6ImFkbWluQHNhbS5jb20ifQ.mwSJNO6Q04rP7Gs39U8EL0a1fIGKTYkMWOCTJP_aNMTePNybYtQF3O2zUAQf5AwU6lQ_iuN1Vd9RU3rM6-ar0jtkIQYpv5geeJSerJ3-D1hi1R28PxLkESwFs9eYKAXtIBAlHyIuGykQaKNybkoI-Bm9kWGq4iIBzYzpE-Z9hvpW9N1eYbDckNgipP9XroxbBSSHQgBrIILtA_EXG05ieFlJRUFXf1HckH9L3nK54__pmeSI4eNkkRRjqpcinnXVDU2Wwu694sHITJmuVtywXVFGbA3tIUKSUtdHfUKdKO9OicEtImNcVq4NC_K7D_XZavor2K7Kd2cgSaga1deijFyyaWKXoOnD5gbv1xvQ2eS6oZGqEnoYsao0--OtRi72Fjuv556EXBHXQF5wsG-WZi3RHNA5uG2AnO4bLaIsGU7O9yhJxn93mPYtAOhnoh_sFAQ8rdJoEyDgN6-KgbXeR2Q22lAo07Wh3LSx57EwEEYFAPAScYQgpOr_LlqhoOYMpZiPnY-DCmi7J5HRpdARQIDCyXESAmgxeN-Brb2J8e1C-5V7FvSmMjCZPARuE_1i0Z3UBtEjOuYUqjEzNt489ZuQybadXCZmKIlrJ9m1BoIFK88bRDzV1NvrMl9Lztc6RLhm_Ow0UoMFqfpKkEDAq-zK_38RlLIrIrVPl2EwZKA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/referees/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update referee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Michela\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/referees/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Get referees",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/referees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get reports",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/reports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get reports with ID 1",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/reports/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reports",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get lineups of report whith ID=1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{referee_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/reports/1/lineups",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reports",
+								"1",
+								"lineups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post lineups of report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teamManager_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Arianna\",\r\n    \"surname\": \"Boninsegna\",\r\n    \"email\": \"a.boninsegna@sam.it\",\r\n    \"adminUserId\": 1,\r\n    \"password\": \"Password01\",\r\n    \"phone\": \"3335248448\",\r\n    \"address\": \"Via Legnago\",\r\n    \"birthDate\": \"07-09-1983\",\r\n    \"citizenship\": \"Italian\",\r\n    \"resume\": \"TBD.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/reports/1/lineups",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"reports",
+								"1",
+								"lineups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete referee with ID=4",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJyb2xlIjoiQWRtaW4iLCJzdXJuYW1lIjoiVmFjY2FyaSIsImlzcyI6IlNvY2NlciBBY3Rpdml0aWVzIE1hbmFnZW1lbnQiLCJuYW1lIjoiTWljaGVsZSIsImV4cCI6MTY0NTYzMDk5OSwiaWF0IjoxNjQ1NTU4OTk5LCJlbWFpbCI6ImFkbWluQHNhbS5jb20ifQ.mwSJNO6Q04rP7Gs39U8EL0a1fIGKTYkMWOCTJP_aNMTePNybYtQF3O2zUAQf5AwU6lQ_iuN1Vd9RU3rM6-ar0jtkIQYpv5geeJSerJ3-D1hi1R28PxLkESwFs9eYKAXtIBAlHyIuGykQaKNybkoI-Bm9kWGq4iIBzYzpE-Z9hvpW9N1eYbDckNgipP9XroxbBSSHQgBrIILtA_EXG05ieFlJRUFXf1HckH9L3nK54__pmeSI4eNkkRRjqpcinnXVDU2Wwu694sHITJmuVtywXVFGbA3tIUKSUtdHfUKdKO9OicEtImNcVq4NC_K7D_XZavor2K7Kd2cgSaga1deijFyyaWKXoOnD5gbv1xvQ2eS6oZGqEnoYsao0--OtRi72Fjuv556EXBHXQF5wsG-WZi3RHNA5uG2AnO4bLaIsGU7O9yhJxn93mPYtAOhnoh_sFAQ8rdJoEyDgN6-KgbXeR2Q22lAo07Wh3LSx57EwEEYFAPAScYQgpOr_LlqhoOYMpZiPnY-DCmi7J5HRpdARQIDCyXESAmgxeN-Brb2J8e1C-5V7FvSmMjCZPARuE_1i0Z3UBtEjOuYUqjEzNt489ZuQybadXCZmKIlrJ9m1BoIFK88bRDzV1NvrMl9Lztc6RLhm_Ow0UoMFqfpKkEDAq-zK_38RlLIrIrVPl2EwZKA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/referees/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update referee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Michela\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/referees/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"referees",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Team Managers",
+			"item": [
+				{
+					"name": "Get team managers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teammanagers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teammanagers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get team managers whith ID=3",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teammanagers/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teammanagers",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post team manager",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TM5\",\r\n    \"surname\": \"Vaccari\",\r\n    \"email\": \"tm5@sam.it\",\r\n    \"adminUserId\": 1,\r\n    \"password\": \"Password01\",\r\n    \"phone\": \"3335248448\",\r\n    \"address\": \"Via Legnago\",\r\n    \"teamName\": \"T5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teammanagers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teammanagers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post team manager Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"teamName\": \"T1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teammanagers/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teammanagers",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete team manager with ID=4",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teammanagers/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teammanagers",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update team managers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Michela\",\r\n    \"active\": \"Y\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teammanagers/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teammanagers",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admins",
+			"item": [
+				{
+					"name": "Get admins",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admins",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get admins whith ID=3",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admins/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post admins",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Chiara\",\r\n    \"surname\": \"Canton\",\r\n    \"email\": \"c.canton@sam.it\",\r\n    \"adminUserId\": 1,\r\n    \"password\": \"Password01\",\r\n    \"phone\": \"3335248448\",\r\n    \"address\": \"Via Legnago\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admins",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete admin with ID=4",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admins/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update team managers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Michela\",\r\n    \"surname\": \"Canton\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admins/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tournaments",
+			"item": [
+				{
+					"name": "Get tournaments",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tournaments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Round Robin tournament whith ID=#",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tournaments/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournaments",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Elimination tournament whith ID=#",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/tournaments/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournaments",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Round Robin  tournaments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Torneo TIM 4\",\r\n    \"type\": \"RoundRobin\",\r\n    \"description\": \"description\",\r\n    \"teamIds\": [2, 3, 4, 5, 6]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tournaments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Single Elimination  tournaments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test Round Robin\",\r\n    \"type\": \"SingleElimination\",\r\n    \"description\": \"description\",\r\n    \"teamIds\": [2, 3, 4, 5]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/tournaments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update team managers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Michela\",\r\n    \"active\": \"Y\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admins/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admins",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{
+					"name": "Get teams",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get teams whith ID=3",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teams/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get tournaments of team #",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teams/2/tournaments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams",
+								"2",
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get matches of team",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teamManager_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teams/5/matches",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams",
+								"5",
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get players of teams 5",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/teams/5/players",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams",
+								"5",
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update team",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teams/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post player on teams 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{teamManager_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"teamId\": 5,\r\n  \"jerseyNumber\": 10,\r\n  \"role\": \"Portiere\",\r\n  \"name\": \"Pippo\",\r\n  \"surname\": \"Inzaghi\",\r\n  \"birthDate\": \"01-01-1970\",\r\n  \"citizenship\": \"Italiana\",\r\n  \"description\": \"description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/teams/5/players",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"teams",
+								"5",
+								"players"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Matches",
+			"item": [
+				{
+					"name": "Update match",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{admin_bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refereeId\": 2,\r\n    \"place\": \"Verona\",\r\n    \"date\":\"19-05-2022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/matches/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matches",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Player",
+			"item": [
+				{
+					"name": "Delete player with id 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJyb2xlIjoiVGVhbU1hbmFnZXIiLCJzdXJuYW1lIjoiVmFjY2FyaSIsImlzcyI6IlNvY2NlciBBY3Rpdml0aWVzIE1hbmFnZW1lbnQiLCJuYW1lIjoiTWljaGVsYSIsImV4cCI6MTY0NjMyNDM4NCwiaWF0IjoxNjQ2MjUyMzg0LCJlbWFpbCI6ImEudmFjY2FyaUBzYW0uaXQifQ.AMU-wq4YHxw4BdJ-6ltSIgizLXaR32-hbeLqxV6Z5YT9HVlw7fHeO0dyVnJtt7QYQlyjgzofRZwYB7tHu-n69NX8ibmI8jx1NRtvMIl4obm480Ow65WziKLOhcFVK-g2YO_58VNtN29I3eOR021qyUAkQPhGcnLLi83IL3hUKvI24tuXWOBKrH4fAWMsNA7EwfLImeC_5s6WpKNL0CdHj0HNKeDKyqhuRXlXNr3eoi5SFTDBKaOvnIxlUrCre877iOmET5ROzJzdGuEaIuYRYP0HRP5cfD0CtlsSfgGcuOWBR7V_GPCrewfNnaXVuUKZaUp_mHy3KPccCMFmx3zD7unlF8iHJG0XBa6vuqFn7KT12rs01bR6w5ionxd4EHTi26CajWYejxxzfCvKWFymyR9EMKXoc4hjw4g0d0t-XvIV2YH1kFUXyv2jc59fE4lK0mXPpa3pvgv66glLys3LqhTLtCjNjEU_IrXPo2KQ2_qGP5nfqyylhd9jCVHR9CfF36WenhbfOXCsqJxXe3dkyDfsF-sjDyASzyzs4uKCZNVqeLGQbZ8jUbLrgyqIBKFlXxAcsyJhTl8izOJ_8VqT0Fir9eI0dAvzw0Djmb8wgD_VQKHdALqXjcy4n_tVIieW9DzJnfKYYffti0TyRalf0DhCz2iDMRSqUAZ_YXwB7uc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/players/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"players",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get player with id 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/players/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"players",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "bearer token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJyb2xlIjoiQWRtaW4iLCJzdXJuYW1lIjoiVmFjY2FyaSIsImlzcyI6IlNvY2NlciBBY3Rpdml0aWVzIE1hbmFnZW1lbnQiLCJuYW1lIjoiTWljaGVsZSIsImV4cCI6MTY0NTcwMzE2OCwiaWF0IjoxNjQ1NjMxMTY4LCJlbWFpbCI6ImFkbWluQHNhbS5jb20ifQ.mlwkMvBORk519O8mnRoNuLGd2ZfGLLu_teKhvpzJHVXDpe5hjPHH7tqHv8nzWjdSjokDOvoCKfVnDZStyNzttz_Ea7tOqHRQz_ccEAGgM7TlwTGvT5SfJ4VoLg-v0QrEDl3rbgssiA2ibos8B-QMEqofbPwucT4TzwE_4uDjeoLozxVPtJxkAHQwd75a4IWLCLHWL_QRQKz6SsgybENymM7J01VBlNGFCcZ1JtgfPmGuJIkMrh9jbQ95bo8LVUJqitOpnc6aOjc8H_jl-i9wDlk5kNuDkTZtIfaOg2Adbprote_O7iTXrXW88ZQKutNU0Q5PHHxGFEhxz3zJVLWHFxarsxtnPkLJyWyvWkeHGQdNYWw3T2TGx3F559fplCHJpLl8PHKoj3ZcUCIBhUD9LU2Y0g5AshPbHCxFvNxNsWhcRhQC64xSBYOrFj4SbTLD9WPN5VjFScdFZAxVLbMciORWpvBlGV5TKxO8ltyo1MB_8v_U4-167UYQxBeAN9wMMjO0hGJN0N9Fxf-kFzB3cj7ANtqMEwY-lQtnABM8Jx_Q_d7HgOlM5RnbiQVh4A-PEeHnyJ3WLWqo8Obl7G3mPjdq1hRP12xg76VygDUNtI8Ojhc74SU3Lw2lkD4zQp786Px4bTpDokyRcQ-0-CFkuakwC_lnQo_4bfKelItqi7E"
+		}
+	]
+}

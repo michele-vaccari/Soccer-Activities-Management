@@ -26,6 +26,30 @@ import { AuthenticationHtppInterceptorService } from './services/authentication-
 import { HomeComponent } from './home/home.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TournamentsTableComponent } from './tournaments-table/tournaments-table.component';
+import { TournamentComponent } from './tournament/tournament.component';
+import { RoundRobinRoundComponent } from './round-robin-round/round-robin-round.component';
+import { SingleEliminationStageComponent } from './single-elimination-stage/single-elimination-stage.component';
+import { TeamsTableComponent } from './teams-table/teams-table.component';
+import { TeamDetailsComponent } from './team-details/team-details.component';
+import { TeamPlayersTableComponent } from './team-players-table/team-players-table.component';
+import { PlayerDetailsComponent } from './player-details/player-details.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { ReportTableComponent } from './report-table/report-table.component';
+import { RefereesTableComponent } from './referees-table/referees-table.component';
+import { RefereeComponent } from './referee/referee.component';
+import { TeamManagersTableComponent } from './team-managers-table/team-managers-table.component';
+import { TeamManagerComponent } from './team-manager/team-manager.component';
+import { CreateTournamentComponent } from './create-tournament/create-tournament.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReportComponent } from './report/report.component';
+import { TeamComponent } from './team/team.component';
+import { PlayerComponent } from './player/player.component';
+import { LineupsTableComponent } from './lineups-table/lineups-table.component';
+import { LineupComponent } from './lineup/lineup.component';
+import { RefereeReportTableComponent } from './referee-report-table/referee-report-table.component';
+import { RefereeReportComponent } from './referee-report/referee-report.component';
+import { ReportDetailsComponent } from './report-details/report-details.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +58,29 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     UsersTableComponent,
     UserComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    TournamentsTableComponent,
+    TournamentComponent,
+    RoundRobinRoundComponent,
+    SingleEliminationStageComponent,
+    TeamsTableComponent,
+    TeamDetailsComponent,
+    TeamPlayersTableComponent,
+    PlayerDetailsComponent,
+    ReportTableComponent,
+    RefereesTableComponent,
+    RefereeComponent,
+    TeamManagersTableComponent,
+    TeamManagerComponent,
+    CreateTournamentComponent,
+    ReportComponent,
+    TeamComponent,
+    PlayerComponent,
+    LineupsTableComponent,
+    LineupComponent,
+    RefereeReportTableComponent,
+    RefereeReportComponent,
+    ReportDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +101,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSidenavModule,
     MatCardModule,
     MatListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatMenuModule,
+    MatCheckboxModule
   ],
   providers: [
     {

@@ -3,6 +3,7 @@ package com.sam.webapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +14,7 @@ public class Referee {
 	private String citizenship;
 	private String resume;
 	private RegisteredUser registeredUserById;
+	private List<Report> reportsById;
 
 	public Referee() { }
 
@@ -85,5 +87,14 @@ public class Referee {
 
 	public void setRegisteredUserById(RegisteredUser registeredUserById) {
 		this.registeredUserById = registeredUserById;
+	}
+
+	@OneToMany(mappedBy = "refereeByRefereeId")
+	public List<Report> getReportsById() {
+		return reportsById;
+	}
+
+	public void setReportsById(List<Report> reportsById) {
+		this.reportsById = reportsById;
 	}
 }

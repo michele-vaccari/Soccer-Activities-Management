@@ -1,6 +1,7 @@
 package com.sam.webapi.controller;
 
 import com.sam.webapi.dto.RefereeDto;
+import com.sam.webapi.dto.ShortReportDto;
 import com.sam.webapi.security.service.JwtService;
 import com.sam.webapi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,6 +68,35 @@ public class RefereeController {
 		var adminEmail = jwtService.getEmail(authorization);
 		try {
 			return refereeService.getReferee(id, adminEmail);
+		}
+		catch (UnauthorizedException ex) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		}
+		catch (RefereeNotFoundException ex) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@Operation(summary = "Get referee reports by its id", security = { @SecurityRequirement(name = "Bearer") })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Found the reports",
+					content = { @Content(mediaType = "application/json",
+							array = @ArraySchema(schema = @Schema(implementation = ShortReportDto.class))) }),
+			@ApiResponse(responseCode = "401", description = "Unauthorized, only Referee users can perform this operation", content = @Content(schema = @Schema(hidden = true))),
+			@ApiResponse(responseCode = "404", description = "Referee not found", content = @Content(schema = @Schema(hidden = true)))
+	})
+	@RequestMapping(value = "/referees/{id}/reports",
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE )
+	@ResponseStatus(HttpStatus.OK)
+	public Iterable<ShortReportDto> getRefereeReports(@RequestHeader("Authorization") String authorization,
+													  @PathVariable Integer id) {
+		var refereeEmail = jwtService.getEmail(authorization);
+		try {
+			return refereeService.getReportsOfReferee(id, refereeEmail);
+		}
+		catch (BadRequestException ex) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
 		catch (UnauthorizedException ex) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);

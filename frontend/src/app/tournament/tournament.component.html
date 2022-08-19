@@ -1,0 +1,68 @@
+<div fxLayout="row" fxLayoutAlign="center">
+    <h1>{{tournament?.name}}</h1>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center">
+    <h2 i18n="@@TIMETABLE">Timetable</h2>
+</div>
+
+<div *ngIf="isRoundRobinTournament; else singleEliminationTournament">
+    <div fxLayout="row" fxLayoutAlign="center">
+        <h3 i18n="@@FIRST_ROUND">FIRST ROUND</h3>
+    </div>
+    <app-round-robin-round [roundDayMatchMap]=firstRoundDayMatchMap></app-round-robin-round>
+
+    <div fxLayout="row" fxLayoutAlign="center">
+        <h3 i18n="@@SECOND_ROUND">SECOND ROUND</h3>
+    </div>
+    <app-round-robin-round [roundDayMatchMap]=secondRoundDayMatchMap></app-round-robin-round>
+</div>
+
+<ng-template #singleEliminationTournament>
+
+    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="center">
+        <div *ngIf="hasEighthFinals">
+            <app-single-elimination-stage stageName={{eighthFinalStageName}} [matchMap]=eighthFinalsMatches></app-single-elimination-stage>
+        </div>
+    
+        <div *ngIf="hasQuarterFinals">
+            <app-single-elimination-stage stageName={{quarterFinalStageName}} [matchMap]=quarterFinalsMatches></app-single-elimination-stage>
+        </div>
+    
+        <div *ngIf="hasSemifinal">
+            <app-single-elimination-stage stageName={{semiFinalStageName}} [matchMap]=semiFinalsMatches></app-single-elimination-stage>
+        </div>
+
+        <div fxLayoutAlign="space-around center">
+            <app-single-elimination-stage stageName={{finalStageName}} [matchMap]=finalMatch></app-single-elimination-stage>
+        </div>
+    </div>
+
+</ng-template>
+
+<div fxLayout="row" fxLayoutAlign="center">
+    <h2 i18n="@@RANKING">Ranking</h2>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+        <th mat-header-cell *matHeaderCellDef>
+          {{column.header}}
+        </th>
+        <td mat-cell *matCellDef="let row">
+          {{column.cell(row)}}
+        </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<div fxLayout="row" fxLayoutAlign="center">
+    <h2 i18n="@@TOURNAMENT_INFORMATION">Tournament information</h2>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center">
+    <p>{{tournament?.description}}</p>
+</div>

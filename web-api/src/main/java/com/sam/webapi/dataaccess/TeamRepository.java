@@ -11,5 +11,7 @@ public interface TeamRepository extends CrudRepository<Team, Integer> {
 	@Query(value = "SELECT MAX(Id) FROM SAM.TEAM", nativeQuery=true)
 	Integer getMaxId();
 
+	Optional<Team> getById(Integer id);
+
 	Optional<Team> findByTeamManagerId(Integer id);
 }
